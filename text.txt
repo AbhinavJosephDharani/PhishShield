@@ -1,0 +1,18 @@
+phishshield/
+├── frontend/
+│   ├── src/
+│   │   ├── pages/
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   │   └── Dashboard.jsx
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   └── package.json
+├── backend/
+│   ├── models/
+│   │   └── User.js
+│   ├── routes/
+│   │   └── auth.js
+│   ├── server.js
+│   └── package.json
+└── package.json

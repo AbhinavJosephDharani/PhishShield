@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000" height="1000" viewBox="0 0 1000 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shield base -->
+  <path d="M500 50L150 200V500C150 700 300 900 500 950C700 900 850 700 850 500V200L500 50Z" fill="white"/>
+  
+  <!-- Fish symbol -->
+  <path d="M500 300C400 300 350 400 350 450C350 500 400 550 450 550C400 600 350 650 350 700C450 650 500 600 500 550C500 600 550 650 650 700C650 650 600 600 550 550C600 550 650 500 650 450C650 400 600 300 500 300Z" fill="black"/>
+  
+  <!-- Shield outline -->
+  <path d="M500 50L150 200V500C150 700 300 900 500 950C700 900 850 700 850 500V200L500 50Z" stroke="black" stroke-width="20" fill="none"/>
+</svg> 
