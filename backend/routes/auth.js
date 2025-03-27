@@ -7,11 +7,13 @@ const crypto = require('crypto');
 // Register new user
 router.post('/register', async (req, res) => {
   try {
+    console.log('Registration request received:', req.body);
     const { email, password, name } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
+      console.log('User already exists:', email);
       return res.status(400).json({ message: 'User already exists' });
     }
 
@@ -25,13 +27,16 @@ router.post('/register', async (req, res) => {
     // Validate user before saving
     const validationError = user.validateSync();
     if (validationError) {
+      console.log('Validation error:', validationError.errors);
       return res.status(400).json({ 
         message: 'Validation error',
         errors: Object.values(validationError.errors).map(err => err.message)
       });
     }
 
+    console.log('Attempting to save user:', { email, name });
     await user.save();
+    console.log('User saved successfully');
 
     // Generate JWT token
     const token = jwt.sign(
@@ -50,8 +55,8 @@ router.post('/register', async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({ message: 'Error registering user' });
+    console.error('Registration error details:', error);
+    res.status(500).json({ message: 'Error registering user', details: error.message });
   }
 });
 
