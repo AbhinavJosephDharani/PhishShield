@@ -16,10 +16,11 @@ function Dashboard({ setIsAuthenticated }) {
           return;
         }
 
-        const response = await axios.get('https://phishshield.vercel.app/api/auth/me', {
+        const response = await axios.get('/api/auth/me', {
           headers: {
             Authorization: `Bearer ${token}`,
-          },
+            'Content-Type': 'application/json'
+          }
         });
 
         setUser(response.data);

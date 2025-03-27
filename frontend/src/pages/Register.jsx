@@ -49,7 +49,7 @@ function Register({ setIsAuthenticated }) {
         password: '***'
       });
       
-      const response = await axios.post('https://phishshield.vercel.app/api/auth/register', {
+      const response = await axios.post('/api/auth/register', {
         name: formData.name,
         email: formData.email,
         password: formData.password,

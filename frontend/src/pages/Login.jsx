@@ -25,9 +25,13 @@ function Login({ setIsAuthenticated }) {
     setIsLoading(true);
 
     try {
-      const response = await axios.post('https://phishshield.vercel.app/api/auth/login', {
+      const response = await axios.post('/api/auth/login', {
         email,
         password,
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
 
       localStorage.setItem('token', response.data.token);
