@@ -6,14 +6,9 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: path.resolve(__dirname, 'dist'),
+    outDir: 'dist',
     sourcemap: true,
-    emptyOutDir: true,
-    rollupOptions: {
-      output: {
-        manualChunks: undefined
-      }
-    }
+    emptyOutDir: true
   },
   server: {
     proxy: {
