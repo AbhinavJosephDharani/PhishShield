@@ -1,22 +1,28 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
-    trim: true
+    required: [true, 'Name is required'],
+    trim: true,
+    minlength: [2, 'Name must be at least 2 characters long'],
+    maxlength: [50, 'Name cannot exceed 50 characters']
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'Email is required'],
     unique: true,
     trim: true,
-    lowercase: true
+    lowercase: true,
+    match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
   },
   password: {
     type: String,
-    required: true
+    required: [true, 'Password is required'],
+    minlength: [8, 'Password must be at least 8 characters long'],
+    select: false // Don't include password in queries by default
   },
   role: {
     type: String,
@@ -57,6 +63,17 @@ const userSchema = new mongoose.Schema({
     default: 'local'
   },
   providerId: String,
+  passwordResetToken: String,
+  passwordResetExpires: Date,
+  loginAttempts: {
+    count: { type: Number, default: 0 },
+    lastAttempt: Date
+  },
+  isLocked: {
+    type: Boolean,
+    default: false
+  },
+  lockUntil: Date,
   createdAt: {
     type: Date,
     default: Date.now
@@ -80,6 +97,44 @@ userSchema.pre('save', async function(next) {
 // Compare password method
 userSchema.methods.comparePassword = async function(candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
+};
+
+// Generate password reset token
+userSchema.methods.generatePasswordResetToken = async function() {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+  return resetToken;
+};
+
+// Check if account is locked
+userSchema.methods.isAccountLocked = function() {
+  return this.isLocked && this.lockUntil && this.lockUntil > Date.now();
+};
+
+// Increment login attempts
+userSchema.methods.incrementLoginAttempts = async function() {
+  this.loginAttempts.count += 1;
+  this.loginAttempts.lastAttempt = Date.now();
+  
+  // Lock account if too many attempts
+  if (this.loginAttempts.count >= 5) {
+    this.isLocked = true;
+    this.lockUntil = Date.now() + 30 * 60 * 1000; // Lock for 30 minutes
+  }
+  
+  await this.save();
+};
+
+// Reset login attempts on successful login
+userSchema.methods.resetLoginAttempts = async function() {
+  this.loginAttempts = { count: 0, lastAttempt: null };
+  this.isLocked = false;
+  this.lockUntil = null;
+  await this.save();
 };
 
 module.exports = mongoose.model('User', userSchema); 
