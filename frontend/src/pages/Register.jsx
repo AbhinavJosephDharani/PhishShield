@@ -43,18 +43,39 @@ function Register({ setIsAuthenticated }) {
     }
 
     try {
+      console.log('Sending registration request:', {
+        name: formData.name,
+        email: formData.email,
+        password: '***'
+      });
+      
       const response = await axios.post('https://phishshield.vercel.app/api/auth/register', {
         name: formData.name,
         email: formData.email,
         password: formData.password,
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
 
+      console.log('Registration successful:', response.data);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
       setIsAuthenticated(true);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to register');
+      console.error('Registration error:', {
+        status: err.response?.status,
+        data: err.response?.data,
+        message: err.message
+      });
+      setError(
+        err.response?.data?.message || 
+        err.response?.data?.details || 
+        err.message || 
+        'Failed to register'
+      );
     } finally {
       setIsLoading(false);
     }
