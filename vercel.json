@@ -23,14 +23,17 @@
         "Access-Control-Allow-Headers": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization",
         "Access-Control-Allow-Credentials": "true"
       },
-      "dest": "/backend/server.js"
+      "dest": "backend/server.js"
     },
     {
-      "handle": "filesystem"
+      "src": "/((?!api/.*).*)",
+      "dest": "frontend/dist/$1",
+      "continue": true
     },
     {
       "src": "/(.*)",
-      "dest": "/frontend/dist/$1"
+      "dest": "frontend/dist/index.html",
+      "status": 200
     }
   ]
 } 
