@@ -21,6 +21,17 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
+// Debug middleware
+app.use((req, res, next) => {
+  console.log('Request received:', {
+    method: req.method,
+    path: req.path,
+    body: req.body,
+    headers: req.headers
+  });
+  next();
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 
