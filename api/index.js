@@ -22,29 +22,28 @@ app.use(express.json());
 const mongooseOptions = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 45000,
-  connectTimeoutMS: 10000,
-  maxPoolSize: 10,
-  minPoolSize: 5
+  serverSelectionTimeoutMS: 3000,
+  socketTimeoutMS: 30000,
+  connectTimeoutMS: 5000,
+  maxPoolSize: 1,
+  minPoolSize: 1
 };
 
 // Connect to MongoDB
-let isConnected = false;
+let cachedDb = null;
 
 const connectDB = async () => {
-  if (isConnected) {
-    console.log('Using existing MongoDB connection');
-    return;
+  if (cachedDb) {
+    return cachedDb;
   }
 
   try {
-    await mongoose.connect(process.env.MONGODB_URI, mongooseOptions);
-    isConnected = true;
+    const conn = await mongoose.connect(process.env.MONGODB_URI, mongooseOptions);
+    cachedDb = conn;
     console.log('Connected to MongoDB');
+    return conn;
   } catch (err) {
     console.error('MongoDB connection error:', err);
-    isConnected = false;
     throw err;
   }
 };
