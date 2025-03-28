@@ -22,5 +22,5 @@
     }
   ],
   "installCommand": "npm install",
-  "buildCommand": false
+  "buildCommand": null
 } 
