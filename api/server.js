@@ -35,7 +35,7 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use('/auth', authRoutes);
+app.use('/', authRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -49,5 +49,8 @@ app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-// Export the Express API
-module.exports = app; 
+// Export the serverless function handler
+module.exports = async (req, res) => {
+  // Forward the request to Express
+  return app(req, res);
+}; 

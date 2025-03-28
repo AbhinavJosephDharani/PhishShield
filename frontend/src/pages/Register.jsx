@@ -5,7 +5,7 @@ import { FiUser, FiMail, FiLock, FiAlertCircle } from 'react-icons/fi';
 import ScrollContainer from '../components/ScrollContainer';
 
 // API URL based on environment
-const API_URL = import.meta.env.PROD ? 'https://phishshield.vercel.app' : '';
+const API_URL = import.meta.env.PROD ? 'https://phishshield.vercel.app/api' : '';
 
 function Register({ setIsAuthenticated }) {
   const [formData, setFormData] = useState({
@@ -52,7 +52,7 @@ function Register({ setIsAuthenticated }) {
         password: '***'
       });
       
-      const response = await axios.post(`${API_URL}/auth/register`, {
+      const response = await axios.post(`${API_URL}/register`, {
         name: formData.name,
         email: formData.email,
         password: formData.password,
