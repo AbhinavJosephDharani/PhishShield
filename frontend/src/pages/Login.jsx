@@ -6,6 +6,9 @@ import Logo from '../components/Logo';
 import DecryptedText from '../components/DecryptedText';
 import ScrollContainer from '../components/ScrollContainer';
 
+// API URL based on environment
+const API_URL = import.meta.env.PROD ? 'https://phishshield.vercel.app' : '';
+
 function Login({ setIsAuthenticated }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,7 +28,7 @@ function Login({ setIsAuthenticated }) {
     setIsLoading(true);
 
     try {
-      const response = await axios.post('/api/auth/login', {
+      const response = await axios.post(`${API_URL}/api/auth/login`, {
         email,
         password,
       }, {

@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+// API URL based on environment
+const API_URL = import.meta.env.PROD ? 'https://phishshield.vercel.app' : '';
+
 function Dashboard({ setIsAuthenticated }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -16,7 +19,7 @@ function Dashboard({ setIsAuthenticated }) {
           return;
         }
 
-        const response = await axios.get('/api/auth/me', {
+        const response = await axios.get(`${API_URL}/api/auth/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
