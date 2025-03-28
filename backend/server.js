@@ -11,7 +11,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['https://phishshield.vercel.app', 'http://localhost:5173'],
+  origin: ['https://phishshield.vercel.app', 'http://localhost:5173', 'http://localhost:3000'],
   credentials: true
 }));
 app.use(express.json());
@@ -32,6 +32,16 @@ app.use((req, res, next) => {
   next();
 });
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({ message: 'PhishShield API is running' });
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 
@@ -47,5 +57,13 @@ app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
 
-// Export the Express API
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+// Export the Express API for Vercel
 module.exports = app; 
