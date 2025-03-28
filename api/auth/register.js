@@ -16,29 +16,55 @@ const connectDB = async () => {
   }
 };
 
+// Parse request body
+const parseBody = async (req) => {
+  const buffers = [];
+  for await (const chunk of req) {
+    buffers.push(chunk);
+  }
+  const data = Buffer.concat(buffers).toString();
+  return data ? JSON.parse(data) : {};
+};
+
 // CORS middleware
 const corsMiddleware = cors({
   origin: ['https://phishshield.vercel.app', 'http://localhost:5173'],
-  methods: ['POST'],
+  methods: ['POST', 'OPTIONS'],
   credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
 });
 
 // Handler function
 const handler = async (req, res) => {
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
   // Handle preflight request
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    res.status(200).end();
+    return;
   }
 
   // Only allow POST requests
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
+    res.status(405).json({ message: 'Method not allowed' });
+    return;
   }
 
   try {
+    // Parse request body
+    const body = await parseBody(req);
+    console.log('Registration request received:', body);
+    const { email, password, name } = body;
+
+    if (!email || !password || !name) {
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+
     await connectDB();
-    console.log('Registration request received:', req.body);
-    const { email, password, name } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -90,15 +116,12 @@ const handler = async (req, res) => {
   }
 };
 
-// Export the wrapped handler
-module.exports = (req, res) => {
-  return new Promise((resolve, reject) => {
-    corsMiddleware(req, res, (err) => {
-      if (err) {
-        reject(err);
-      } else {
-        handler(req, res).catch(reject);
-      }
-    });
-  });
+// Export the handler directly
+module.exports = async (req, res) => {
+  try {
+    await handler(req, res);
+  } catch (error) {
+    console.error('Unhandled error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 }; 
