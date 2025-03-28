@@ -1,5 +1,6 @@
-import mongoose from 'mongoose';
-import jwt from 'jsonwebtoken';
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 // MongoDB Schema
 const userSchema = new mongoose.Schema({
@@ -36,7 +37,6 @@ userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
   
   try {
-    const bcrypt = await import('bcryptjs');
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     next();
@@ -66,7 +66,7 @@ const connectDB = async () => {
 };
 
 // API Handler
-export default async function handler(req, res) {
+module.exports = async (req, res) => {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -87,9 +87,8 @@ export default async function handler(req, res) {
 
   try {
     // Parse request body
-    const body = req.body;
-    console.log('Registration request received:', body);
-    const { email, password, name } = body;
+    const { email, password, name } = req.body;
+    console.log('Registration request received:', { email, name });
 
     if (!email || !password || !name) {
       return res.status(400).json({ message: 'Missing required fields' });
@@ -145,4 +144,4 @@ export default async function handler(req, res) {
     console.error('Registration error details:', error);
     return res.status(500).json({ message: 'Error registering user', details: error.message });
   }
-} 
+}; 

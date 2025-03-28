@@ -1,7 +1,6 @@
 {
   "name": "phishshield-api",
   "version": "1.0.0",
-  "type": "module",
   "dependencies": {
     "mongoose": "^8.2.1",
     "bcryptjs": "^2.4.3",
