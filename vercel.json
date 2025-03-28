@@ -8,14 +8,6 @@
       "destination": "/api/register"
     },
     {
-      "source": "/api/login",
-      "destination": "/api/login"
-    },
-    {
-      "source": "/api/me",
-      "destination": "/api/me"
-    },
-    {
       "source": "/(.*)",
       "destination": "/"
     }
