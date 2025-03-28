@@ -1,28 +1,27 @@
 {
   "version": 2,
-  "buildCommand": "cd frontend && npm install && npx vite build",
-  "outputDirectory": "frontend/dist",
-  "rewrites": [
+  "builds": [
     {
-      "source": "/api/test",
-      "destination": "/api/test"
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
     },
     {
-      "source": "/(.*)",
-      "destination": "/"
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "buildCommand": "npm install && npx vite build",
+        "outputDirectory": "dist"
+      }
     }
   ],
-  "functions": {
-    "api/**/*.js": {
-      "memory": 3008,
-      "maxDuration": 60,
-      "includeFiles": "node_modules/**"
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/dist/$1"
     }
-  },
-  "env": {
-    "MONGODB_URI": "@mongodb_uri",
-    "JWT_SECRET": "@jwt_secret",
-    "UPSTASH_REDIS_REST_URL": "@upstash_redis_rest_url",
-    "UPSTASH_REDIS_REST_TOKEN": "@upstash_redis_rest_token"
-  }
+  ]
 } 
