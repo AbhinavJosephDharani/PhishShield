@@ -1,37 +1,7 @@
-const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('./models/User');
-
-// MongoDB connection options
-const mongooseOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverSelectionTimeoutMS: 3000,
-  socketTimeoutMS: 30000,
-  connectTimeoutMS: 5000,
-  maxPoolSize: 1,
-  minPoolSize: 1
-};
-
-// Connect to MongoDB
-let cachedDb = null;
-
-const connectDB = async () => {
-  if (cachedDb) {
-    return cachedDb;
-  }
-
-  try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI, mongooseOptions);
-    cachedDb = conn;
-    console.log('Connected to MongoDB');
-    return conn;
-  } catch (err) {
-    console.error('MongoDB connection error:', err);
-    throw err;
-  }
-};
+const connectDB = require('./lib/mongodb');
 
 module.exports = async (req, res) => {
   // Set CORS headers
