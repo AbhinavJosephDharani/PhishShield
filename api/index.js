@@ -18,10 +18,36 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// MongoDB connection options
+const mongooseOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverSelectionTimeoutMS: 5000,
+  socketTimeoutMS: 45000,
+  connectTimeoutMS: 10000,
+  maxPoolSize: 10,
+  minPoolSize: 5
+};
+
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+let isConnected = false;
+
+const connectDB = async () => {
+  if (isConnected) {
+    console.log('Using existing MongoDB connection');
+    return;
+  }
+
+  try {
+    await mongoose.connect(process.env.MONGODB_URI, mongooseOptions);
+    isConnected = true;
+    console.log('Connected to MongoDB');
+  } catch (err) {
+    console.error('MongoDB connection error:', err);
+    isConnected = false;
+    throw err;
+  }
+};
 
 // Debug middleware
 app.use((req, res, next) => {
@@ -51,6 +77,11 @@ app.use((req, res) => {
 
 // Export the serverless function handler
 module.exports = async (req, res) => {
-  // Forward the request to Express
-  return app(req, res);
+  try {
+    await connectDB();
+    return app(req, res);
+  } catch (error) {
+    console.error('Serverless function error:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 }; 
