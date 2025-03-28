@@ -52,7 +52,7 @@ function Register({ setIsAuthenticated }) {
         password: '***'
       });
       
-      const response = await axios.post(`${API_URL}/api/auth/register`, {
+      const response = await axios.post(`${API_URL}/auth/register`, {
         name: formData.name,
         email: formData.email,
         password: formData.password,

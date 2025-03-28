@@ -2,6 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const authRoutes = require('./routes/auth');
 
 // Load environment variables
@@ -33,7 +35,7 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
