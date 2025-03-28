@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const User = require('../../backend/models/User');
-const cors = require('cors');
 const jwt = require('jsonwebtoken');
 
 // MongoDB connection
@@ -16,31 +15,13 @@ const connectDB = async () => {
   }
 };
 
-// Parse request body
-const parseBody = async (req) => {
-  const buffers = [];
-  for await (const chunk of req) {
-    buffers.push(chunk);
-  }
-  const data = Buffer.concat(buffers).toString();
-  return data ? JSON.parse(data) : {};
-};
-
-// CORS middleware
-const corsMiddleware = cors({
-  origin: ['https://phishshield.vercel.app', 'http://localhost:5173'],
-  methods: ['POST', 'OPTIONS'],
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization']
-});
-
 // Handler function
 const handler = async (req, res) => {
   // Set CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', req.headers.origin || '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
 
   // Handle preflight request
   if (req.method === 'OPTIONS') {
@@ -56,7 +37,7 @@ const handler = async (req, res) => {
 
   try {
     // Parse request body
-    const body = await parseBody(req);
+    const body = await req.json();
     console.log('Registration request received:', body);
     const { email, password, name } = body;
 
@@ -101,7 +82,7 @@ const handler = async (req, res) => {
       { expiresIn: '24h' }
     );
 
-    res.status(201).json({
+    return res.status(201).json({
       token,
       user: {
         id: user._id,
@@ -112,16 +93,9 @@ const handler = async (req, res) => {
     });
   } catch (error) {
     console.error('Registration error details:', error);
-    res.status(500).json({ message: 'Error registering user', details: error.message });
+    return res.status(500).json({ message: 'Error registering user', details: error.message });
   }
 };
 
-// Export the handler directly
-module.exports = async (req, res) => {
-  try {
-    await handler(req, res);
-  } catch (error) {
-    console.error('Unhandled error:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-}; 
+// Export the handler
+module.exports = handler; 
