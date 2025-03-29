@@ -16,10 +16,16 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+// Connect to MongoDB with improved options
+mongoose.connect(process.env.MONGODB_URI, {
+  serverSelectionTimeoutMS: 20000,
+  socketTimeoutMS: 45000,
+  connectTimeoutMS: 20000,
+  maxPoolSize: 10,
+  minPoolSize: 2
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch((err) => console.error('MongoDB connection error:', err));
 
 // Debug middleware
 app.use((req, res, next) => {
