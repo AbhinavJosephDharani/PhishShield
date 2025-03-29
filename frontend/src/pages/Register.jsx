@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { FiUser, FiMail, FiLock, FiAlertCircle } from 'react-icons/fi';
 import ScrollContainer from '../components/ScrollContainer';
 
 // API URL based on environment
-const API_URL = import.meta.env.PROD ? 'https://phishshield.vercel.app' : '';
+const API_URL = import.meta.env.VITE_API_URL;
 
-function Register({ setIsAuthenticated }) {
+function Register() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,7 +17,6 @@ function Register({ setIsAuthenticated }) {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [opacity, setOpacity] = useState(0);
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Fade in animation
@@ -39,6 +38,9 @@ function Register({ setIsAuthenticated }) {
     setError('');
     setIsLoading(true);
 
+    console.log('Starting registration process');
+    console.log('API URL:', API_URL);
+
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       setIsLoading(false);
@@ -46,13 +48,14 @@ function Register({ setIsAuthenticated }) {
     }
 
     try {
-      console.log('Sending registration request:', {
+      console.log('Sending registration request to:', `${API_URL}/api/auth/register`);
+      console.log('Request data:', {
         name: formData.name,
         email: formData.email,
         password: '***'
       });
       
-      const response = await axios.post(`${API_URL}/api/register`, {
+      const response = await axios.post(`${API_URL}/api/auth/register`, {
         name: formData.name,
         email: formData.email,
         password: formData.password,
@@ -62,11 +65,23 @@ function Register({ setIsAuthenticated }) {
         }
       });
 
-      console.log('Registration successful:', response.data);
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-      setIsAuthenticated(true);
-      navigate('/dashboard');
+      console.log('Registration response:', {
+        status: response.status,
+        data: response.data,
+        headers: response.headers
+      });
+
+      // Just log the success and clear the form
+      console.log('Registration successful! Response data:', response.data);
+      alert('Registration successful! Check the console for details.');
+      
+      // Clear the form
+      setFormData({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      });
     } catch (err) {
       console.error('Registration error:', {
         status: err.response?.status,

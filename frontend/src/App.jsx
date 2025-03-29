@@ -12,11 +12,7 @@ function App() {
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
-    // Check if user is authenticated
-    const token = localStorage.getItem('token');
-    if (token) {
-      setIsAuthenticated(true);
-    }
+    // Temporarily disable auth check
     setIsLoading(false);
 
     // Add scroll listener
@@ -62,13 +58,7 @@ function App() {
           />
           <Route
             path="/register"
-            element={
-              isAuthenticated ? (
-                <Navigate to="/dashboard" replace />
-              ) : (
-                <Register setIsAuthenticated={setIsAuthenticated} />
-              )
-            }
+            element={<Register />}
           />
           <Route
             path="/dashboard"
