@@ -7,7 +7,7 @@ import ScrollContainer from '../components/ScrollContainer';
 // API URL based on environment
 const API_URL = import.meta.env.VITE_API_URL;
 
-function Register() {
+function Register({ setIsAuthenticated }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,7 +17,6 @@ function Register() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [opacity, setOpacity] = useState(0);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
