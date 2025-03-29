@@ -2,7 +2,10 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
-const userSchema = new mongoose.Schema({
+// Initialize mongoose Schema
+const Schema = mongoose.Schema;
+
+const userSchema = new Schema({
   name: {
     type: String,
     required: [true, 'Name is required'],
@@ -137,4 +140,7 @@ userSchema.methods.resetLoginAttempts = async function() {
   await this.save();
 };
 
-module.exports = mongoose.model('User', userSchema); 
+// Create the model
+const User = mongoose.models.User || mongoose.model('User', userSchema);
+
+module.exports = User; 
