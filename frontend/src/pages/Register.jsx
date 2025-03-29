@@ -47,6 +47,12 @@ function Register() {
       return;
     }
 
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters long');
+      setIsLoading(false);
+      return;
+    }
+
     try {
       console.log('Sending registration request to:', `${API_URL}/api/auth/register`);
       console.log('Request data:', {
@@ -177,6 +183,9 @@ function Register() {
                     className="appearance-none relative block w-full px-10 py-3 border border-gray-300/20 bg-black/20 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
                     placeholder="Password"
                   />
+                  <p className="mt-2 text-sm text-gray-400">
+                    Password must be at least 8 characters long
+                  </p>
                 </div>
               </div>
 
