@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FiUser, FiMail, FiLock, FiAlertCircle } from 'react-icons/fi';
 import ScrollContainer from '../components/ScrollContainer';
@@ -17,6 +17,8 @@ function Register() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [opacity, setOpacity] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fade in animation
@@ -77,17 +79,11 @@ function Register() {
         headers: response.headers
       });
 
-      // Just log the success and clear the form
-      console.log('Registration successful! Response data:', response.data);
-      alert('Registration successful! Check the console for details.');
-      
-      // Clear the form
-      setFormData({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-      });
+      // Store auth data and redirect
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      setIsAuthenticated(true);
+      navigate('/dashboard');
     } catch (err) {
       console.error('Registration error:', {
         status: err.response?.status,
