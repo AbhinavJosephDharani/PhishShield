@@ -12,11 +12,15 @@
   "routes": [
     {
       "src": "/api/auth/(.*)",
-      "dest": "server.js"
+      "dest": "/api/auth/$1"
+    },
+    {
+      "src": "/health",
+      "dest": "/health"
     },
     {
       "src": "/(.*)",
-      "dest": "server.js"
+      "dest": "/server.js"
     }
   ],
   "env": {
