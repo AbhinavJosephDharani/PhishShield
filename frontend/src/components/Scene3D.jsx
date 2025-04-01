@@ -6,15 +6,33 @@ import * as THREE from 'three';
 function ParticleField() {
   const count = 2000;
   const { viewport } = useThree();
-  const [positions] = useState(() => {
+  const [positions, colors] = useState(() => {
     const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
     const spread = Math.max(viewport.width, viewport.height) * 2;
+    
+    // Theme colors
+    const themeColors = [
+      new THREE.Color('#60A5FA'), // blue
+      new THREE.Color('#A855F7'), // purple
+      new THREE.Color('#EC4899')  // pink
+    ];
+    
     for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * spread;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * spread;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * spread;
+      const i3 = i * 3;
+      
+      // Position
+      positions[i3] = (Math.random() - 0.5) * spread;
+      positions[i3 + 1] = (Math.random() - 0.5) * spread;
+      positions[i3 + 2] = (Math.random() - 0.5) * spread;
+      
+      // Color - randomly select from theme colors
+      const color = themeColors[Math.floor(Math.random() * themeColors.length)];
+      colors[i3] = color.r;
+      colors[i3 + 1] = color.g;
+      colors[i3 + 2] = color.b;
     }
-    return positions;
+    return [positions, colors];
   });
 
   const pointsRef = useRef();
@@ -28,7 +46,7 @@ function ParticleField() {
   // Create a circular point material
   const material = new THREE.PointsMaterial({
     size: 0.15,
-    color: '#60A5FA',
+    vertexColors: true,
     transparent: true,
     opacity: 0.8,
     sizeAttenuation: true,
@@ -43,6 +61,12 @@ function ParticleField() {
           attach="attributes-position"
           count={positions.length / 3}
           array={positions}
+          itemSize={3}
+        />
+        <bufferAttribute
+          attach="attributes-color"
+          count={colors.length / 3}
+          array={colors}
           itemSize={3}
         />
       </bufferGeometry>
