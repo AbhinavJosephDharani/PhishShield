@@ -6,13 +6,16 @@ import * as THREE from 'three';
 function ParticleField() {
   const count = 2000;
   const pointsRef = useRef();
+  const { viewport } = useThree();
 
-  // Create static positions
+  // Create static positions with viewport-aware spread
   const positions = new Float32Array(count * 3);
+  const spread = Math.min(viewport.width, viewport.height) * 0.8; // Adjust spread based on viewport
+  
   for (let i = 0; i < count; i++) {
-    positions[i * 3] = (Math.random() - 0.5) * 20;
-    positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+    positions[i * 3] = (Math.random() - 0.5) * spread;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * spread;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * spread * 0.5; // Less depth spread
   }
 
   useFrame(({ clock }) => {
@@ -33,7 +36,7 @@ function ParticleField() {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.1}
+        size={0.15}
         color="#60A5FA"
         transparent
         opacity={0.8}
@@ -47,7 +50,9 @@ function MainScene({ scrollY }) {
   const { camera } = useThree();
   
   useEffect(() => {
-    camera.position.z = 15;
+    camera.position.z = 8; // Closer camera position
+    camera.fov = 50; // Narrower field of view
+    camera.updateProjectionMatrix();
   }, [camera]);
 
   return (
@@ -114,6 +119,12 @@ export default function Scene3D({ scrollY = 0, children }) {
       <div className="canvas-wrapper">
         <Canvas
           className="w-full h-full"
+          camera={{
+            fov: 50,
+            near: 0.1,
+            far: 1000,
+            position: [0, 0, 8]
+          }}
           style={{
             position: 'fixed',
             top: 0,
