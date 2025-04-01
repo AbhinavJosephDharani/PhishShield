@@ -3,38 +3,6 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
-function AnimatedSphere({ position, color, speed }) {
-  const meshRef = useRef();
-  const [hovered, setHovered] = useState(false);
-
-  useFrame((state) => {
-    const time = state.clock.getElapsedTime();
-    meshRef.current.position.y = position[1] + Math.sin(time * speed) * 0.3;
-    meshRef.current.rotation.x = time * 0.5;
-    meshRef.current.rotation.y = time * 0.3;
-    meshRef.current.scale.setScalar(hovered ? 1.2 : 1);
-  });
-
-  return (
-    <mesh
-      ref={meshRef}
-      position={position}
-      onPointerOver={() => setHovered(true)}
-      onPointerOut={() => setHovered(false)}
-    >
-      <sphereGeometry args={[0.7, 32, 32]} />
-      <meshPhongMaterial
-        color={color}
-        shininess={100}
-        specular={new THREE.Color(0xffffff)}
-        emissive={color}
-        emissiveIntensity={0.5}
-        toneMapped={false}
-      />
-    </mesh>
-  );
-}
-
 function ParticleField() {
   const count = 2000;
   const { viewport } = useThree();
@@ -57,6 +25,17 @@ function ParticleField() {
     pointsRef.current.rotation.x = Math.sin(time * 0.05) * 0.2;
   });
 
+  // Create a circular point material
+  const material = new THREE.PointsMaterial({
+    size: 0.15,
+    color: '#60A5FA',
+    transparent: true,
+    opacity: 0.8,
+    sizeAttenuation: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+  });
+
   return (
     <points ref={pointsRef}>
       <bufferGeometry>
@@ -67,14 +46,7 @@ function ParticleField() {
           itemSize={3}
         />
       </bufferGeometry>
-      <pointsMaterial
-        size={0.15}
-        color="#60A5FA"
-        transparent
-        opacity={0.8}
-        sizeAttenuation
-        toneMapped={false}
-      />
+      <primitive object={material} />
     </points>
   );
 }
@@ -107,21 +79,8 @@ function MainScene({ scrollY }) {
       <ambientLight intensity={0.4} />
       <pointLight position={[10, 10, 10]} intensity={2} />
       <pointLight position={[-10, -10, -10]} intensity={1} />
-      <spotLight
-        position={[0, 5, 0]}
-        angle={0.5}
-        penumbra={1}
-        intensity={1}
-        castShadow
-      />
       
       <ParticleField />
-      
-      <group position={[0, 0, 0]} scale={Math.min(1, viewport.width / 10)}>
-        <AnimatedSphere position={[-3, 0, 0]} color="#60A5FA" speed={1} />
-        <AnimatedSphere position={[0, 0, 0]} color="#818CF8" speed={1.2} />
-        <AnimatedSphere position={[3, 0, 0]} color="#6366F1" speed={1.4} />
-      </group>
       
       <OrbitControls
         enableZoom={false}
