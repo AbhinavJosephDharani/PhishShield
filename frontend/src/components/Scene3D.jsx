@@ -5,57 +5,21 @@ import * as THREE from 'three';
 
 function ParticleField() {
   const count = 2000;
-  const { viewport } = useThree();
-  const [positions, colors] = useState(() => {
-    const positions = new Float32Array(count * 3);
-    const colors = new Float32Array(count * 3);
-    const spread = Math.max(viewport.width, viewport.height) * 1.5;
-    
-    // Theme colors
-    const themeColors = [
-      new THREE.Color('#60A5FA'), // blue
-      new THREE.Color('#A855F7'), // purple
-      new THREE.Color('#EC4899')  // pink
-    ];
-    
-    for (let i = 0; i < count; i++) {
-      const i3 = i * 3;
-      
-      // Position - create a more layered distribution
-      const radius = Math.random() * spread;
-      const theta = Math.random() * 2 * Math.PI;
-      const phi = Math.acos((Math.random() * 2) - 1);
-      
-      positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-      positions[i3 + 2] = radius * Math.cos(phi);
-      
-      // Color - randomly select from theme colors
-      const color = themeColors[Math.floor(Math.random() * themeColors.length)];
-      colors[i3] = color.r;
-      colors[i3 + 1] = color.g;
-      colors[i3 + 2] = color.b;
-    }
-    return [positions, colors];
-  });
-
   const pointsRef = useRef();
 
-  useFrame(({ clock }) => {
-    const time = clock.getElapsedTime();
-    pointsRef.current.rotation.y = time * 0.1;
-    pointsRef.current.rotation.x = Math.sin(time * 0.05) * 0.2;
-  });
+  // Create static positions
+  const positions = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    positions[i * 3] = (Math.random() - 0.5) * 20;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+  }
 
-  // Create a circular point material
-  const material = new THREE.PointsMaterial({
-    size: 0.3,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.9,
-    sizeAttenuation: true,
-    blending: THREE.AdditiveBlending,
-    depthWrite: false,
+  useFrame(({ clock }) => {
+    if (pointsRef.current) {
+      const time = clock.getElapsedTime();
+      pointsRef.current.rotation.y = time * 0.1;
+    }
   });
 
   return (
@@ -63,61 +27,34 @@ function ParticleField() {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={positions.length / 3}
+          count={count}
           array={positions}
           itemSize={3}
         />
-        <bufferAttribute
-          attach="attributes-color"
-          count={colors.length / 3}
-          array={colors}
-          itemSize={3}
-        />
       </bufferGeometry>
-      <primitive object={material} />
+      <pointsMaterial
+        size={0.1}
+        color="#60A5FA"
+        transparent
+        opacity={0.8}
+        sizeAttenuation={true}
+      />
     </points>
   );
 }
 
 function MainScene({ scrollY }) {
-  const { camera, viewport, size } = useThree();
+  const { camera } = useThree();
   
   useEffect(() => {
-    const updateCamera = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-    };
-    
-    window.addEventListener('resize', updateCamera);
-    updateCamera();
-    
-    return () => window.removeEventListener('resize', updateCamera);
+    camera.position.z = 15;
   }, [camera]);
-
-  useFrame(() => {
-    camera.position.y = -(scrollY * 0.01);
-    camera.position.z = 15 - Math.min(scrollY * 0.01, 3);
-  });
 
   return (
     <>
       <color attach="background" args={['#030712']} />
-      <fog attach="fog" args={['#030712', 10, 30]} />
-      
-      <ambientLight intensity={0.6} />
-      <pointLight position={[10, 10, 10]} intensity={2.5} />
-      <pointLight position={[-10, -10, -10]} intensity={1.5} />
-      
+      <ambientLight intensity={1} />
       <ParticleField />
-      
-      <OrbitControls
-        enableZoom={false}
-        enablePan={false}
-        maxPolarAngle={Math.PI / 2}
-        minPolarAngle={Math.PI / 2}
-        autoRotate
-        autoRotateSpeed={0.5}
-      />
     </>
   );
 }
@@ -177,28 +114,12 @@ export default function Scene3D({ scrollY = 0, children }) {
       <div className="canvas-wrapper">
         <Canvas
           className="w-full h-full"
-          dpr={window.devicePixelRatio}
-          camera={{ 
-            position: [0, 0, 15], 
-            fov: 60,  // Reduced FOV for less distortion
-            near: 0.1, 
-            far: 1000,
-            aspect: dimensions.width / dimensions.height 
-          }}
-          gl={{
-            antialias: true,
-            alpha: false,
-            powerPreference: "high-performance",
-            stencil: false,
-            depth: true,
-            logarithmicDepthBuffer: true
-          }}
           style={{
-            width: '100%',
-            height: '100%',
-            position: 'absolute',
+            position: 'fixed',
             top: 0,
-            left: 0
+            left: 0,
+            width: '100%',
+            height: '100%'
           }}
         >
           <MainScene scrollY={scrollY} />
