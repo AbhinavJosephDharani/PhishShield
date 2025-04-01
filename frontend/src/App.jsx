@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Home from './pages/Home';
 import AnimatedBackground from './components/AnimatedBackground';
 import './App.css'
 
@@ -42,13 +43,7 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={
-              isAuthenticated ? (
-                <Navigate to="/dashboard" replace />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
+            element={<Home />}
           />
           <Route
             path="/login"
