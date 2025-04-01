@@ -9,7 +9,7 @@ function ParticleField() {
   const [positions, colors] = useState(() => {
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
-    const spread = Math.max(viewport.width, viewport.height) * 2;
+    const spread = Math.max(viewport.width, viewport.height) * 1.5;
     
     // Theme colors
     const themeColors = [
@@ -21,10 +21,14 @@ function ParticleField() {
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
       
-      // Position
-      positions[i3] = (Math.random() - 0.5) * spread;
-      positions[i3 + 1] = (Math.random() - 0.5) * spread;
-      positions[i3 + 2] = (Math.random() - 0.5) * spread;
+      // Position - create a more layered distribution
+      const radius = Math.random() * spread;
+      const theta = Math.random() * 2 * Math.PI;
+      const phi = Math.acos((Math.random() * 2) - 1);
+      
+      positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
+      positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+      positions[i3 + 2] = radius * Math.cos(phi);
       
       // Color - randomly select from theme colors
       const color = themeColors[Math.floor(Math.random() * themeColors.length)];
@@ -45,10 +49,10 @@ function ParticleField() {
 
   // Create a circular point material
   const material = new THREE.PointsMaterial({
-    size: 0.15,
+    size: 0.3,
     vertexColors: true,
     transparent: true,
-    opacity: 0.8,
+    opacity: 0.9,
     sizeAttenuation: true,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
@@ -92,17 +96,17 @@ function MainScene({ scrollY }) {
 
   useFrame(() => {
     camera.position.y = -(scrollY * 0.01);
-    camera.position.z = 15 - Math.min(scrollY * 0.01, 5);
+    camera.position.z = 20 - Math.min(scrollY * 0.01, 5);
   });
 
   return (
     <>
       <color attach="background" args={['#030712']} />
-      <fog attach="fog" args={['#030712', 10, 50]} />
+      <fog attach="fog" args={['#030712', 15, 35]} />
       
-      <ambientLight intensity={0.4} />
-      <pointLight position={[10, 10, 10]} intensity={2} />
-      <pointLight position={[-10, -10, -10]} intensity={1} />
+      <ambientLight intensity={0.6} />
+      <pointLight position={[10, 10, 10]} intensity={2.5} />
+      <pointLight position={[-10, -10, -10]} intensity={1.5} />
       
       <ParticleField />
       
