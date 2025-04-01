@@ -96,13 +96,13 @@ function MainScene({ scrollY }) {
 
   useFrame(() => {
     camera.position.y = -(scrollY * 0.01);
-    camera.position.z = 20 - Math.min(scrollY * 0.01, 5);
+    camera.position.z = 15 - Math.min(scrollY * 0.01, 3);
   });
 
   return (
     <>
       <color attach="background" args={['#030712']} />
-      <fog attach="fog" args={['#030712', 15, 35]} />
+      <fog attach="fog" args={['#030712', 10, 30]} />
       
       <ambientLight intensity={0.6} />
       <pointLight position={[10, 10, 10]} intensity={2.5} />
@@ -157,7 +157,7 @@ export default function Scene3D({ scrollY = 0, children }) {
     const handleResize = () => {
       requestAnimationFrame(() => {
         updateDimensions();
-        setMounted(state => !state); // Force Three.js canvas update
+        setMounted(state => !state);
       });
     };
 
@@ -180,7 +180,7 @@ export default function Scene3D({ scrollY = 0, children }) {
           dpr={window.devicePixelRatio}
           camera={{ 
             position: [0, 0, 15], 
-            fov: 75, 
+            fov: 60,  // Reduced FOV for less distortion
             near: 0.1, 
             far: 1000,
             aspect: dimensions.width / dimensions.height 
