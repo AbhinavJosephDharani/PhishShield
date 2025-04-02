@@ -33,7 +33,7 @@ function ParticleField() {
       
       positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
       positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-      positions[i3 + 2] = radius * Math.cos(phi) * 0.5; // Less depth
+      positions[i3 + 2] = (Math.random() - 0.5) * 2; // Very shallow depth
       
       // Color - randomly select from theme colors
       const color = themeColors[Math.floor(Math.random() * themeColors.length)];
@@ -54,6 +54,7 @@ function ParticleField() {
     // Draw a circular gradient
     const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
     gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+    gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.5)');
     gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
     
     ctx.fillStyle = gradient;
@@ -69,10 +70,10 @@ function ParticleField() {
   useFrame(({ clock }) => {
     if (pointsRef.current) {
       const time = clock.getElapsedTime();
-      pointsRef.current.rotation.y = time * 0.1;
+      pointsRef.current.rotation.y = time * 0.05; // Slower rotation
       
       // Add gentle floating motion
-      pointsRef.current.position.y = Math.sin(time * 0.5) * 0.3;
+      pointsRef.current.position.y = Math.sin(time * 0.3) * 0.2; // Gentler motion
     }
   });
 
@@ -93,10 +94,10 @@ function ParticleField() {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.15}
+        size={0.2}
         vertexColors
         transparent
-        opacity={0.8}
+        opacity={1}
         sizeAttenuation={true}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
@@ -176,8 +177,19 @@ export default function Scene3D({ scrollY = 0, children }) {
   if (!mounted) return null;
 
   return (
-    <div className="scene-container">
-      <div className="canvas-wrapper">
+    <div className="scene-container" style={{ position: 'relative', width: '100%', height: '100%' }}>
+      <div 
+        className="canvas-wrapper" 
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: -1,
+          pointerEvents: 'none'
+        }}
+      >
         <Canvas
           className="w-full h-full"
           camera={{
@@ -186,18 +198,11 @@ export default function Scene3D({ scrollY = 0, children }) {
             far: 1000,
             position: [0, 0, 8]
           }}
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%'
-          }}
         >
           <MainScene scrollY={scrollY} />
         </Canvas>
       </div>
-      <div className="content-overlay">
+      <div className="content-overlay" style={{ position: 'relative', zIndex: 1 }}>
         {children}
       </div>
     </div>
