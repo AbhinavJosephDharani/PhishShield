@@ -1,41 +1,50 @@
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 
 function ParticleField() {
   const count = 2000;
   const pointsRef = useRef();
+  const mouseRef = useRef({ x: 0, y: 0 });
   const { viewport } = useThree();
+
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      mouseRef.current.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouseRef.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   // Create positions and colors
   const [positions, colors] = useState(() => {
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
-    const spread = Math.min(viewport.width, viewport.height) * 1.5;
+    const spread = Math.min(viewport.width, viewport.height) * 2;
     
-    // Theme colors
+    // Theme colors with more vibrant options
     const themeColors = [
-      new THREE.Color('#60A5FA'), // blue
-      new THREE.Color('#818CF8'), // light indigo
-      new THREE.Color('#A78BFA'), // purple
-      new THREE.Color('#C084FC'), // bright purple
-      new THREE.Color('#E879F9'), // pink
+      new THREE.Color('#60A5FA').multiplyScalar(1.2), // bright blue
+      new THREE.Color('#818CF8').multiplyScalar(1.2), // bright indigo
+      new THREE.Color('#A78BFA').multiplyScalar(1.2), // bright purple
+      new THREE.Color('#C084FC').multiplyScalar(1.2), // bright violet
+      new THREE.Color('#E879F9').multiplyScalar(1.2), // bright pink
     ];
     
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
       
-      // Position - create a more layered distribution
-      const radius = Math.random() * spread;
-      const theta = Math.random() * 2 * Math.PI;
-      const phi = Math.acos((Math.random() * 2) - 1);
+      // Create a more uniform distribution in a disc
+      const radius = Math.sqrt(Math.random()) * spread;
+      const theta = Math.random() * Math.PI * 2;
       
-      positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-      positions[i3 + 2] = (Math.random() - 0.5) * 4; // Slightly more depth
+      positions[i3] = radius * Math.cos(theta);
+      positions[i3 + 1] = radius * Math.sin(theta);
+      positions[i3 + 2] = (Math.random() - 0.5) * 5;
       
-      // Color - randomly select from theme colors
+      // Random color from theme
       const color = themeColors[Math.floor(Math.random() * themeColors.length)];
       colors[i3] = color.r;
       colors[i3 + 1] = color.g;
@@ -51,10 +60,9 @@ function ParticleField() {
     canvas.height = 64;
     const ctx = canvas.getContext('2d');
     
-    // Draw a circular gradient
     const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
     gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-    gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.5)');
+    gradient.addColorStop(0.3, 'rgba(255, 255, 255, 0.8)');
     gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
     
     ctx.fillStyle = gradient;
@@ -70,8 +78,16 @@ function ParticleField() {
   useFrame(({ clock }) => {
     if (pointsRef.current) {
       const time = clock.getElapsedTime();
-      pointsRef.current.rotation.y = time * 0.05; // Slower rotation
-      pointsRef.current.position.y = Math.sin(time * 0.3) * 0.2; // Gentle floating
+      
+      // Smooth mouse following
+      const targetRotationX = mouseRef.current.y * 0.2;
+      const targetRotationY = mouseRef.current.x * 0.2;
+      
+      pointsRef.current.rotation.x += (targetRotationX - pointsRef.current.rotation.x) * 0.05;
+      pointsRef.current.rotation.y += (targetRotationY - pointsRef.current.rotation.y) * 0.05;
+      
+      // Gentle floating motion
+      pointsRef.current.position.y = Math.sin(time * 0.2) * 0.3;
     }
   });
 
@@ -92,7 +108,7 @@ function ParticleField() {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.15}
+        size={0.2}
         vertexColors
         transparent
         opacity={0.8}
@@ -106,62 +122,17 @@ function ParticleField() {
   );
 }
 
-function MainScene({ scrollY }) {
-  const { camera } = useThree();
-  
-  useEffect(() => {
-    camera.position.z = 5;
-    camera.fov = 75;
-    camera.updateProjectionMatrix();
-  }, [camera]);
-
-  return (
-    <>
-      <color attach="background" args={['#030712']} />
-      <ambientLight intensity={1} />
-      <ParticleField />
-    </>
-  );
-}
-
-function getAspectRatioClass() {
-  const h = window.innerHeight;
-  const w = window.innerWidth;
-  const aspect = w / h;
-  const ratio43 = 4 / 3;
-
-  if (aspect > ratio43) {
-    return 'widescreen';
-  } else if (Math.abs(aspect - ratio43) < 0.1) {
-    return 'aspect-4-3';
-  } else {
-    return 'portrait';
-  }
-}
-
-export default function Scene3D({ scrollY = 0, children }) {
+export default function Scene3D() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    
-    const handleResize = () => {
-      requestAnimationFrame(() => {
-        setMounted(state => !state);
-      });
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   if (!mounted) return null;
 
   return (
-    <div 
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ zIndex: 0 }}
-    >
+    <div className="fixed inset-0 w-full h-full" style={{ zIndex: -1 }}>
       <Canvas
         className="w-full h-full"
         camera={{
@@ -172,9 +143,8 @@ export default function Scene3D({ scrollY = 0, children }) {
         }}
       >
         <color attach="background" args={['#030712']} />
-        <MainScene scrollY={scrollY} />
+        <ParticleField />
       </Canvas>
-      {children}
     </div>
   );
 } 

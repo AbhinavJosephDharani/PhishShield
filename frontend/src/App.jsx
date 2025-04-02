@@ -4,13 +4,11 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
-import AnimatedBackground from './components/AnimatedBackground';
 import './App.css'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     // Check if user is authenticated
@@ -19,13 +17,6 @@ function App() {
       setIsAuthenticated(true);
     }
     setIsLoading(false);
-
-    // Add scroll listener
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   if (isLoading) {
@@ -37,47 +28,44 @@ function App() {
   }
 
   return (
-    <>
-      <AnimatedBackground scrollY={scrollY} />
-      <Router>
-        <Routes>
-          <Route
-            path="/"
-            element={<Home />}
-          />
-          <Route
-            path="/login"
-            element={
-              isAuthenticated ? (
-                <Navigate to="/dashboard" replace />
-              ) : (
-                <Login setIsAuthenticated={setIsAuthenticated} />
-              )
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              isAuthenticated ? (
-                <Navigate to="/dashboard" replace />
-              ) : (
-                <Register setIsAuthenticated={setIsAuthenticated} />
-              )
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              isAuthenticated ? (
-                <Dashboard setIsAuthenticated={setIsAuthenticated} />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          />
-        </Routes>
-      </Router>
-    </>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={<Home />}
+        />
+        <Route
+          path="/login"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <Login setIsAuthenticated={setIsAuthenticated} />
+            )
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <Register setIsAuthenticated={setIsAuthenticated} />
+            )
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            isAuthenticated ? (
+              <Dashboard setIsAuthenticated={setIsAuthenticated} />
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+      </Routes>
+    </Router>
   );
 }
 
