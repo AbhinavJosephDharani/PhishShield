@@ -12,7 +12,7 @@ function ParticleField() {
   const [positions, colors] = useState(() => {
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
-    const spread = Math.min(viewport.width, viewport.height) * 0.8;
+    const spread = Math.min(viewport.width, viewport.height) * 1.5;
     
     // Theme colors
     const themeColors = [
@@ -33,7 +33,7 @@ function ParticleField() {
       
       positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
       positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-      positions[i3 + 2] = (Math.random() - 0.5) * 2; // Very shallow depth
+      positions[i3 + 2] = (Math.random() - 0.5) * 4; // Slightly more depth
       
       // Color - randomly select from theme colors
       const color = themeColors[Math.floor(Math.random() * themeColors.length)];
@@ -71,9 +71,7 @@ function ParticleField() {
     if (pointsRef.current) {
       const time = clock.getElapsedTime();
       pointsRef.current.rotation.y = time * 0.05; // Slower rotation
-      
-      // Add gentle floating motion
-      pointsRef.current.position.y = Math.sin(time * 0.3) * 0.2; // Gentler motion
+      pointsRef.current.position.y = Math.sin(time * 0.3) * 0.2; // Gentle floating
     }
   });
 
@@ -94,10 +92,10 @@ function ParticleField() {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.2}
+        size={0.15}
         vertexColors
         transparent
-        opacity={1}
+        opacity={0.8}
         sizeAttenuation={true}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
@@ -112,8 +110,8 @@ function MainScene({ scrollY }) {
   const { camera } = useThree();
   
   useEffect(() => {
-    camera.position.z = 8;
-    camera.fov = 50;
+    camera.position.z = 5;
+    camera.fov = 75;
     camera.updateProjectionMatrix();
   }, [camera]);
 
@@ -143,69 +141,40 @@ function getAspectRatioClass() {
 
 export default function Scene3D({ scrollY = 0, children }) {
   const [mounted, setMounted] = useState(false);
-  const [dimensions, setDimensions] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight
-  });
 
   useEffect(() => {
     setMounted(true);
     
-    const updateDimensions = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      setDimensions({ width, height });
-    };
-
-    // Handle window resize
     const handleResize = () => {
       requestAnimationFrame(() => {
-        updateDimensions();
         setMounted(state => !state);
       });
     };
 
-    // Initial setup
-    updateDimensions();
     window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   if (!mounted) return null;
 
   return (
-    <div className="scene-container" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}>
-      <div 
-        className="canvas-wrapper" 
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          zIndex: 0
+    <div 
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      style={{ zIndex: 0 }}
+    >
+      <Canvas
+        className="w-full h-full"
+        camera={{
+          fov: 75,
+          near: 0.1,
+          far: 1000,
+          position: [0, 0, 5]
         }}
       >
-        <Canvas
-          className="w-full h-full"
-          camera={{
-            fov: 50,
-            near: 0.1,
-            far: 1000,
-            position: [0, 0, 8]
-          }}
-        >
-          <MainScene scrollY={scrollY} />
-        </Canvas>
-      </div>
-      {children && (
-        <div className="content-overlay" style={{ position: 'relative', zIndex: 1 }}>
-          {children}
-        </div>
-      )}
+        <color attach="background" args={['#030712']} />
+        <MainScene scrollY={scrollY} />
+      </Canvas>
+      {children}
     </div>
   );
 } 
