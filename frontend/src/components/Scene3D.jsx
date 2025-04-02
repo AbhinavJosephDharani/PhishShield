@@ -6,31 +6,46 @@ function ParticleField() {
   const count = 2500;
   const pointsRef = useRef();
   const mouseRef = useRef({ x: 0, y: 0 });
-  const { viewport } = useThree();
+  const { viewport, size } = useThree();
+
+  // Update viewport on resize
+  useEffect(() => {
+    const handleResize = () => {
+      mouseRef.current.x = 0;
+      mouseRef.current.y = 0;
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const handleMouseMove = (event) => {
-      mouseRef.current.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouseRef.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      mouseRef.current.x = (event.clientX / size.width) * 2 - 1;
+      mouseRef.current.y = -(event.clientY / size.height) * 2 + 1;
     };
 
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  }, [size]);
 
   // Create positions and colors
   const [positions, colors] = useState(() => {
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
-    const spread = Math.min(viewport.width, viewport.height) * 3;
+    
+    // Calculate spread based on aspect ratio
+    const aspectRatio = size.width / size.height;
+    const baseSpread = 10; // Base spread value
+    const xSpread = baseSpread * aspectRatio;
+    const ySpread = baseSpread;
     
     // Theme colors with more vibrant options
     const themeColors = [
-      new THREE.Color('#60A5FA').multiplyScalar(1.5), // bright blue
-      new THREE.Color('#818CF8').multiplyScalar(1.5), // bright indigo
-      new THREE.Color('#A78BFA').multiplyScalar(1.5), // bright purple
-      new THREE.Color('#C084FC').multiplyScalar(1.5), // bright violet
-      new THREE.Color('#E879F9').multiplyScalar(1.5), // bright pink
+      new THREE.Color('#60A5FA').multiplyScalar(1.8), // bright blue
+      new THREE.Color('#818CF8').multiplyScalar(1.8), // bright indigo
+      new THREE.Color('#A78BFA').multiplyScalar(1.8), // bright purple
+      new THREE.Color('#C084FC').multiplyScalar(1.8), // bright violet
+      new THREE.Color('#E879F9').multiplyScalar(1.8), // bright pink
     ];
     
     for (let i = 0; i < count; i++) {
@@ -38,21 +53,24 @@ function ParticleField() {
       
       // Create a layered distribution
       const layer = Math.floor(Math.random() * 3); // 0, 1, or 2
-      const radius = (Math.random() * 0.3 + 0.7) * spread * (1 - layer * 0.2);
+      const layerFactor = 1 - layer * 0.15; // Less aggressive layer scaling
+      
+      // Use separate spreads for x and y
       const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos((Math.random() * 2) - 1);
+      const radiusX = Math.random() * xSpread * layerFactor;
+      const radiusY = Math.random() * ySpread * layerFactor;
       
-      positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-      positions[i3 + 2] = (Math.random() - 0.5) * 10; // More depth variation
+      positions[i3] = radiusX * Math.cos(theta);
+      positions[i3 + 1] = radiusY * Math.sin(theta);
+      positions[i3 + 2] = (Math.random() - 0.5) * 8; // Controlled depth
       
-      // Random color from theme with size-based brightness
+      // Random color from theme with distance-based brightness
       const color = themeColors[Math.floor(Math.random() * themeColors.length)].clone();
       const distanceFromCenter = Math.sqrt(
-        positions[i3] * positions[i3] + 
-        positions[i3 + 1] * positions[i3 + 1]
-      ) / spread;
-      color.multiplyScalar(1 - distanceFromCenter * 0.5); // Fade out towards edges
+        (positions[i3] / xSpread) ** 2 + 
+        (positions[i3 + 1] / ySpread) ** 2
+      );
+      color.multiplyScalar(1 - distanceFromCenter * 0.3); // Gentler fade at edges
       
       colors[i3] = color.r;
       colors[i3 + 1] = color.g;
@@ -89,14 +107,14 @@ function ParticleField() {
       const time = clock.getElapsedTime();
       
       // Smooth mouse following with more rotation
-      const targetRotationX = mouseRef.current.y * 0.3;
-      const targetRotationY = mouseRef.current.x * 0.3;
+      const targetRotationX = mouseRef.current.y * 0.2;
+      const targetRotationY = mouseRef.current.x * 0.2;
       
-      pointsRef.current.rotation.x += (targetRotationX - pointsRef.current.rotation.x) * 0.1;
-      pointsRef.current.rotation.y += (targetRotationY - pointsRef.current.rotation.y) * 0.1;
+      pointsRef.current.rotation.x += (targetRotationX - pointsRef.current.rotation.x) * 0.05;
+      pointsRef.current.rotation.y += (targetRotationY - pointsRef.current.rotation.y) * 0.05;
       
-      // More pronounced floating motion
-      pointsRef.current.position.y = Math.sin(time * 0.3) * 0.5;
+      // Gentle floating motion
+      pointsRef.current.position.y = Math.sin(time * 0.2) * 0.3;
     }
   });
 
@@ -117,10 +135,10 @@ function ParticleField() {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.3}
+        size={0.15}
         vertexColors
         transparent
-        opacity={1}
+        opacity={0.8}
         sizeAttenuation={true}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
@@ -145,18 +163,19 @@ export default function Scene3D() {
       <Canvas
         className="w-full h-full"
         camera={{
-          fov: 75,
+          fov: 60,
           near: 0.1,
           far: 1000,
-          position: [0, 0, 5]
+          position: [0, 0, 15]
         }}
         gl={{
           antialias: true,
           alpha: true,
         }}
+        dpr={[1, 2]} // Responsive pixel ratio
       >
         <color attach="background" args={['#030712']} />
-        <fog attach="fog" args={['#030712', 5, 30]} />
+        <fog attach="fog" args={['#030712', 15, 35]} />
         <ParticleField />
       </Canvas>
     </div>
