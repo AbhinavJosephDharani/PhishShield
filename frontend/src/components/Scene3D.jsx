@@ -177,17 +177,16 @@ export default function Scene3D({ scrollY = 0, children }) {
   if (!mounted) return null;
 
   return (
-    <div className="scene-container" style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <div className="scene-container" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%' }}>
       <div 
         className="canvas-wrapper" 
         style={{
-          position: 'fixed',
+          position: 'absolute',
           top: 0,
           left: 0,
           width: '100%',
           height: '100%',
-          zIndex: -1,
-          pointerEvents: 'none'
+          zIndex: 0
         }}
       >
         <Canvas
@@ -202,9 +201,11 @@ export default function Scene3D({ scrollY = 0, children }) {
           <MainScene scrollY={scrollY} />
         </Canvas>
       </div>
-      <div className="content-overlay" style={{ position: 'relative', zIndex: 1 }}>
-        {children}
-      </div>
+      {children && (
+        <div className="content-overlay" style={{ position: 'relative', zIndex: 1 }}>
+          {children}
+        </div>
+      )}
     </div>
   );
 } 

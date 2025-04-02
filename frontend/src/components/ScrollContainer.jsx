@@ -44,16 +44,17 @@ export default function ScrollContainer({ children }) {
   }, [isScrolling]);
   
   return (
-    <>
+    <div className="relative w-full h-full">
       <div className="fixed inset-0 w-full h-full pointer-events-none">
         <Scene3D scrollY={scrollY} />
       </div>
       <div 
         ref={containerRef}
-        className="absolute inset-0 w-full h-full overflow-y-auto"
+        className="relative w-full h-full overflow-y-auto"
+        style={{ zIndex: 1 }}
       >
         {children}
       </div>
-    </>
+    </div>
   );
 } 
