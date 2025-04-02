@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
@@ -8,20 +8,71 @@ function ParticleField() {
   const pointsRef = useRef();
   const { viewport } = useThree();
 
-  // Create static positions with viewport-aware spread
-  const positions = new Float32Array(count * 3);
-  const spread = Math.min(viewport.width, viewport.height) * 0.8; // Adjust spread based on viewport
-  
-  for (let i = 0; i < count; i++) {
-    positions[i * 3] = (Math.random() - 0.5) * spread;
-    positions[i * 3 + 1] = (Math.random() - 0.5) * spread;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * spread * 0.5; // Less depth spread
-  }
+  // Create positions and colors
+  const [positions, colors] = useState(() => {
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+    const spread = Math.min(viewport.width, viewport.height) * 0.8;
+    
+    // Theme colors
+    const themeColors = [
+      new THREE.Color('#60A5FA'), // blue
+      new THREE.Color('#818CF8'), // light indigo
+      new THREE.Color('#A78BFA'), // purple
+      new THREE.Color('#C084FC'), // bright purple
+      new THREE.Color('#E879F9'), // pink
+    ];
+    
+    for (let i = 0; i < count; i++) {
+      const i3 = i * 3;
+      
+      // Position - create a more layered distribution
+      const radius = Math.random() * spread;
+      const theta = Math.random() * 2 * Math.PI;
+      const phi = Math.acos((Math.random() * 2) - 1);
+      
+      positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
+      positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+      positions[i3 + 2] = radius * Math.cos(phi) * 0.5; // Less depth
+      
+      // Color - randomly select from theme colors
+      const color = themeColors[Math.floor(Math.random() * themeColors.length)];
+      colors[i3] = color.r;
+      colors[i3 + 1] = color.g;
+      colors[i3 + 2] = color.b;
+    }
+    return [positions, colors];
+  });
+
+  // Create a circular texture for particles
+  const particleTexture = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 64;
+    canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+    
+    // Draw a circular gradient
+    const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
+    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.arc(32, 32, 32, 0, Math.PI * 2);
+    ctx.fill();
+    
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    return texture;
+  }, []);
 
   useFrame(({ clock }) => {
     if (pointsRef.current) {
       const time = clock.getElapsedTime();
       pointsRef.current.rotation.y = time * 0.1;
+      
+      // Add gentle floating motion
+      pointsRef.current.position.y = Math.sin(time * 0.5) * 0.3;
     }
   });
 
@@ -34,13 +85,23 @@ function ParticleField() {
           array={positions}
           itemSize={3}
         />
+        <bufferAttribute
+          attach="attributes-color"
+          count={count}
+          array={colors}
+          itemSize={3}
+        />
       </bufferGeometry>
       <pointsMaterial
         size={0.15}
-        color="#60A5FA"
+        vertexColors
         transparent
         opacity={0.8}
         sizeAttenuation={true}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+        map={particleTexture}
+        alphaMap={particleTexture}
       />
     </points>
   );
@@ -50,8 +111,8 @@ function MainScene({ scrollY }) {
   const { camera } = useThree();
   
   useEffect(() => {
-    camera.position.z = 8; // Closer camera position
-    camera.fov = 50; // Narrower field of view
+    camera.position.z = 8;
+    camera.fov = 50;
     camera.updateProjectionMatrix();
   }, [camera]);
 
