@@ -3,7 +3,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
 function ParticleField() {
-  const count = 2000;
+  const count = 2500;
   const pointsRef = useRef();
   const mouseRef = useRef({ x: 0, y: 0 });
   const { viewport } = useThree();
@@ -22,30 +22,38 @@ function ParticleField() {
   const [positions, colors] = useState(() => {
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
-    const spread = Math.min(viewport.width, viewport.height) * 2;
+    const spread = Math.min(viewport.width, viewport.height) * 3;
     
     // Theme colors with more vibrant options
     const themeColors = [
-      new THREE.Color('#60A5FA').multiplyScalar(1.2), // bright blue
-      new THREE.Color('#818CF8').multiplyScalar(1.2), // bright indigo
-      new THREE.Color('#A78BFA').multiplyScalar(1.2), // bright purple
-      new THREE.Color('#C084FC').multiplyScalar(1.2), // bright violet
-      new THREE.Color('#E879F9').multiplyScalar(1.2), // bright pink
+      new THREE.Color('#60A5FA').multiplyScalar(1.5), // bright blue
+      new THREE.Color('#818CF8').multiplyScalar(1.5), // bright indigo
+      new THREE.Color('#A78BFA').multiplyScalar(1.5), // bright purple
+      new THREE.Color('#C084FC').multiplyScalar(1.5), // bright violet
+      new THREE.Color('#E879F9').multiplyScalar(1.5), // bright pink
     ];
     
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
       
-      // Create a more uniform distribution in a disc
-      const radius = Math.sqrt(Math.random()) * spread;
+      // Create a layered distribution
+      const layer = Math.floor(Math.random() * 3); // 0, 1, or 2
+      const radius = (Math.random() * 0.3 + 0.7) * spread * (1 - layer * 0.2);
       const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos((Math.random() * 2) - 1);
       
-      positions[i3] = radius * Math.cos(theta);
-      positions[i3 + 1] = radius * Math.sin(theta);
-      positions[i3 + 2] = (Math.random() - 0.5) * 5;
+      positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
+      positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+      positions[i3 + 2] = (Math.random() - 0.5) * 10; // More depth variation
       
-      // Random color from theme
-      const color = themeColors[Math.floor(Math.random() * themeColors.length)];
+      // Random color from theme with size-based brightness
+      const color = themeColors[Math.floor(Math.random() * themeColors.length)].clone();
+      const distanceFromCenter = Math.sqrt(
+        positions[i3] * positions[i3] + 
+        positions[i3 + 1] * positions[i3 + 1]
+      ) / spread;
+      color.multiplyScalar(1 - distanceFromCenter * 0.5); // Fade out towards edges
+      
       colors[i3] = color.r;
       colors[i3 + 1] = color.g;
       colors[i3 + 2] = color.b;
@@ -62,7 +70,8 @@ function ParticleField() {
     
     const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
     gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-    gradient.addColorStop(0.3, 'rgba(255, 255, 255, 0.8)');
+    gradient.addColorStop(0.2, 'rgba(255, 255, 255, 0.9)');
+    gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.5)');
     gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
     
     ctx.fillStyle = gradient;
@@ -79,15 +88,15 @@ function ParticleField() {
     if (pointsRef.current) {
       const time = clock.getElapsedTime();
       
-      // Smooth mouse following
-      const targetRotationX = mouseRef.current.y * 0.2;
-      const targetRotationY = mouseRef.current.x * 0.2;
+      // Smooth mouse following with more rotation
+      const targetRotationX = mouseRef.current.y * 0.3;
+      const targetRotationY = mouseRef.current.x * 0.3;
       
-      pointsRef.current.rotation.x += (targetRotationX - pointsRef.current.rotation.x) * 0.05;
-      pointsRef.current.rotation.y += (targetRotationY - pointsRef.current.rotation.y) * 0.05;
+      pointsRef.current.rotation.x += (targetRotationX - pointsRef.current.rotation.x) * 0.1;
+      pointsRef.current.rotation.y += (targetRotationY - pointsRef.current.rotation.y) * 0.1;
       
-      // Gentle floating motion
-      pointsRef.current.position.y = Math.sin(time * 0.2) * 0.3;
+      // More pronounced floating motion
+      pointsRef.current.position.y = Math.sin(time * 0.3) * 0.5;
     }
   });
 
@@ -108,10 +117,10 @@ function ParticleField() {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.2}
+        size={0.3}
         vertexColors
         transparent
-        opacity={0.8}
+        opacity={1}
         sizeAttenuation={true}
         blending={THREE.AdditiveBlending}
         depthWrite={false}
@@ -141,8 +150,13 @@ export default function Scene3D() {
           far: 1000,
           position: [0, 0, 5]
         }}
+        gl={{
+          antialias: true,
+          alpha: true,
+        }}
       >
         <color attach="background" args={['#030712']} />
+        <fog attach="fog" args={['#030712', 5, 30]} />
         <ParticleField />
       </Canvas>
     </div>
