@@ -4,7 +4,7 @@ import axios from 'axios';
 import { FiMail, FiLock, FiAlertCircle } from 'react-icons/fi';
 import Logo from '../components/Logo';
 import DecryptedText from '../components/DecryptedText';
-import ScrollContainer from '../components/ScrollContainer';
+import Scene3D from '../components/Scene3D';
 
 // API URL based on environment
 const API_URL = import.meta.env.PROD ? 'https://phishshield.vercel.app' : '';
@@ -49,7 +49,8 @@ function Login({ setIsAuthenticated }) {
   };
 
   return (
-    <ScrollContainer>
+    <>
+      <Scene3D />
       <div className="min-h-screen flex flex-col p-4">
         <div className="absolute top-1 left-0 right-0 flex justify-center items-center">
           <div className="w-8 h-8">
@@ -167,7 +168,7 @@ function Login({ setIsAuthenticated }) {
           </div>
         </div>
       </div>
-    </ScrollContainer>
+    </>
   );
 }
 

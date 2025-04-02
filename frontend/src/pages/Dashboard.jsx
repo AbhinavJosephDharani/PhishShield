@@ -1,99 +1,46 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import ScrollContainer from '../components/ScrollContainer';
+import Scene3D from '../components/Scene3D';
 
-// API URL based on environment
-const API_URL = import.meta.env.PROD ? 'https://phishshield.vercel.app' : '';
-
-function Dashboard({ setIsAuthenticated }) {
+function Dashboard() {
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-          handleLogout();
-          return;
-        }
-
-        const response = await axios.get(`${API_URL}/api/auth/me`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        setUser(response.data);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-        handleLogout();
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, []);
+    const storedUser = localStorage.getItem('user');
+    if (!storedUser) {
+      navigate('/login');
+      return;
+    }
+    setUser(JSON.parse(storedUser));
+  }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    setIsAuthenticated(false);
     navigate('/login');
   };
 
-  if (isLoading) {
-    return (
-      <ScrollContainer>
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-xl text-white">Loading...</div>
-        </div>
-      </ScrollContainer>
-    );
-  }
+  if (!user) return null;
 
   return (
-    <ScrollContainer>
+    <>
+      <Scene3D />
       <div className="min-h-screen">
-        <nav className="bg-black/80 backdrop-blur-md border-b border-white/5">
+        {/* Navigation */}
+        <nav className="fixed top-0 left-0 right-0 bg-black/80 backdrop-blur-md z-50 border-b border-white/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between h-16">
-              <div className="flex">
-                <div className="flex-shrink-0 flex items-center">
-                  <span className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">PhishShield</span>
-                </div>
-                <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                  <a
-                    href="#"
-                    className="border-blue-500 text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                  >
-                    Dashboard
-                  </a>
-                  <a
-                    href="#"
-                    className="border-transparent text-gray-300 hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                  >
-                    Training
-                  </a>
-                  <a
-                    href="#"
-                    className="border-transparent text-gray-300 hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
-                  >
-                    Reports
-                  </a>
-                </div>
-              </div>
+            <div className="flex items-center justify-between h-16">
               <div className="flex items-center">
-                <span className="text-gray-300 mr-4">
-                  Welcome, {user?.name || 'User'}
+                <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
+                  PhishShield
                 </span>
+              </div>
+              <div className="flex items-center space-x-4">
+                <span className="text-gray-300">Welcome, {user.name}</span>
                 <button
                   onClick={handleLogout}
-                  className="ml-3 inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-white rounded-lg hover:from-blue-600 hover:via-purple-600 hover:to-pink-600 transition-all duration-300"
+                  className="px-4 py-2 bg-black text-white rounded-lg border border-transparent hover:border-white/10 hover:bg-gradient-to-r hover:from-blue-500 hover:via-purple-500 hover:to-pink-500 transition-all duration-300"
                 >
                   Logout
                 </button>
@@ -102,18 +49,68 @@ function Dashboard({ setIsAuthenticated }) {
           </div>
         </nav>
 
-        <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-          <div className="px-4 py-6 sm:px-0">
-            <div className="border border-white/10 bg-black/40 backdrop-blur-md rounded-lg h-96 p-8">
-              <h1 className="text-2xl font-bold mb-4 text-white">Welcome to PhishShield</h1>
-              <p className="text-gray-300">
-                Your cybersecurity training dashboard is being set up...
-              </p>
+        {/* Main Content */}
+        <div className="pt-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-8 shadow-2xl border border-white/10">
+            <h1 className="text-3xl font-bold text-white mb-6">Dashboard</h1>
+            
+            {/* Training Progress */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              <div className="bg-black/40 rounded-lg p-6 border border-white/5">
+                <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-2">
+                  Training Progress
+                </h3>
+                <p className="text-gray-300">Coming soon...</p>
+              </div>
+              
+              <div className="bg-black/40 rounded-lg p-6 border border-white/5">
+                <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-2">
+                  Recent Activities
+                </h3>
+                <p className="text-gray-300">Coming soon...</p>
+              </div>
+              
+              <div className="bg-black/40 rounded-lg p-6 border border-white/5">
+                <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-blue-500 mb-2">
+                  Security Score
+                </h3>
+                <p className="text-gray-300">Coming soon...</p>
+              </div>
+            </div>
+
+            {/* Available Training */}
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-4">Available Training</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-black/40 rounded-lg p-6 border border-white/5 hover:border-white/10 transition-all duration-300">
+                  <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-2">
+                    Phishing Awareness
+                  </h3>
+                  <p className="text-gray-300 mb-4">
+                    Learn to identify and avoid phishing attempts in emails and messages.
+                  </p>
+                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                    Start Training
+                  </button>
+                </div>
+
+                <div className="bg-black/40 rounded-lg p-6 border border-white/5 hover:border-white/10 transition-all duration-300">
+                  <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-2">
+                    Social Engineering
+                  </h3>
+                  <p className="text-gray-300 mb-4">
+                    Understand and protect against social engineering tactics.
+                  </p>
+                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                    Start Training
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </ScrollContainer>
+    </>
   );
 }
 
