@@ -10,12 +10,12 @@ function Home() {
       <Sidebar />
 
       {/* Main Content */}
-      <div className="relative w-full pl-64">
+      <div className="relative w-full lg:pl-64 transition-[padding] duration-300">
         {/* Navigation Bar */}
-        <nav className="fixed top-0 left-64 right-0 bg-black/80 backdrop-blur-md z-50 border-b border-white/5">
+        <nav className="fixed top-0 right-0 left-0 lg:left-64 bg-black/80 backdrop-blur-md z-40 border-b border-white/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-end h-16">
-              <div className="flex items-center space-x-4">
+              <div className="hidden lg:flex items-center space-x-4">
                 <Link
                   to="/login"
                   className="flex items-center px-4 py-2 text-white hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-blue-400 hover:via-purple-500 hover:to-pink-500 transition-all duration-300"

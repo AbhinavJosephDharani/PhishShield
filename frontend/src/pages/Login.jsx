@@ -54,10 +54,10 @@ function Login({ setIsAuthenticated }) {
       <Scene3D />
       <Sidebar />
       
-      <div className="relative w-full pl-64">
-        <div className="min-h-screen flex flex-col items-center justify-center px-4">
+      <div className="relative w-full lg:pl-64 transition-[padding] duration-300">
+        <div className="min-h-screen flex flex-col items-center justify-center px-4 pt-16 lg:pt-0">
           <div 
-            className="w-[400px] relative"
+            className="w-full max-w-[400px] relative"
             style={{ opacity }}
           >
             <div className="text-center mb-8">
