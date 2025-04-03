@@ -4,11 +4,11 @@ import Scene3D from '../components/Scene3D';
 
 function Home() {
   return (
-    <>
+    <div className="min-h-screen w-screen overflow-x-hidden">
       <Scene3D />
       
       {/* Main Content */}
-      <div className="relative">
+      <div className="relative w-full">
         {/* Navigation Bar */}
         <nav className="fixed top-0 left-0 right-0 bg-black/80 backdrop-blur-md z-50 border-b border-white/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,8 +39,8 @@ function Home() {
         </nav>
 
         {/* Hero Section */}
-        <div className="min-h-screen flex flex-col items-center justify-center p-4">
-          <div className="max-w-4xl mx-auto text-center">
+        <div className="min-h-screen w-full flex flex-col items-center justify-center px-4">
+          <div className="max-w-4xl w-full mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-extrabold mb-6">
               Protect Your Organization with
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500"> PhishShield</span>
@@ -66,7 +66,7 @@ function Home() {
         </div>
 
         {/* Features Section */}
-        <div className="py-20 bg-black/40 backdrop-blur-sm border-t border-white/5">
+        <div className="w-full py-20 bg-black/40 backdrop-blur-sm border-t border-white/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 mb-4">
@@ -105,7 +105,7 @@ function Home() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -159,7 +159,7 @@ export default function Scene3D() {
   if (!mounted) return null;
 
   return (
-    <div className="fixed inset-0 w-full h-full" style={{ zIndex: -1 }}>
+    <div className="fixed inset-0 w-screen h-screen overflow-hidden" style={{ zIndex: -1 }}>
       <Canvas
         className="w-full h-full"
         camera={{
@@ -171,8 +171,10 @@ export default function Scene3D() {
         gl={{
           antialias: true,
           alpha: true,
+          powerPreference: "high-performance"
         }}
         dpr={[1, 2]} // Responsive pixel ratio
+        style={{ position: 'absolute', left: 0, top: 0, width: '100vw', height: '100vh' }}
       >
         <color attach="background" args={['#030712']} />
         <fog attach="fog" args={['#030712', 15, 35]} />
