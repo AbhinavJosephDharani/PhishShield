@@ -28,55 +28,59 @@ function ParticleField() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [size]);
 
-  // Create positions and colors
-  const [positions, colors] = useState(() => {
+  // Create positions and colors with proper buffer initialization
+  const [geometry] = useState(() => {
+    const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
     
     // Calculate spread based on aspect ratio
     const aspectRatio = size.width / size.height;
-    const baseSpread = 10; // Base spread value
+    const baseSpread = 10;
     const xSpread = baseSpread * aspectRatio;
     const ySpread = baseSpread;
     
-    // Theme colors with more vibrant options
+    // Theme colors with vibrant options
     const themeColors = [
-      new THREE.Color('#60A5FA').multiplyScalar(1.8), // bright blue
-      new THREE.Color('#818CF8').multiplyScalar(1.8), // bright indigo
-      new THREE.Color('#A78BFA').multiplyScalar(1.8), // bright purple
-      new THREE.Color('#C084FC').multiplyScalar(1.8), // bright violet
-      new THREE.Color('#E879F9').multiplyScalar(1.8), // bright pink
+      new THREE.Color('#60A5FA').multiplyScalar(1.8),
+      new THREE.Color('#818CF8').multiplyScalar(1.8),
+      new THREE.Color('#A78BFA').multiplyScalar(1.8),
+      new THREE.Color('#C084FC').multiplyScalar(1.8),
+      new THREE.Color('#E879F9').multiplyScalar(1.8),
     ];
     
     for (let i = 0; i < count; i++) {
       const i3 = i * 3;
       
       // Create a layered distribution
-      const layer = Math.floor(Math.random() * 3); // 0, 1, or 2
-      const layerFactor = 1 - layer * 0.15; // Less aggressive layer scaling
+      const layer = Math.floor(Math.random() * 3);
+      const layerFactor = 1 - layer * 0.15;
       
-      // Use separate spreads for x and y
+      // Use spherical coordinates for better distribution
       const theta = Math.random() * Math.PI * 2;
-      const radiusX = Math.random() * xSpread * layerFactor;
-      const radiusY = Math.random() * ySpread * layerFactor;
+      const phi = Math.random() * Math.PI;
+      const r = Math.random() * baseSpread * layerFactor;
       
-      positions[i3] = radiusX * Math.cos(theta);
-      positions[i3 + 1] = radiusY * Math.sin(theta);
-      positions[i3 + 2] = (Math.random() - 0.5) * 8; // Controlled depth
+      positions[i3] = r * Math.sin(phi) * Math.cos(theta) * aspectRatio;
+      positions[i3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      positions[i3 + 2] = r * Math.cos(phi) * 0.5; // Reduced depth
       
-      // Random color from theme with distance-based brightness
+      // Random color from theme with distance-based fade
       const color = themeColors[Math.floor(Math.random() * themeColors.length)].clone();
       const distanceFromCenter = Math.sqrt(
         (positions[i3] / xSpread) ** 2 + 
         (positions[i3 + 1] / ySpread) ** 2
       );
-      color.multiplyScalar(1 - distanceFromCenter * 0.3); // Gentler fade at edges
+      color.multiplyScalar(1 - distanceFromCenter * 0.3);
       
       colors[i3] = color.r;
       colors[i3 + 1] = color.g;
       colors[i3 + 2] = color.b;
     }
-    return [positions, colors];
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    return geometry;
   });
 
   // Create a circular texture for particles
@@ -106,7 +110,7 @@ function ParticleField() {
     if (pointsRef.current) {
       const time = clock.getElapsedTime();
       
-      // Smooth mouse following with more rotation
+      // Smooth mouse following with rotation
       const targetRotationX = mouseRef.current.y * 0.2;
       const targetRotationY = mouseRef.current.x * 0.2;
       
@@ -120,20 +124,7 @@ function ParticleField() {
 
   return (
     <points ref={pointsRef}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={count}
-          array={positions}
-          itemSize={3}
-        />
-        <bufferAttribute
-          attach="attributes-color"
-          count={count}
-          array={colors}
-          itemSize={3}
-        />
-      </bufferGeometry>
+      <primitive object={geometry} />
       <pointsMaterial
         size={0.15}
         vertexColors
@@ -173,7 +164,7 @@ export default function Scene3D() {
           alpha: true,
           powerPreference: "high-performance"
         }}
-        dpr={[1, 2]} // Responsive pixel ratio
+        dpr={[1, 2]}
         style={{ position: 'absolute', left: 0, top: 0, width: '100vw', height: '100vh' }}
       >
         <color attach="background" args={['#030712']} />
