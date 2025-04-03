@@ -5,6 +5,7 @@ import { FiUser, FiMail, FiLock, FiAlertCircle } from 'react-icons/fi';
 import Logo from '../components/Logo';
 import DecryptedText from '../components/DecryptedText';
 import Scene3D from '../components/Scene3D';
+import Sidebar from '../components/Sidebar';
 
 // API URL based on environment
 const API_URL = import.meta.env.PROD ? 'https://phishshield.vercel.app' : '';
@@ -60,26 +61,10 @@ function Register() {
   return (
     <div className="min-h-screen w-screen overflow-x-hidden">
       <Scene3D />
-      <div className="relative w-full min-h-screen flex flex-col">
-        <div className="absolute top-4 left-0 right-0 flex justify-center items-center">
-          <div className="w-8 h-8">
-            <Logo 
-              style={{
-                transform: 'scale(0.4)',
-                transition: 'all 0.3s ease'
-              }}
-              params={{
-                patternScale: 0.4,
-                refraction: 0.035,
-                edge: 0.98,
-                patternBlur: 0.006,
-                liquid: 0.15,
-                speed: 0.35
-              }}
-            />
-          </div>
-        </div>
-        <div className="flex-1 flex items-center justify-center px-4">
+      <Sidebar />
+      
+      <div className="relative w-full pl-64">
+        <div className="min-h-screen flex flex-col items-center justify-center px-4">
           <div 
             className="w-[400px] relative"
             style={{ opacity }}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Scene3D from '../components/Scene3D';
+import Sidebar from '../components/Sidebar';
 
 function Dashboard() {
   const [user, setUser] = useState(null);
@@ -26,16 +27,14 @@ function Dashboard() {
   return (
     <div className="min-h-screen w-screen overflow-x-hidden">
       <Scene3D />
-      <div className="relative w-full min-h-screen">
-        {/* Navigation */}
-        <nav className="fixed top-0 left-0 right-0 bg-black/80 backdrop-blur-md z-50 border-b border-white/5">
+      <Sidebar />
+
+      {/* Main Content */}
+      <div className="relative w-full pl-64">
+        {/* Navigation Bar */}
+        <nav className="fixed top-0 left-64 right-0 bg-black/80 backdrop-blur-md z-50 border-b border-white/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center">
-                <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
-                  PhishShield
-                </span>
-              </div>
+            <div className="flex items-center justify-end h-16">
               <div className="flex items-center space-x-4">
                 <span className="text-gray-300">Welcome, {user.name}</span>
                 <button
