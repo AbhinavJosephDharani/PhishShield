@@ -24,9 +24,9 @@ function Dashboard() {
   if (!user) return null;
 
   return (
-    <>
+    <div className="min-h-screen w-screen overflow-x-hidden">
       <Scene3D />
-      <div className="min-h-screen">
+      <div className="relative w-full min-h-screen">
         {/* Navigation */}
         <nav className="fixed top-0 left-0 right-0 bg-black/80 backdrop-blur-md z-50 border-b border-white/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -50,7 +50,7 @@ function Dashboard() {
         </nav>
 
         {/* Main Content */}
-        <div className="pt-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="pt-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
           <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-8 shadow-2xl border border-white/10">
             <h1 className="text-3xl font-bold text-white mb-6">Dashboard</h1>
             
@@ -110,7 +110,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

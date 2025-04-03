@@ -49,10 +49,10 @@ function Login({ setIsAuthenticated }) {
   };
 
   return (
-    <>
+    <div className="min-h-screen w-screen overflow-x-hidden">
       <Scene3D />
-      <div className="min-h-screen flex flex-col p-4">
-        <div className="absolute top-1 left-0 right-0 flex justify-center items-center">
+      <div className="relative w-full min-h-screen flex flex-col">
+        <div className="absolute top-4 left-0 right-0 flex justify-center items-center">
           <div className="w-8 h-8">
             <Logo 
               style={{
@@ -70,9 +70,9 @@ function Login({ setIsAuthenticated }) {
             />
           </div>
         </div>
-        <div className="flex-1 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center px-4">
           <div 
-            className="w-[400px] mx-auto relative"
+            className="w-[400px] relative"
             style={{ opacity }}
           >
             <div className="text-center mb-8">
@@ -168,7 +168,7 @@ function Login({ setIsAuthenticated }) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
