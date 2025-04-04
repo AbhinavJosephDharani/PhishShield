@@ -6,10 +6,10 @@ import GlitchText from '../components/GlitchText';
 export default function Home() {
   return (
     <Layout>
-      <div className="relative">
+      <div className="w-full">
         {/* Hero Section */}
-        <section className="relative py-20 overflow-hidden">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="w-full py-20">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center">
               <GlitchText className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6">
                 Protect Your Digital Identity
@@ -36,8 +36,8 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section className="py-20 bg-gray-900/50 backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="w-full py-20 bg-gray-900/50 backdrop-blur-sm">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="p-6 rounded-lg bg-gray-800/50 backdrop-blur-sm border border-gray-700">
                 <h3 className="text-xl font-semibold mb-4 text-blue-400">Real-time Detection</h3>
@@ -62,8 +62,8 @@ export default function Home() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <section className="w-full py-20">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <GlitchText className="text-3xl font-bold mb-6">
               Ready to Secure Your Digital Presence?
             </GlitchText>
