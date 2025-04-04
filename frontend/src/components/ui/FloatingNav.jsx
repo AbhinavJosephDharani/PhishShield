@@ -25,7 +25,7 @@ export const FloatingNav = ({ navItems, className }) => {
     const timeout = setTimeout(() => {
       setVisible(true);
       setIsScrolling(false);
-    }, 800); // Increased from 400ms to 800ms
+    }, 800);
 
     setScrollTimeout(timeout);
   });
@@ -51,33 +51,46 @@ export const FloatingNav = ({ navItems, className }) => {
           opacity: visible ? 1 : 0,
         }}
         transition={{
-          duration: 0.6, // Increased from 0.4s to 0.6s
-          ease: [0.4, 0, 0.2, 1], // Custom ease curve for smoother motion
+          duration: 0.6,
+          ease: [0.4, 0, 0.2, 1],
           opacity: {
-            duration: 0.5, // Separate duration for opacity
+            duration: 0.5,
           },
         }}
         className={cn(
-          "flex max-w-fit fixed top-10 inset-x-0 mx-auto border border-transparent dark:border-white/[0.2] rounded-full dark:bg-black bg-white shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] z-[5000] pr-2 pl-8 py-2 items-center justify-center space-x-4",
+          "flex w-full fixed top-0 inset-x-0 h-20 bg-gradient-to-r from-gray-900 to-gray-800 border-b border-gray-800/50 z-[5000] px-6 items-center justify-between",
           className
         )}>
-        {navItems.map((navItem, idx) => (
-          <Link
-            key={`link-${idx}`}
-            to={navItem.link}
-            className={cn(
-              "relative dark:text-neutral-50 items-center flex space-x-1 text-neutral-600 dark:hover:text-neutral-300 hover:text-neutral-500"
-            )}>
-            <span className="block sm:hidden">{navItem.icon}</span>
-            <span className="hidden sm:block text-sm">{navItem.name}</span>
-          </Link>
-        ))}
-        <Link
-          to="/login"
-          className="border text-sm font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
-          <span>Login</span>
-          <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent h-px" />
+        {/* Logo Section */}
+        <Link to="/" className="flex items-center">
+          <span className="text-[#00FFBB] text-2xl font-bold">PhishShield</span>
         </Link>
+
+        {/* Navigation Links */}
+        <div className="hidden md:flex items-center space-x-8">
+          {navItems.map((navItem, idx) => (
+            <Link
+              key={`link-${idx}`}
+              to={navItem.link}
+              className="text-gray-300 hover:text-white text-sm font-medium transition-colors">
+              {navItem.name}
+            </Link>
+          ))}
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex items-center space-x-4">
+          <Link
+            to="/login"
+            className="text-gray-300 hover:text-white text-sm font-medium transition-colors">
+            Partner Login
+          </Link>
+          <Link
+            to="/register"
+            className="bg-[#00FFBB] hover:bg-[#00FFBB]/90 text-gray-900 px-4 py-2 rounded text-sm font-medium transition-colors">
+            Free Trial
+          </Link>
+        </div>
       </motion.div>
     </AnimatePresence>
   );
