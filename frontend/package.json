@@ -11,7 +11,6 @@
     "vercel-build": "npm install && npm run build"
   },
   "dependencies": {
-    "@motionone/dom": "^10.18.0",
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-separator": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.2",
@@ -26,7 +25,7 @@
     "axios": "^1.6.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "framer-motion": "^11.0.8",
+    "framer-motion": "^11.18.2",
     "lucide-react": "^0.486.0",
     "postcss": "^8.4.35",
     "react": "^18.2.0",
