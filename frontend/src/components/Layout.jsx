@@ -6,7 +6,7 @@ const Layout = ({ children }) => {
   const location = useLocation();
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100">
+    <div className="min-h-screen w-full bg-gray-900 text-gray-100 flex flex-col overflow-x-hidden">
       {/* Glitch effect background */}
       <div className="fixed inset-0 z-0 opacity-20">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10" />
@@ -14,7 +14,7 @@ const Layout = ({ children }) => {
       </div>
 
       {/* Navigation */}
-      <nav className="relative z-10 bg-gray-900/80 backdrop-blur-sm border-b border-gray-800">
+      <nav className="relative z-10 bg-gray-900/80 backdrop-blur-sm border-b border-gray-800 w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
@@ -47,12 +47,12 @@ const Layout = ({ children }) => {
       </nav>
 
       {/* Main content */}
-      <main className="relative z-10">
+      <main className="relative z-10 flex-grow w-full">
         {children}
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 bg-gray-900/80 backdrop-blur-sm border-t border-gray-800 mt-auto">
+      <footer className="relative z-10 bg-gray-900/80 backdrop-blur-sm border-t border-gray-800 w-full">
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <div className="text-center text-sm text-gray-400">
             © {new Date().getFullYear()} PhishShield. All rights reserved.
