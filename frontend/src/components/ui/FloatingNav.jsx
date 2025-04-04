@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   motion,
   AnimatePresence,
@@ -10,31 +10,44 @@ import { Link } from "react-router-dom";
 
 export const FloatingNav = ({ navItems, className }) => {
   const { scrollYProgress } = useScroll();
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const [isScrolling, setIsScrolling] = useState(false);
+  const [scrollTimeout, setScrollTimeout] = useState(null);
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
-    // Check if current is not undefined and is a number
-    if (typeof current === "number") {
-      let direction = current - scrollYProgress.getPrevious();
-
-      if (scrollYProgress.get() < 0.05) {
-        setVisible(false);
-      } else {
-        if (direction < 0) {
-          setVisible(true);
-        } else {
-          setVisible(false);
-        }
-      }
+    // Clear the previous timeout
+    if (scrollTimeout) {
+      clearTimeout(scrollTimeout);
     }
+
+    // Hide nav when scrolling
+    setVisible(false);
+    setIsScrolling(true);
+
+    // Set a new timeout to show nav after scrolling stops
+    const timeout = setTimeout(() => {
+      setVisible(true);
+      setIsScrolling(false);
+    }, 150); // Adjust this value to control how quickly the nav reappears
+
+    setScrollTimeout(timeout);
   });
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+    };
+  }, [scrollTimeout]);
 
   return (
     <AnimatePresence mode="wait">
       <motion.div
         initial={{
           opacity: 1,
-          y: -100,
+          y: 0,
         }}
         animate={{
           y: visible ? 0 : -100,
