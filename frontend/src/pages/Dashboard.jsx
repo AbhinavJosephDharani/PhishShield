@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Scene3D from '../components/Scene3D';
-import Sidebar from '../components/Sidebar';
+import Layout from '../components/Layout';
+import GlitchText from '../components/GlitchText';
 
 function Dashboard() {
   const [user, setUser] = useState(null);
@@ -25,91 +25,83 @@ function Dashboard() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen w-screen overflow-x-hidden">
-      <Scene3D />
-      <Sidebar />
-
-      {/* Main Content */}
-      <div className="relative w-full lg:pl-64 transition-[padding] duration-300">
-        {/* Navigation Bar */}
-        <nav className="fixed top-0 right-0 left-0 lg:left-64 bg-black/80 backdrop-blur-md z-40 border-b border-white/5">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-end h-16">
-              <div className="flex items-center space-x-4">
-                <span className="text-gray-300 hidden sm:inline">Welcome, {user.name}</span>
-                <button
-                  onClick={handleLogout}
-                  className="px-4 py-2 bg-black text-white rounded-lg border border-transparent hover:border-white/10 hover:bg-gradient-to-r hover:from-blue-500 hover:via-purple-500 hover:to-pink-500 transition-all duration-300"
-                >
-                  Logout
-                </button>
+    <Layout>
+      <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        {/* User Welcome */}
+        <div className="flex justify-between items-center mb-8">
+          <GlitchText className="text-2xl sm:text-3xl font-bold">
+            Welcome, {user.name}
+          </GlitchText>
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+          >
+            Logout
+          </button>
+        </div>
+        
+        {/* Training Progress */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="p-6 rounded-lg bg-gray-800/50 backdrop-blur-sm border border-gray-700">
+            <h3 className="text-xl font-semibold mb-4 text-blue-400">Training Progress</h3>
+            <div className="flex items-center">
+              <div className="flex-1 bg-gray-700 rounded-full h-2">
+                <div className="bg-blue-500 h-2 rounded-full w-[45%]"></div>
               </div>
+              <span className="ml-4 text-gray-300">45%</span>
             </div>
           </div>
-        </nav>
+          
+          <div className="p-6 rounded-lg bg-gray-800/50 backdrop-blur-sm border border-gray-700">
+            <h3 className="text-xl font-semibold mb-4 text-purple-400">Recent Activities</h3>
+            <ul className="space-y-2 text-gray-300">
+              <li>• Completed Phishing Module</li>
+              <li>• Started Social Engineering</li>
+            </ul>
+          </div>
+          
+          <div className="p-6 rounded-lg bg-gray-800/50 backdrop-blur-sm border border-gray-700">
+            <h3 className="text-xl font-semibold mb-4 text-pink-400">Security Score</h3>
+            <div className="flex items-center justify-center">
+              <div className="text-4xl font-bold text-pink-400">85</div>
+              <div className="ml-2 text-gray-300">/100</div>
+            </div>
+          </div>
+        </div>
 
-        {/* Main Content */}
-        <div className="pt-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-          <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-4 sm:p-8 shadow-2xl border border-white/10">
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-6">Dashboard</h1>
-            
-            {/* Training Progress */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-8">
-              <div className="bg-black/40 rounded-lg p-4 sm:p-6 border border-white/5">
-                <h3 className="text-lg sm:text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-2">
-                  Training Progress
-                </h3>
-                <p className="text-gray-300">Coming soon...</p>
-              </div>
-              
-              <div className="bg-black/40 rounded-lg p-4 sm:p-6 border border-white/5">
-                <h3 className="text-lg sm:text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-2">
-                  Recent Activities
-                </h3>
-                <p className="text-gray-300">Coming soon...</p>
-              </div>
-              
-              <div className="bg-black/40 rounded-lg p-4 sm:p-6 border border-white/5">
-                <h3 className="text-lg sm:text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-blue-500 mb-2">
-                  Security Score
-                </h3>
-                <p className="text-gray-300">Coming soon...</p>
-              </div>
+        {/* Available Training */}
+        <div>
+          <GlitchText className="text-xl sm:text-2xl font-bold mb-6">
+            Available Training
+          </GlitchText>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-6 rounded-lg bg-gray-800/50 backdrop-blur-sm border border-gray-700 hover:border-blue-500/50 transition-colors">
+              <h3 className="text-xl font-semibold mb-4 text-blue-400">
+                Phishing Awareness
+              </h3>
+              <p className="text-gray-300 mb-4">
+                Learn to identify and avoid phishing attempts in emails and messages.
+              </p>
+              <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+                Start Training
+              </button>
             </div>
 
-            {/* Available Training */}
-            <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-white mb-4">Available Training</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                <div className="bg-black/40 rounded-lg p-4 sm:p-6 border border-white/5 hover:border-white/10 transition-all duration-300">
-                  <h3 className="text-lg sm:text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 mb-2">
-                    Phishing Awareness
-                  </h3>
-                  <p className="text-gray-300 mb-4">
-                    Learn to identify and avoid phishing attempts in emails and messages.
-                  </p>
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
-                    Start Training
-                  </button>
-                </div>
-
-                <div className="bg-black/40 rounded-lg p-4 sm:p-6 border border-white/5 hover:border-white/10 transition-all duration-300">
-                  <h3 className="text-lg sm:text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500 mb-2">
-                    Social Engineering
-                  </h3>
-                  <p className="text-gray-300 mb-4">
-                    Understand and protect against social engineering tactics.
-                  </p>
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
-                    Start Training
-                  </button>
-                </div>
-              </div>
+            <div className="p-6 rounded-lg bg-gray-800/50 backdrop-blur-sm border border-gray-700 hover:border-purple-500/50 transition-colors">
+              <h3 className="text-xl font-semibold mb-4 text-purple-400">
+                Social Engineering
+              </h3>
+              <p className="text-gray-300 mb-4">
+                Understand and protect against social engineering tactics.
+              </p>
+              <button className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors">
+                Start Training
+              </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 

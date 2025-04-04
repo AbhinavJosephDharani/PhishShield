@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FiUser, FiMail, FiLock, FiAlertCircle } from 'react-icons/fi';
-import Logo from '../components/Logo';
-import DecryptedText from '../components/DecryptedText';
-import Scene3D from '../components/Scene3D';
-import Sidebar from '../components/Sidebar';
+import Layout from '../components/Layout';
+import GlitchText from '../components/GlitchText';
 
 // API URL based on environment
 const API_URL = import.meta.env.PROD ? 'https://phishshield.vercel.app' : '';
@@ -19,12 +17,7 @@ function Register() {
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [opacity, setOpacity] = useState(0);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setOpacity(1);
-  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -59,142 +52,128 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen w-screen overflow-x-hidden">
-      <Scene3D />
-      <Sidebar />
-      
-      <div className="relative w-full lg:pl-64 transition-[padding] duration-300">
-        <div className="min-h-screen flex flex-col items-center justify-center px-4 pt-16 lg:pt-0">
-          <div 
-            className="w-full max-w-[400px] relative"
-            style={{ opacity }}
-          >
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-extrabold text-white flex items-center justify-center gap-2">
-                Join{' '}
-                <DecryptedText
-                  text="PhishShield"
-                  speed={50}
-                  sequential={true}
-                  revealDirection="center"
-                  animateOn="view"
-                  className="text-blue-400 font-extrabold"
-                  encryptedClassName="text-red-400 font-extrabold"
-                  characters="01!@#$%^&*()_+[]{}|;:,.<>?"
-                  maxIterations={15}
-                  parentClassName="inline-block"
-                />
-              </h2>
-              <p className="mt-2 text-sm text-gray-300">
-                Create your account to start your cybersecurity journey
-              </p>
-            </div>
+    <Layout>
+      <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center px-4">
+        <div className="w-full max-w-[400px]">
+          <div className="text-center mb-8">
+            <GlitchText className="text-3xl font-bold mb-2">
+              Join PhishShield
+            </GlitchText>
+            <p className="text-gray-400">
+              Create your account to start your cybersecurity journey
+            </p>
+          </div>
 
-            <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-8 shadow-2xl border border-white/10">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {error && (
-                  <div className="flex items-center gap-2 text-red-500 bg-red-500/10 p-3 rounded-lg">
-                    <FiAlertCircle className="flex-shrink-0" />
-                    <p className="text-sm">{error}</p>
+          <div className="p-8 rounded-lg bg-gray-800/50 backdrop-blur-sm border border-gray-700">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {error && (
+                <div className="flex items-center gap-2 text-red-400 bg-red-500/10 p-3 rounded-lg">
+                  <FiAlertCircle className="flex-shrink-0" />
+                  <p className="text-sm">{error}</p>
+                </div>
+              )}
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Full Name
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FiUser className="h-5 w-5 text-gray-400" />
                   </div>
-                )}
+                  <input
+                    name="name"
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+              </div>
 
-                <div>
-                  <div className="text-sm text-gray-300 mb-2">Full Name</div>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FiUser className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      name="name"
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={handleChange}
-                      className="appearance-none relative block w-full px-10 py-3 border border-gray-300/20 bg-black/20 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
-                      placeholder="Enter your full name"
-                    />
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Email address
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FiMail className="h-5 w-5 text-gray-400" />
                   </div>
+                  <input
+                    name="email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter your email"
+                  />
                 </div>
+              </div>
 
-                <div>
-                  <div className="text-sm text-gray-300 mb-2">Email address</div>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FiMail className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      name="email"
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="appearance-none relative block w-full px-10 py-3 border border-gray-300/20 bg-black/20 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
-                      placeholder="Enter your email"
-                    />
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Password
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FiLock className="h-5 w-5 text-gray-400" />
                   </div>
+                  <input
+                    name="password"
+                    type="password"
+                    required
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Create a password"
+                  />
                 </div>
+              </div>
 
-                <div>
-                  <div className="text-sm text-gray-300 mb-2">Password</div>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FiLock className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      name="password"
-                      type="password"
-                      required
-                      value={formData.password}
-                      onChange={handleChange}
-                      className="appearance-none relative block w-full px-10 py-3 border border-gray-300/20 bg-black/20 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
-                      placeholder="Create a password"
-                    />
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <FiLock className="h-5 w-5 text-gray-400" />
                   </div>
+                  <input
+                    name="confirmPassword"
+                    type="password"
+                    required
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    className="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md bg-gray-700/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Confirm your password"
+                  />
                 </div>
+              </div>
 
-                <div>
-                  <div className="text-sm text-gray-300 mb-2">Confirm Password</div>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <FiLock className="h-5 w-5 text-gray-400" />
-                    </div>
-                    <input
-                      name="confirmPassword"
-                      type="password"
-                      required
-                      value={formData.confirmPassword}
-                      onChange={handleChange}
-                      className="appearance-none relative block w-full px-10 py-3 border border-gray-300/20 bg-black/20 text-white placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
-                      placeholder="Confirm your password"
-                    />
-                  </div>
-                </div>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {isLoading ? 'Creating account...' : 'Create Account'}
+              </button>
 
-                <div>
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="w-full flex justify-center py-3 px-4 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-                  >
-                    {isLoading ? 'Creating account...' : 'Create Account'}
-                  </button>
-                </div>
-
-                <div className="text-center">
-                  <Link
-                    to="/login"
-                    className="text-sm font-medium text-blue-400 hover:text-blue-300 transition-colors duration-200"
-                  >
-                    Already have an account? Sign in
-                  </Link>
-                </div>
-              </form>
-            </div>
+              <div className="text-center mt-4">
+                <Link
+                  to="/login"
+                  className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                >
+                  Already have an account? Sign in
+                </Link>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 
