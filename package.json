@@ -1,1 +1,1 @@
-{"name":"phishshield","version":"1.0.0","private":true,"scripts":{"build":"cd frontend && npm install && npm run build"},"dependencies":{"clsx":"^2.1.1","motion":"^12.6.3","ogl":"^1.0.11","tailwind-merge":"^3.1.0"}}
+{"name":"phishshield","version":"1.0.0","private":true,"scripts":{"build":"cd frontend && npm install && npm run build"},"dependencies":{"@motionone/dom":"^10.18.0","clsx":"^2.1.1","ogl":"^1.0.11","tailwind-merge":"^3.1.0"}}
