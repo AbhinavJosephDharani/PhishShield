@@ -16,6 +16,17 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Debug middleware
+app.use((req, res, next) => {
+  console.log('Request received:', {
+    method: req.method,
+    path: req.path,
+    body: req.body,
+    headers: req.headers
+  });
+  next();
+});
+
 // MongoDB connection
 let cached = global.mongoose;
 if (!cached) {
@@ -29,7 +40,7 @@ async function connectDB() {
   }
 
   if (!cached.promise) {
-    console.log('Creating new MongoDB connection');
+    console.log('Creating new MongoDB connection with URI:', process.env.MONGODB_URI);
     const opts = {
       bufferCommands: false,
       serverSelectionTimeoutMS: 30000,
@@ -92,17 +103,6 @@ app.use(async (req, res, next) => {
       code: error.code
     });
   }
-});
-
-// Debug middleware
-app.use((req, res, next) => {
-  console.log('Request received:', {
-    method: req.method,
-    path: req.path,
-    body: req.body,
-    headers: req.headers
-  });
-  next();
 });
 
 // Root endpoint
@@ -171,14 +171,6 @@ app.use((req, res) => {
   console.log('404 Not Found:', req.method, req.url);
   res.status(404).json({ message: 'Route not found' });
 });
-
-// For local development
-if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-  });
-}
 
 // Export the Express API for Vercel
 module.exports = app; 

@@ -1,35 +1,9 @@
-const mongoose = require('mongoose');
-const User = require('../../backend/models/User');
-const jwt = require('jsonwebtoken');
-
-// MongoDB connection
-const connectDB = async () => {
-  if (mongoose.connections[0].readyState) return;
-  
-  try {
-    const opts = {
-      serverSelectionTimeoutMS: 30000,
-      connectTimeoutMS: 30000,
-      socketTimeoutMS: 45000,
-      retryWrites: true,
-      w: 'majority'
-    };
-    
-    await mongoose.connect(process.env.MONGODB_URI, opts);
-    console.log('Connected to MongoDB');
-  } catch (error) {
-    console.error('MongoDB connection error:', {
-      message: error.message,
-      name: error.name,
-      code: error.code,
-      stack: error.stack
-    });
-    throw error;
-  }
-};
+import { MongoClient } from 'mongodb';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 // Handler function
-const handler = async (req, res) => {
+export default async function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -48,66 +22,84 @@ const handler = async (req, res) => {
     return;
   }
 
+  console.log('Registration request received:', {
+    body: req.body,
+    headers: req.headers
+  });
+
+  const { email, password, name } = req.body;
+
+  if (!email || !password || !name) {
+    return res.status(400).json({ message: 'Missing required fields' });
+  }
+
+  let client;
   try {
-    // Get request body directly since we're using Express
-    console.log('Registration request received:', req.body);
-    const { email, password, name } = req.body;
+    console.log('Connecting to MongoDB...');
+    client = await MongoClient.connect(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 30000,
+      connectTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+      retryWrites: true,
+      w: 'majority'
+    });
 
-    if (!email || !password || !name) {
-      return res.status(400).json({ message: 'Missing required fields' });
-    }
-
-    await connectDB();
+    const db = client.db('phishshield');
+    const users = db.collection('users');
 
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    console.log('Checking for existing user...');
+    const existingUser = await users.findOne({ email });
     if (existingUser) {
-      console.log('User already exists:', email);
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Create new user
-    const user = new User({
+    // Hash password
+    console.log('Hashing password...');
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create user
+    console.log('Creating new user...');
+    const result = await users.insertOne({
       email,
-      password,
-      name
+      password: hashedPassword,
+      name,
+      createdAt: new Date()
     });
 
-    // Validate user before saving
-    const validationError = user.validateSync();
-    if (validationError) {
-      console.log('Validation error:', validationError.errors);
-      return res.status(400).json({ 
-        message: 'Validation error',
-        errors: Object.values(validationError.errors).map(err => err.message)
-      });
-    }
-
-    console.log('Attempting to save user:', { email, name });
-    await user.save();
-    console.log('User saved successfully');
-
-    // Generate JWT token
+    // Generate JWT
+    console.log('Generating JWT...');
     const token = jwt.sign(
-      { userId: user._id },
+      { userId: result.insertedId },
       process.env.JWT_SECRET,
-      { expiresIn: '24h' }
+      { expiresIn: '1d' }
     );
 
-    return res.status(201).json({
+    console.log('Registration successful');
+    res.status(201).json({
+      message: 'User registered successfully',
       token,
       user: {
-        id: user._id,
-        email: user.email,
-        name: user.name,
-        role: user.role
+        id: result.insertedId,
+        email,
+        name
       }
     });
   } catch (error) {
-    console.error('Registration error details:', error);
-    return res.status(500).json({ message: 'Error registering user', details: error.message });
+    console.error('Registration error:', {
+      message: error.message,
+      name: error.name,
+      code: error.code,
+      stack: error.stack
+    });
+    res.status(500).json({
+      message: 'Error registering user',
+      details: error.message,
+      code: error.code
+    });
+  } finally {
+    if (client) {
+      await client.close();
+    }
   }
-};
-
-// Export the handler
-module.exports = handler; 
+} 
