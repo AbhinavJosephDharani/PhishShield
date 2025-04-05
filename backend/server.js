@@ -24,10 +24,12 @@ if (!cached) {
 
 async function connectDB() {
   if (cached.conn) {
+    console.log('Using cached MongoDB connection');
     return cached.conn;
   }
 
   if (!cached.promise) {
+    console.log('Creating new MongoDB connection');
     const opts = {
       bufferCommands: false,
       serverSelectionTimeoutMS: 30000,
@@ -38,16 +40,32 @@ async function connectDB() {
       socketTimeoutMS: 45000
     };
 
-    cached.promise = mongoose.connect(process.env.MONGODB_URI, opts).then((mongoose) => {
-      console.log('Connected to MongoDB');
-      return mongoose;
-    });
+    cached.promise = mongoose.connect(process.env.MONGODB_URI, opts)
+      .then((mongoose) => {
+        console.log('Successfully connected to MongoDB');
+        return mongoose;
+      })
+      .catch((error) => {
+        console.error('MongoDB connection error:', {
+          message: error.message,
+          name: error.name,
+          code: error.code,
+          stack: error.stack
+        });
+        throw error;
+      });
   }
 
   try {
     cached.conn = await cached.promise;
     return cached.conn;
   } catch (e) {
+    console.error('Failed to establish MongoDB connection:', {
+      message: e.message,
+      name: e.name,
+      code: e.code,
+      stack: e.stack
+    });
     cached.promise = null;
     throw e;
   }
@@ -56,11 +74,21 @@ async function connectDB() {
 // Connect to MongoDB before handling requests
 app.use(async (req, res, next) => {
   try {
+    console.log('Attempting to connect to MongoDB for request:', req.method, req.path);
     await connectDB();
     next();
   } catch (error) {
-    console.error('MongoDB connection error:', error);
-    res.status(500).json({ message: 'Database connection error', details: error.message });
+    console.error('MongoDB connection error in request handler:', {
+      message: error.message,
+      name: error.name,
+      code: error.code,
+      stack: error.stack
+    });
+    res.status(500).json({ 
+      message: 'Database connection error', 
+      details: error.message,
+      code: error.code
+    });
   }
 });
 

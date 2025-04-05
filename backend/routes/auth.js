@@ -7,10 +7,21 @@ const crypto = require('crypto');
 // Register new user
 router.post('/register', async (req, res) => {
   try {
-    console.log('Registration request received:', req.body);
+    console.log('Registration request received:', {
+      body: req.body,
+      headers: req.headers
+    });
+
     const { email, password, name } = req.body;
 
+    // Validate required fields
+    if (!email || !password || !name) {
+      console.log('Missing required fields:', { email: !!email, password: !!password, name: !!name });
+      return res.status(400).json({ message: 'Missing required fields' });
+    }
+
     // Check if user already exists
+    console.log('Checking for existing user with email:', email);
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       console.log('User already exists:', email);
@@ -18,6 +29,7 @@ router.post('/register', async (req, res) => {
     }
 
     // Create new user
+    console.log('Creating new user:', { email, name });
     const user = new User({
       email,
       password,
@@ -25,6 +37,7 @@ router.post('/register', async (req, res) => {
     });
 
     // Validate user before saving
+    console.log('Validating user data');
     const validationError = user.validateSync();
     if (validationError) {
       console.log('Validation error:', validationError.errors);
@@ -34,22 +47,25 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    console.log('Attempting to save user:', { email, name });
-    await user.save();
-    console.log('User saved successfully');
-
-    // Generate JWT token
+    // Check JWT_SECRET
     if (!process.env.JWT_SECRET) {
       console.error('JWT_SECRET is not set');
       return res.status(500).json({ message: 'Server configuration error' });
     }
 
+    console.log('Attempting to save user to database');
+    await user.save();
+    console.log('User saved successfully');
+
+    // Generate JWT token
+    console.log('Generating JWT token');
     const token = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
 
+    console.log('Registration successful, sending response');
     res.status(201).json({
       token,
       user: {
@@ -64,7 +80,8 @@ router.post('/register', async (req, res) => {
       error: error.message,
       stack: error.stack,
       name: error.name,
-      code: error.code
+      code: error.code,
+      type: error.constructor.name
     });
     res.status(500).json({ 
       message: 'Error registering user', 
