@@ -39,6 +39,11 @@ router.post('/register', async (req, res) => {
     console.log('User saved successfully');
 
     // Generate JWT token
+    if (!process.env.JWT_SECRET) {
+      console.error('JWT_SECRET is not set');
+      return res.status(500).json({ message: 'Server configuration error' });
+    }
+
     const token = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET,
@@ -55,8 +60,17 @@ router.post('/register', async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Registration error details:', error);
-    res.status(500).json({ message: 'Error registering user', details: error.message });
+    console.error('Registration error details:', {
+      error: error.message,
+      stack: error.stack,
+      name: error.name,
+      code: error.code
+    });
+    res.status(500).json({ 
+      message: 'Error registering user', 
+      details: error.message,
+      code: error.code
+    });
   }
 });
 
@@ -94,6 +108,11 @@ router.post('/login', async (req, res) => {
     await user.save();
 
     // Generate JWT token
+    if (!process.env.JWT_SECRET) {
+      console.error('JWT_SECRET is not set');
+      return res.status(500).json({ message: 'Server configuration error' });
+    }
+
     const token = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET,
