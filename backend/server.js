@@ -111,8 +111,36 @@ app.get('/', (req, res) => {
 });
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
+app.get('/health', async (req, res) => {
+  try {
+    console.log('Health check requested');
+    const db = mongoose.connection;
+    const dbState = db.readyState;
+    
+    const healthStatus = {
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      database: {
+        status: dbState === 1 ? 'connected' : 'disconnected',
+        readyState: dbState,
+        error: dbState !== 1 ? 'Database not connected' : null
+      },
+      environment: {
+        node_env: process.env.NODE_ENV,
+        has_mongodb_uri: !!process.env.MONGODB_URI,
+        has_jwt_secret: !!process.env.JWT_SECRET
+      }
+    };
+
+    console.log('Health check response:', healthStatus);
+    res.json(healthStatus);
+  } catch (error) {
+    console.error('Health check error:', error);
+    res.status(500).json({
+      status: 'error',
+      error: error.message
+    });
+  }
 });
 
 // Test endpoint
