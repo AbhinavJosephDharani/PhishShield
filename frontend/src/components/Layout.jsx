@@ -26,12 +26,12 @@ const navItems = [
 
 const Layout = ({ children }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+    <div className="min-h-screen bg-transparent text-white">
       {/* Floating Navigation */}
       <FloatingNav navItems={navItems} />
 
       {/* Main Content */}
-      <main className="pt-20">
+      <main className="pt-24">
         {children}
       </main>
 

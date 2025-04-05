@@ -11,7 +11,7 @@ style.textContent = `
     padding: 0;
     height: 100%;
     width: 100%;
-    background-color: #020617;
+    background-color: transparent;
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
