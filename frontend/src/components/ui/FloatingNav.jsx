@@ -1,71 +1,65 @@
 import React from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { IconShieldCheck } from "@tabler/icons-react";
-import { FloatingDock } from "./FloatingDock";
+import { Link } from "react-router-dom";
+import { cn } from "../../lib/utils";
 import { Logo } from "./Logo";
 
 const navItems = [
   {
-    title: "PhishShield",
-    href: "/",
-    content: <IconShieldCheck className="h-full w-full text-white" />,
-    isIcon: true
+    name: "PhishShield",
+    link: "/",
+    icon: <IconShieldCheck className="h-5 w-5" />
   },
   {
-    title: "Features",
-    href: "/features",
-    content: "Features",
-    isIcon: false
+    name: "Features",
+    link: "/features"
   },
   {
-    title: "Community",
-    href: "/community",
-    content: "Community",
-    isIcon: false
+    name: "Community",
+    link: "/community"
   },
   {
-    title: "About",
-    href: "/about",
-    content: "About",
-    isIcon: false
+    name: "About",
+    link: "/about"
   },
   {
-    title: "Register",
-    href: "/register",
-    content: "Register",
-    isIcon: false
-  },
-  {
-    title: "Login",
-    href: "/login",
-    content: "Login",
-    isIcon: false
+    name: "Register",
+    link: "/register"
   }
 ];
 
 export const FloatingNav = () => {
-  const { scrollY } = useScroll();
-  const opacity = useTransform(scrollY, [0, 100], [1, 0]);
-  const translateY = useTransform(scrollY, [0, 100], [0, -100]);
-
   return (
     <>
       {/* Top Logo */}
       <motion.div
-        style={{ opacity, translateY }}
         className="fixed top-4 left-1/2 -translate-x-1/2 z-50">
         <Logo size="lg" showText={true} />
       </motion.div>
 
-      {/* Full-width bottom bar */}
-      <div className="fixed bottom-0 left-0 right-0 h-24 bg-black/20 backdrop-blur-sm z-40" />
-
       {/* Navigation Bar */}
-      <FloatingDock
-        items={navItems}
-        desktopClassName="fixed bottom-4 left-1/2 -translate-x-1/2 z-50"
-        mobileClassName="fixed bottom-4 right-4 z-50"
-      />
+      <div className="fixed bottom-4 inset-x-0 mx-auto z-50 flex justify-center">
+        <div className="flex max-w-fit items-center border border-white/[0.2] rounded-full bg-black/20 backdrop-blur-sm shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] pr-2 pl-8 py-2 space-x-4">
+          {navItems.map((navItem, idx) => (
+            <Link
+              key={`link-${idx}`}
+              to={navItem.link}
+              className={cn(
+                "relative text-white items-center flex space-x-1 hover:text-neutral-300"
+              )}>
+              {navItem.icon && <span className="block sm:hidden">{navItem.icon}</span>}
+              <span className="text-sm font-medium">{navItem.name}</span>
+            </Link>
+          ))}
+          <Link
+            to="/login"
+            className="border text-sm font-medium relative border-white/[0.2] text-white px-4 py-2 rounded-full hover:bg-white/10 transition-colors">
+            <span>Login</span>
+            <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent h-px" />
+          </Link>
+        </div>
+      </div>
     </>
   );
 }; 
