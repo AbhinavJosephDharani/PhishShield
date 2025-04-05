@@ -38,14 +38,18 @@ function Register() {
     }
 
     try {
-      await axios.post(`${API_URL}/api/auth/register`, {
+      const response = await axios.post(`${API_URL}/api/auth/register`, {
         name: formData.name,
         email: formData.email,
         password: formData.password
       });
       navigate('/login');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to register');
+      console.error('Registration error:', err);
+      const errorMessage = err.response?.data?.message || 
+                          err.response?.data?.details || 
+                          'Failed to register. Please try again.';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }

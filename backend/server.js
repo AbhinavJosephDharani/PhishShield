@@ -113,6 +113,20 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+// Test endpoint
+app.get('/api/test', (req, res) => {
+  console.log('Test endpoint hit');
+  res.json({ 
+    status: 'ok',
+    message: 'Server is working',
+    env: {
+      node_env: process.env.NODE_ENV,
+      has_mongodb_uri: !!process.env.MONGODB_URI,
+      has_jwt_secret: !!process.env.JWT_SECRET
+    }
+  });
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 
