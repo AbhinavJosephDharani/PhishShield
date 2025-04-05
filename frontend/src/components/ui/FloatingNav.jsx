@@ -2,38 +2,38 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "../../lib/utils";
 import { Link } from "react-router-dom";
+import { IconHome, IconShieldCheck, IconUser, IconInfoCircle } from "@tabler/icons-react";
+import { FloatingDock } from "./FloatingDock";
 
-export const FloatingNav = ({ navItems, className }) => {
+const navItems = [
+  {
+    title: "Home",
+    href: "/",
+    icon: <IconHome className="h-full w-full text-neutral-500 dark:text-neutral-400" />,
+  },
+  {
+    title: "Check URL",
+    href: "/check",
+    icon: <IconShieldCheck className="h-full w-full text-neutral-500 dark:text-neutral-400" />,
+  },
+  {
+    title: "Profile",
+    href: "/profile",
+    icon: <IconUser className="h-full w-full text-neutral-500 dark:text-neutral-400" />,
+  },
+  {
+    title: "About",
+    href: "/about",
+    icon: <IconInfoCircle className="h-full w-full text-neutral-500 dark:text-neutral-400" />,
+  },
+];
+
+export const FloatingNav = () => {
   return (
-    <div className={cn(
-      "flex fixed bottom-8 left-1/2 -translate-x-1/2 h-16 bg-transparent z-[5000] px-6 items-center justify-center gap-8",
-      className
-    )}>
-      {/* Navigation Links */}
-      <div className="flex items-center space-x-8">
-        {navItems.map((navItem, idx) => (
-          <Link
-            key={`link-${idx}`}
-            to={navItem.link}
-            className="text-white hover:text-white/80 text-sm font-medium transition-colors">
-            {navItem.name}
-          </Link>
-        ))}
-      </div>
-
-      {/* Action Buttons */}
-      <div className="flex items-center space-x-4">
-        <Link
-          to="/login"
-          className="text-white hover:text-white/80 text-sm font-medium transition-colors">
-          Partner Login
-        </Link>
-        <Link
-          to="/register"
-          className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded text-sm font-medium transition-colors">
-          Free Trial
-        </Link>
-      </div>
-    </div>
+    <FloatingDock
+      items={navItems}
+      desktopClassName="fixed bottom-4 left-1/2 -translate-x-1/2 z-50"
+      mobileClassName="fixed bottom-4 right-4 z-50"
+    />
   );
 }; 
