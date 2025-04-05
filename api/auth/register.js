@@ -36,10 +36,9 @@ const handler = async (req, res) => {
   }
 
   try {
-    // Parse request body
-    const body = await req.json();
-    console.log('Registration request received:', body);
-    const { email, password, name } = body;
+    // Get request body directly since we're using Express
+    console.log('Registration request received:', req.body);
+    const { email, password, name } = req.body;
 
     if (!email || !password || !name) {
       return res.status(400).json({ message: 'Missing required fields' });
