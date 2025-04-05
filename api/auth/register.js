@@ -7,10 +7,23 @@ const connectDB = async () => {
   if (mongoose.connections[0].readyState) return;
   
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    const opts = {
+      serverSelectionTimeoutMS: 30000,
+      connectTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+      retryWrites: true,
+      w: 'majority'
+    };
+    
+    await mongoose.connect(process.env.MONGODB_URI, opts);
     console.log('Connected to MongoDB');
   } catch (error) {
-    console.error('MongoDB connection error:', error);
+    console.error('MongoDB connection error:', {
+      message: error.message,
+      name: error.name,
+      code: error.code,
+      stack: error.stack
+    });
     throw error;
   }
 };
