@@ -1,41 +1,41 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import React from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { cn } from "../../lib/utils";
-import { Link } from "react-router-dom";
-import { IconHome, IconShieldCheck, IconUsers, IconInfoCircle, IconLogin, IconUserPlus } from "@tabler/icons-react";
+import { IconShieldCheck } from "@tabler/icons-react";
 import { FloatingDock } from "./FloatingDock";
 import { Logo } from "./Logo";
 
 const navItems = [
   {
-    title: "Home",
+    title: "PhishShield",
     href: "/",
     icon: <IconShieldCheck className="h-full w-full text-white" />,
+    showIconOnly: true,
   },
   {
     title: "Features",
     href: "/features",
-    icon: <IconHome className="h-full w-full text-white" />,
+    showText: true,
   },
   {
     title: "Community",
     href: "/community",
-    icon: <IconUsers className="h-full w-full text-white" />,
+    showText: true,
   },
   {
     title: "About",
     href: "/about",
-    icon: <IconInfoCircle className="h-full w-full text-white" />,
+    showText: true,
   },
   {
     title: "Register",
     href: "/register",
-    icon: <IconUserPlus className="h-full w-full text-white" />,
+    showText: true,
   },
   {
     title: "Login",
     href: "/login",
-    icon: <IconLogin className="h-full w-full text-white" />,
+    showText: true,
   },
 ];
 
@@ -53,11 +53,14 @@ export const FloatingNav = () => {
         <Logo size="lg" showText={true} />
       </motion.div>
 
+      {/* Full-width bottom bar */}
+      <div className="fixed bottom-0 left-0 right-0 h-24 bg-black/20 backdrop-blur-sm z-40" />
+
       {/* Navigation Bar */}
       <FloatingDock
         items={navItems}
-        desktopClassName="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 shadow-[0_0_15px_rgba(0,0,0,0.5)] backdrop-blur-sm"
-        mobileClassName="fixed bottom-4 right-4 z-50 shadow-[0_0_15px_rgba(0,0,0,0.5)] backdrop-blur-sm"
+        desktopClassName="fixed bottom-4 left-1/2 -translate-x-1/2 z-50"
+        mobileClassName="fixed bottom-4 right-4 z-50"
       />
     </>
   );
