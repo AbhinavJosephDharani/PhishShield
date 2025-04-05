@@ -1,6 +1,5 @@
 import React from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { cn } from "../../lib/utils";
 import { IconShieldCheck } from "@tabler/icons-react";
 import { FloatingDock } from "./FloatingDock";
 import { Logo } from "./Logo";
@@ -9,34 +8,39 @@ const navItems = [
   {
     title: "PhishShield",
     href: "/",
-    icon: <IconShieldCheck className="h-full w-full text-white" />,
-    showIconOnly: true,
+    content: <IconShieldCheck className="h-full w-full text-white" />,
+    isIcon: true
   },
   {
     title: "Features",
     href: "/features",
-    showText: true,
+    content: "Features",
+    isIcon: false
   },
   {
     title: "Community",
     href: "/community",
-    showText: true,
+    content: "Community",
+    isIcon: false
   },
   {
     title: "About",
     href: "/about",
-    showText: true,
+    content: "About",
+    isIcon: false
   },
   {
     title: "Register",
     href: "/register",
-    showText: true,
+    content: "Register",
+    isIcon: false
   },
   {
     title: "Login",
     href: "/login",
-    showText: true,
-  },
+    content: "Login",
+    isIcon: false
+  }
 ];
 
 export const FloatingNav = () => {
