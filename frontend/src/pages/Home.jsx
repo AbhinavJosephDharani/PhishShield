@@ -12,18 +12,20 @@ export default function Home() {
     <>
       {/* First Page */}
       <WavyBackground className="w-full" waveOpacity={0.3} blur={4}>
-        <div className="h-screen text-white">
+        <div className="h-screen text-[color:var(--color--eeeeee)]">
           {/* Hero Section */}
-          <div className="h-screen flex flex-col items-center justify-center px-8">
-            <ScrollReveal
-              baseOpacity={0}
-              enableBlur={true}
-              blurStrength={10}
-              containerClassName="max-w-5xl mx-auto text-center"
-              textClassName="text-[9.5rem] font-['Editorialnew'] tracking-[-.57rem] leading-[.9] font-[100]"
-            >
-              Protect Your Digital World with Advanced AI
-            </ScrollReveal>
+          <div className="h-screen flex flex-col items-center justify-center">
+            <div className="container-large px-8">
+              <ScrollReveal
+                baseOpacity={0}
+                enableBlur={true}
+                blurStrength={10}
+                containerClassName="mx-auto text-center"
+                textClassName="text-[9.5rem] font-['Tthoves'] tracking-[-.57rem] leading-[.9] font-[100]"
+              >
+                Protect Your Digital World with Advanced AI
+              </ScrollReveal>
+            </div>
           </div>
 
           {/* Navigation */}
@@ -32,36 +34,38 @@ export default function Home() {
       </WavyBackground>
 
       {/* Second Page */}
-      <div className="min-h-screen bg-black text-white py-32 px-8">
-        <ScrollReveal
-          baseOpacity={0}
-          enableBlur={true}
-          blurStrength={8}
-          containerClassName="max-w-5xl mx-auto mb-32"
-          textClassName="text-5xl font-serif tracking-tight leading-[1.2]"
-        >
-          Advanced Protection Against Sophisticated Phishing Attacks
-        </ScrollReveal>
+      <div className="min-h-screen bg-black text-[color:var(--color--eeeeee)] py-32">
+        <div className="container-large px-8">
+          <ScrollReveal
+            baseOpacity={0}
+            enableBlur={true}
+            blurStrength={8}
+            containerClassName="mx-auto mb-32"
+            textClassName="text-5xl font-['Tthoves'] tracking-tight leading-[1.3]"
+          >
+            Advanced Protection Against Sophisticated Phishing Attacks
+          </ScrollReveal>
 
-        <ScrollReveal
-          baseOpacity={0}
-          enableBlur={true}
-          blurStrength={8}
-          containerClassName="max-w-4xl mx-auto mb-32"
-          textClassName="text-5xl font-serif tracking-tight leading-[1.2]"
-        >
-          Real-time Threat Detection Using State-of-the-art Machine Learning Models
-        </ScrollReveal>
+          <ScrollReveal
+            baseOpacity={0}
+            enableBlur={true}
+            blurStrength={8}
+            containerClassName="mx-auto mb-32"
+            textClassName="text-5xl font-['Tthoves'] tracking-tight leading-[1.3]"
+          >
+            Real-time Threat Detection Using State-of-the-art Machine Learning Models
+          </ScrollReveal>
 
-        <ScrollReveal
-          baseOpacity={0}
-          enableBlur={true}
-          blurStrength={8}
-          containerClassName="max-w-4xl mx-auto"
-          textClassName="text-5xl font-serif tracking-tight leading-[1.2]"
-        >
-          Continuous Learning and Adaptation to New Phishing Techniques
-        </ScrollReveal>
+          <ScrollReveal
+            baseOpacity={0}
+            enableBlur={true}
+            blurStrength={8}
+            containerClassName="mx-auto"
+            textClassName="text-5xl font-['Tthoves'] tracking-tight leading-[1.3]"
+          >
+            Continuous Learning and Adaptation to New Phishing Techniques
+          </ScrollReveal>
+        </div>
       </div>
     </>
   );
