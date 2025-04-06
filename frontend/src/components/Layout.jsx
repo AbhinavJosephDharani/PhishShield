@@ -1,37 +1,14 @@
 import React from 'react';
-import { FloatingNav } from './ui/FloatingNav';
-
-const navItems = [
-  {
-    name: "Platform",
-    link: "/platform"
-  },
-  {
-    name: "Solutions",
-    link: "/solutions"
-  },
-  {
-    name: "Why PhishShield",
-    link: "/why-phishshield"
-  },
-  {
-    name: "Resources",
-    link: "/resources"
-  },
-  {
-    name: "About",
-    link: "/about"
-  }
-];
+import Navbar from './Navbar';
 
 const Layout = ({ children }) => {
   return (
     <div className="min-h-screen bg-transparent text-white">
-      {/* Floating Navigation */}
-      <FloatingNav navItems={navItems} />
+      {/* Navigation */}
+      <Navbar />
 
       {/* Main Content */}
-      <main className="pt-24">
+      <main className="pt-16">
         {children}
       </main>
 
