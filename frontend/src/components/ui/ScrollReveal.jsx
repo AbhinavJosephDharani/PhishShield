@@ -11,12 +11,9 @@ const ScrollReveal = ({
   scrollContainerRef,
   enableBlur = true,
   baseOpacity = 0,
-  baseRotation = 5,
   blurStrength = 10,
   containerClassName = "",
   textClassName = "",
-  rotationEnd = 0,
-  wordAnimationEnd = 1
 }) => {
   const containerRef = useRef(null);
   const words = useMemo(() => {
@@ -42,14 +39,12 @@ const ScrollReveal = ({
     // Initial state
     gsap.set(wordElements, {
       opacity: baseOpacity,
-      rotation: baseRotation,
       filter: enableBlur ? `blur(${blurStrength}px)` : 'none'
     });
 
     // Animate each word with a stagger
     tl.to(wordElements, {
       opacity: 1,
-      rotation: rotationEnd,
       filter: 'blur(0px)',
       duration: 1,
       stagger: {
@@ -62,7 +57,7 @@ const ScrollReveal = ({
     return () => {
       tl.kill();
     };
-  }, [words, baseOpacity, baseRotation, blurStrength, enableBlur]);
+  }, [words, baseOpacity, blurStrength, enableBlur]);
 
   if (typeof children !== 'string') {
     return <div ref={containerRef}>{children}</div>;
