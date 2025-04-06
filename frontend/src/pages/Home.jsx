@@ -18,16 +18,18 @@ export default function Home() {
         </div>
 
         {/* Hero Section */}
-        <div className="h-screen flex items-center justify-center px-8">
-          <ScrollReveal
-            baseOpacity={0}
-            enableBlur={true}
-            blurStrength={10}
-            containerClassName="max-w-5xl mx-auto text-center mt-16"
-            textClassName="text-[9.5rem] font-['Editorialnew'] tracking-[-.57rem] leading-[.9] font-[200]"
-          >
-            Protect Your Digital World from Phishing Threats with Advanced AI Technology
-          </ScrollReveal>
+        <div className="h-screen flex flex-col items-center justify-center px-8">
+          <div className="relative -mt-24"> {/* Negative margin to move text up */}
+            <ScrollReveal
+              baseOpacity={0}
+              enableBlur={true}
+              blurStrength={10}
+              containerClassName="max-w-5xl mx-auto text-center"
+              textClassName="text-[9.5rem] font-['Editorialnew'] tracking-[-.57rem] leading-[.9] font-[200]"
+            >
+              Protect Your Digital World from Phishing Threats with Advanced AI Technology
+            </ScrollReveal>
+          </div>
         </div>
 
         {/* Features Section */}
