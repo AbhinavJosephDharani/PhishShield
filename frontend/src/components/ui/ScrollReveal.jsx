@@ -1,5 +1,5 @@
-import { useEffect, useRef, useMemo } from 'react';
-import { gsap } from 'gsap';
+import React, { useEffect, useRef, useMemo } from 'react';
+import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import './ScrollReveal.css';
@@ -10,100 +10,74 @@ const ScrollReveal = ({
   children,
   scrollContainerRef,
   enableBlur = true,
-  baseOpacity = 0.1,
-  baseRotation = 3,
-  blurStrength = 4,
+  baseOpacity = 0,
+  baseRotation = 5,
+  blurStrength = 10,
   containerClassName = "",
   textClassName = "",
-  rotationEnd = "bottom bottom",
-  wordAnimationEnd = "bottom bottom"
+  rotationEnd = 0,
+  wordAnimationEnd = 1
 }) => {
   const containerRef = useRef(null);
-
-  const splitText = useMemo(() => {
-    const text = typeof children === 'string' ? children : '';
-    return text.split(/(\s+)/).map((word, index) => {
-      if (word.match(/^\s+$/)) return word;
-      return (
-        <span className="word" key={index}>
-          {word}
-        </span>
-      );
-    });
+  const words = useMemo(() => {
+    if (typeof children !== 'string') return [];
+    return children.split(' ');
   }, [children]);
 
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    const scroller =
-      scrollContainerRef && scrollContainerRef.current
-        ? scrollContainerRef.current
-        : window;
-
-    gsap.fromTo(
-      el,
-      { transformOrigin: '0% 50%', rotate: baseRotation },
-      {
-        ease: 'none',
-        rotate: 0,
-        scrollTrigger: {
-          trigger: el,
-          scroller,
-          start: 'top bottom',
-          end: rotationEnd,
-          scrub: true,
-        },
+    const wordElements = container.querySelectorAll('.word');
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: container,
+        start: "top 80%",
+        end: "top 30%",
+        scrub: 1,
+        toggleActions: "play none none reverse"
       }
-    );
+    });
 
-    const wordElements = el.querySelectorAll('.word');
+    // Initial state
+    gsap.set(wordElements, {
+      opacity: baseOpacity,
+      rotation: baseRotation,
+      filter: enableBlur ? `blur(${blurStrength}px)` : 'none'
+    });
 
-    gsap.fromTo(
-      wordElements,
-      { opacity: baseOpacity, willChange: 'opacity' },
-      {
-        ease: 'none',
-        opacity: 1,
-        stagger: 0.05,
-        scrollTrigger: {
-          trigger: el,
-          scroller,
-          start: 'top bottom-=20%',
-          end: wordAnimationEnd,
-          scrub: true,
-        },
-      }
-    );
-
-    if (enableBlur) {
-      gsap.fromTo(
-        wordElements,
-        { filter: `blur(${blurStrength}px)` },
-        {
-          ease: 'none',
-          filter: 'blur(0px)',
-          stagger: 0.05,
-          scrollTrigger: {
-            trigger: el,
-            scroller,
-            start: 'top bottom-=20%',
-            end: wordAnimationEnd,
-            scrub: true,
-          },
-        }
-      );
-    }
+    // Animate each word with a stagger
+    tl.to(wordElements, {
+      opacity: 1,
+      rotation: rotationEnd,
+      filter: 'blur(0px)',
+      duration: 1,
+      stagger: {
+        amount: 0.5,
+        from: "start"
+      },
+      ease: "power2.out"
+    });
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      tl.kill();
     };
-  }, [scrollContainerRef, enableBlur, baseRotation, baseOpacity, rotationEnd, wordAnimationEnd, blurStrength]);
+  }, [words, baseOpacity, baseRotation, blurStrength, enableBlur]);
+
+  if (typeof children !== 'string') {
+    return <div ref={containerRef}>{children}</div>;
+  }
 
   return (
-    <h2 ref={containerRef} className={`scroll-reveal ${containerClassName}`}>
-      <p className={`scroll-reveal-text ${textClassName}`}>{splitText}</p>
-    </h2>
+    <div ref={containerRef} className={containerClassName}>
+      <div className={textClassName}>
+        {words.map((word, i) => (
+          <span key={i} className="word inline-block px-[0.15em] select-none">
+            {word}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 };
 
