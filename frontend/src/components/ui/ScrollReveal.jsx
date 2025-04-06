@@ -29,8 +29,8 @@ const ScrollReveal = ({
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: container,
-        start: "top 60%",
-        end: "top 40%",
+        start: "top 85%",
+        end: "top 75%",
         scrub: 0.5,
         toggleActions: "play none none reverse"
       }
