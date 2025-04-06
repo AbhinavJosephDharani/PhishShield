@@ -10,7 +10,7 @@ import { IconShieldCheck } from "@tabler/icons-react";
 export default function Home() {
   return (
     <>
-      {/* First Page */}
+      {/* First Page - Main Hero Section */}
       <WavyBackground className="w-full" waveOpacity={0.3} blur={4}>
         <div className="h-screen text-[color:var(--color--eeeeee)]">
           {/* Hero Section */}
