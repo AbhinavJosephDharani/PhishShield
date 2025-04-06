@@ -21,7 +21,7 @@ export default function Home() {
                 enableBlur={true}
                 blurStrength={10}
                 containerClassName="mx-auto text-center"
-                textClassName="text-[9.5rem] font-['Editorial_New'] tracking-[-.57rem] leading-[.9] font-[100]"
+                textClassName="text-[9.5rem] font-['Editorial_New'] tracking-[-.57rem] leading-[.9] font-[35]"
               >
                 Protect Your Digital World with Advanced AI
               </ScrollReveal>
