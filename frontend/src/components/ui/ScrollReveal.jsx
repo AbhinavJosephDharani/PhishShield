@@ -29,9 +29,9 @@ const ScrollReveal = ({
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: container,
-        start: "top 80%",
-        end: "top 30%",
-        scrub: 1,
+        start: "top 60%",
+        end: "top 40%",
+        scrub: 0.5,
         toggleActions: "play none none reverse"
       }
     });
@@ -48,7 +48,7 @@ const ScrollReveal = ({
       filter: 'blur(0px)',
       duration: 1,
       stagger: {
-        amount: 0.5,
+        amount: 0.3,
         from: "start"
       },
       ease: "power2.out"
