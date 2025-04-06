@@ -21,7 +21,7 @@ export default function Home() {
                 enableBlur={true}
                 blurStrength={10}
                 containerClassName="mx-auto text-center"
-                textClassName="text-[9.5rem] font-['Tthoves'] tracking-[-.57rem] leading-[.9] font-[100]"
+                textClassName="text-[9.5rem] font-['Editorial_New'] tracking-[-.57rem] leading-[.9] font-[100]"
               >
                 Protect Your Digital World with Advanced AI
               </ScrollReveal>
@@ -41,7 +41,7 @@ export default function Home() {
             enableBlur={true}
             blurStrength={8}
             containerClassName="mx-auto mb-32"
-            textClassName="text-5xl font-['Tthoves'] tracking-tight leading-[1.3]"
+            textClassName="text-5xl font-['Editorial_New'] tracking-tight leading-[1.3]"
           >
             Advanced Protection Against Sophisticated Phishing Attacks
           </ScrollReveal>
@@ -51,7 +51,7 @@ export default function Home() {
             enableBlur={true}
             blurStrength={8}
             containerClassName="mx-auto mb-32"
-            textClassName="text-5xl font-['Tthoves'] tracking-tight leading-[1.3]"
+            textClassName="text-5xl font-['Editorial_New'] tracking-tight leading-[1.3]"
           >
             Real-time Threat Detection Using State-of-the-art Machine Learning Models
           </ScrollReveal>
@@ -61,7 +61,7 @@ export default function Home() {
             enableBlur={true}
             blurStrength={8}
             containerClassName="mx-auto"
-            textClassName="text-5xl font-['Tthoves'] tracking-tight leading-[1.3]"
+            textClassName="text-5xl font-['Editorial_New'] tracking-tight leading-[1.3]"
           >
             Continuous Learning and Adaptation to New Phishing Techniques
           </ScrollReveal>
