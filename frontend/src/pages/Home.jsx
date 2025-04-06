@@ -20,9 +20,9 @@ export default function Home() {
               enableBlur={true}
               blurStrength={10}
               containerClassName="max-w-5xl mx-auto text-center"
-              textClassName="text-[9.5rem] font-['Editorialnew'] tracking-[-.57rem] leading-[.9] font-[200]"
+              textClassName="text-[9.5rem] font-['Editorialnew'] tracking-[-.57rem] leading-[.9] font-[100]"
             >
-              Protect Your Digital World from Phishing Threats with Advanced AI Technology
+              Protect Your Digital World with Advanced AI
             </ScrollReveal>
           </div>
 
