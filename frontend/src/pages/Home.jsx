@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import GlitchText from '../components/GlitchText';
@@ -9,24 +9,11 @@ import { BackgroundGradient } from '../components/ui/BackgroundGradient';
 import { IconShieldCheck } from "@tabler/icons-react";
 
 export default function Home() {
-  useEffect(() => {
-    const handleScroll = () => {
-      document.documentElement.style.setProperty('--scroll', `${window.scrollY}px`);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
     <>
       {/* First Page - Main Hero Section */}
-      <div className="relative w-full h-screen overflow-hidden">
-        <div className="fixed inset-0 w-full h-full" style={{ transform: 'translateY(calc(var(--scroll) * 0.5))', '--scroll': '0px' }}>
-          <WavyBackground className="w-full" waveOpacity={0.3} blur={4} />
-        </div>
-
-        <div className="relative z-10 h-screen text-[color:var(--color--eeeeee)]">
+      <WavyBackground className="w-full" waveOpacity={0.3} blur={4}>
+        <div className="h-screen text-[color:var(--color--eeeeee)]">
           {/* Hero Section */}
           <div className="h-screen flex flex-col items-center justify-center -mt-32">
             <div className="container-large px-8">
@@ -55,7 +42,7 @@ export default function Home() {
           {/* Navigation */}
           <FloatingNav />
         </div>
-      </div>
+      </WavyBackground>
 
       {/* Second Page */}
       <div className="min-h-screen bg-black text-[color:var(--color--eeeeee)] py-32">
