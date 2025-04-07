@@ -54,6 +54,13 @@ export const FloatingNav = () => {
                 <span className="text-lg">Register</span>
               </Link>
             </BackgroundGradient>
+            <BackgroundGradient containerClassName="rounded-2xl overflow-hidden">
+              <Link
+                to="/register"
+                className="block bg-black text-white px-5 py-2.5 rounded-2xl font-sans font-medium hover:bg-gray-900 transition-colors">
+                <span className="text-lg">Register (Debug)</span>
+              </Link>
+            </BackgroundGradient>
             <Link
               to="/login"
               className="border font-sans font-medium relative border-white/[0.2] text-black px-5 py-2.5 rounded-2xl bg-white hover:bg-white/90 transition-colors">
