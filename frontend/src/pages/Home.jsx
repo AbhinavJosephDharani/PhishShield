@@ -12,40 +12,42 @@ export default function Home() {
   return (
     <>
       {/* First Page - Main Hero Section */}
-      <WavyBackground className="w-full" waveOpacity={0.3} blur={4}>
-        <div className="h-screen text-[color:var(--color--eeeeee)]">
-          {/* Hero Section */}
-          <div className="h-screen flex flex-col items-center justify-center -mt-32">
-            <div className="container-large px-8">
-              <ScrollReveal
-                baseOpacity={0}
-                enableBlur={true}
-                blurStrength={10}
-                containerClassName="mx-auto text-center mb-8"
-                textClassName="text-[9.5rem] font-['Editorial_New'] tracking-[-.57rem] leading-[1.1] font-light"
-              >
-                Protect Your Digital World with Advanced AI
-              </ScrollReveal>
-              <div className="flex justify-center mt-8">
-                <BackgroundGradient>
-                  <Link
-                    to="/register"
-                    className="block bg-black text-white px-5 py-[1.25rem] rounded-[1.125rem] text-sm font-medium hover:bg-gray-900 transition-colors"
-                  >
-                    Start learning now
-                  </Link>
-                </BackgroundGradient>
+      <div className="overflow-x-hidden">
+        <WavyBackground className="w-full" waveOpacity={0.3} blur={4}>
+          <div className="h-screen text-[color:var(--color--eeeeee)]">
+            {/* Hero Section */}
+            <div className="h-screen flex flex-col items-center justify-center -mt-32">
+              <div className="container-large px-8">
+                <ScrollReveal
+                  baseOpacity={0}
+                  enableBlur={true}
+                  blurStrength={10}
+                  containerClassName="mx-auto text-center mb-8"
+                  textClassName="text-[9.5rem] font-['Editorial_New'] tracking-[-.57rem] leading-[1.1] font-light"
+                >
+                  Protect Your Digital World with Advanced AI
+                </ScrollReveal>
+                <div className="flex justify-center mt-8">
+                  <BackgroundGradient>
+                    <Link
+                      to="/register"
+                      className="block bg-black text-white px-5 py-[1.25rem] rounded-[1.125rem] text-sm font-medium hover:bg-gray-900 transition-colors"
+                    >
+                      Start learning now
+                    </Link>
+                  </BackgroundGradient>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Navigation */}
-          <FloatingNav />
-        </div>
-      </WavyBackground>
+            {/* Navigation */}
+            <FloatingNav />
+          </div>
+        </WavyBackground>
+      </div>
 
       {/* Second Page */}
-      <div className="min-h-screen bg-black text-[color:var(--color--eeeeee)] py-32">
+      <div className="min-h-screen bg-black text-[color:var(--color--eeeeee)] py-32 overflow-x-hidden">
         <div className="container-large px-8">
           <ScrollReveal
             baseOpacity={0}
