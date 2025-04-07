@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { IconShieldCheck } from "@tabler/icons-react";
+import { BackgroundGradient } from './ui/BackgroundGradient';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -47,12 +48,14 @@ const Navbar = () => {
             >
               Log in
             </Link>
-            <Link
-              to="/register"
-              className="bg-black text-white px-5 py-[1.25rem] rounded-[1.125rem] text-sm font-medium hover:bg-gray-900 transition-colors"
-            >
-              Get Started
-            </Link>
+            <BackgroundGradient>
+              <Link
+                to="/register"
+                className="block bg-black text-white px-5 py-[1.25rem] rounded-[1.125rem] text-sm font-medium hover:bg-gray-900 transition-colors"
+              >
+                Get Started
+              </Link>
+            </BackgroundGradient>
           </div>
 
           {/* Mobile menu button */}
