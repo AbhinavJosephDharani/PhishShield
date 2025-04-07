@@ -47,11 +47,12 @@ export const FloatingNav = () => {
             </Link>
           ))}
           <div className="flex items-center gap-3">
-            <BackgroundGradient containerClassName="rounded-2xl overflow-hidden">
+            <BackgroundGradient>
               <Link
                 to="/register"
-                className="block bg-black text-white px-5 py-2.5 rounded-2xl font-sans font-medium hover:bg-gray-900 transition-colors">
-                <span className="text-lg">Register</span>
+                className="block bg-black text-white px-5 py-[1.25rem] rounded-[1.125rem] text-sm font-medium hover:bg-gray-900 transition-colors"
+              >
+                Register
               </Link>
             </BackgroundGradient>
             <BackgroundGradient>
