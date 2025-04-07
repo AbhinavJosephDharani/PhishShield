@@ -56,6 +56,14 @@ const Navbar = () => {
                 Get Started
               </Link>
             </BackgroundGradient>
+            <BackgroundGradient>
+              <Link
+                to="/register"
+                className="block bg-black text-white px-5 py-[1.25rem] rounded-[1.125rem] text-sm font-medium hover:bg-gray-900 transition-colors"
+              >
+                Get Started
+              </Link>
+            </BackgroundGradient>
           </div>
 
           {/* Mobile menu button */}
