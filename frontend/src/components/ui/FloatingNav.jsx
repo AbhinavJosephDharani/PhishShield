@@ -41,7 +41,7 @@ export const FloatingNav = () => {
               key={`link-${idx}`}
               to={navItem.link}
               className={cn(
-                "relative text-white font-sans font-bold hover:text-neutral-300"
+                "relative text-white font-sans font-medium hover:text-neutral-300"
               )}>
               <span className="text-lg">{navItem.name}</span>
             </Link>
@@ -50,13 +50,13 @@ export const FloatingNav = () => {
             <BackgroundGradient containerClassName="rounded-2xl overflow-hidden">
               <Link
                 to="/register"
-                className="block bg-black text-white px-5 py-2.5 rounded-2xl font-sans font-bold hover:bg-gray-900 transition-colors">
+                className="block bg-black text-white px-5 py-2.5 rounded-2xl font-sans font-medium hover:bg-gray-900 transition-colors">
                 <span className="text-lg">Register</span>
               </Link>
             </BackgroundGradient>
             <Link
               to="/login"
-              className="border font-sans font-bold relative border-white/[0.2] text-black px-5 py-2.5 rounded-2xl bg-white hover:bg-white/90 transition-colors">
+              className="border font-sans font-medium relative border-white/[0.2] text-black px-5 py-2.5 rounded-2xl bg-white hover:bg-white/90 transition-colors">
               <span className="text-lg">Login</span>
             </Link>
           </div>
