@@ -93,16 +93,16 @@ export const WavyBackground = ({
   }, []);
 
   return (
-    <div className={cn("h-screen flex flex-col items-center justify-center", containerClassName)}>
+    <div className={cn("h-screen flex flex-col items-center justify-center overflow-hidden", containerClassName)}>
       <canvas
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 w-full"
         ref={canvasRef}
         id="canvas"
         style={{
           ...(isSafari ? { filter: `blur(${blur}px)` } : {}),
         }}
       />
-      <div className={cn("relative z-10", className)} {...props}>
+      <div className={cn("relative z-10 w-full", className)} {...props}>
         {children}
       </div>
     </div>
