@@ -4,6 +4,7 @@ import axios from 'axios';
 import { FiUser, FiMail, FiLock, FiAlertCircle } from 'react-icons/fi';
 import Layout from '../components/Layout';
 import GlitchText from '../components/GlitchText';
+import { BackgroundGradient } from '../components/ui/BackgroundGradient';
 
 // API URL based on environment
 const API_URL = import.meta.env.PROD ? 'https://phishshield.vercel.app' : '';
@@ -164,6 +165,17 @@ function Register() {
               >
                 {isLoading ? 'Creating account...' : 'Create Account'}
               </button>
+
+              {/* Debug: Duplicate of working navigation bar button */}
+              <div className="mt-4">
+                <BackgroundGradient containerClassName="rounded-2xl overflow-hidden">
+                  <Link
+                    to="/register"
+                    className="block bg-black text-white px-5 py-2.5 rounded-2xl font-sans font-medium hover:bg-gray-900 transition-colors">
+                    <span className="text-lg">Register (Debug)</span>
+                  </Link>
+                </BackgroundGradient>
+              </div>
 
               <div className="text-center mt-4">
                 <Link
