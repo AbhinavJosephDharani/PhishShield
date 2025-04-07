@@ -112,12 +112,16 @@ const Navbar = () => {
             >
               Log in
             </Link>
-            <Link
-              to="/register"
-              className="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:text-blue-500 hover:bg-gray-800"
-            >
-              Get Started
-            </Link>
+            <div className="px-3 py-2">
+              <BackgroundGradient>
+                <Link
+                  to="/register"
+                  className="block w-full bg-black text-white px-3 py-2 rounded-[1.125rem] text-base font-medium hover:bg-gray-900 transition-colors text-center"
+                >
+                  Get Started
+                </Link>
+              </BackgroundGradient>
+            </div>
           </div>
         </div>
       </motion.div>
