@@ -16,13 +16,13 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm border-b border-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+      <div className="max-w-7xl mx-auto">
+        <div className="nav-line grid-column-gap-[1.25rem] grid-row-gap-[1.25rem] border-[1px] border-solid border-[#242424] bg-[#131313] rounded-[1.125rem] justify-content-center align-items-center margin-bottom-[1.25rem] padding-[1.25rem] flex justify-between items-center">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center gap-2">
               <IconShieldCheck className="h-8 w-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">PhishShield</span>
+              <span className="text-xl font-bold text-white">PhishShield</span>
             </Link>
           </div>
 
@@ -32,7 +32,7 @@ const Navbar = () => {
               <Link
                 key={item.name}
                 to={item.link}
-                className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                className="text-white hover:text-gray-300 px-3 py-2 rounded-md text-sm font-medium transition-colors"
               >
                 {item.name}
               </Link>
@@ -40,16 +40,16 @@ const Navbar = () => {
           </div>
 
           {/* CTA Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
+          <div className="hidden md:flex items-center space-x-5">
             <Link
               to="/login"
-              className="text-gray-600 hover:text-gray-900 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+              className="text-white hover:text-gray-300 px-5 py-[1.25rem] rounded-md text-sm font-medium transition-colors"
             >
               Log in
             </Link>
             <Link
               to="/register"
-              className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors"
+              className="bg-blue-600 text-white px-5 py-[1.25rem] rounded-[1.125rem] text-sm font-medium hover:bg-blue-700 transition-colors"
             >
               Get Started
             </Link>
@@ -92,26 +92,26 @@ const Navbar = () => {
         animate={{ opacity: isMenuOpen ? 1 : 0, height: isMenuOpen ? 'auto' : 0 }}
         transition={{ duration: 0.3 }}
       >
-        <div className="px-2 pt-2 pb-3 space-y-1">
+        <div className="px-2 pt-2 pb-3 space-y-1 bg-[#131313]">
           {navItems.map((item) => (
             <Link
               key={item.name}
               to={item.link}
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+              className="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-300 hover:bg-gray-800"
             >
               {item.name}
             </Link>
           ))}
-          <div className="pt-4 pb-3 border-t border-gray-200">
+          <div className="pt-4 pb-3 border-t border-gray-700">
             <Link
               to="/login"
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+              className="block px-3 py-2 rounded-md text-base font-medium text-white hover:text-gray-300 hover:bg-gray-800"
             >
               Log in
             </Link>
             <Link
               to="/register"
-              className="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+              className="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:text-blue-500 hover:bg-gray-800"
             >
               Get Started
             </Link>

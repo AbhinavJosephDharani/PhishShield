@@ -14,17 +14,25 @@ export default function Home() {
       <WavyBackground className="w-full" waveOpacity={0.3} blur={4}>
         <div className="h-screen text-[color:var(--color--eeeeee)]">
           {/* Hero Section */}
-          <div className="h-screen flex flex-col items-center justify-center">
+          <div className="h-screen flex flex-col items-center justify-center -mt-16">
             <div className="container-large px-8">
               <ScrollReveal
                 baseOpacity={0}
                 enableBlur={true}
                 blurStrength={10}
-                containerClassName="mx-auto text-center"
+                containerClassName="mx-auto text-center mb-8"
                 textClassName="text-[9.5rem] font-['Editorial_New'] tracking-[-.57rem] leading-[.9] font-[35]"
               >
                 Protect Your Digital World with Advanced AI
               </ScrollReveal>
+              <div className="flex justify-center mt-8">
+                <Link
+                  to="/register"
+                  className="bg-blue-600 text-white px-8 py-4 rounded-[1.125rem] text-lg font-medium hover:bg-blue-700 transition-colors"
+                >
+                  Start learning now
+                </Link>
+              </div>
             </div>
           </div>
 
