@@ -32,7 +32,7 @@ export const FloatingNav = () => {
 
       {/* Navigation Bar */}
       <div className="fixed bottom-6 inset-x-0 mx-auto z-50">
-        <div className="flex items-center justify-center gap-6 p-4 bg-[#1a1a1a] border border-white/[0.2] rounded-2xl max-w-fit mx-auto">
+        <div className="flex items-center justify-center gap-8 p-4 bg-[#1a1a1a] border border-white/[0.2] rounded-2xl max-w-fit mx-auto">
           {navItems.map((navItem, idx) => (
             <Link
               key={`link-${idx}`}
@@ -40,21 +40,23 @@ export const FloatingNav = () => {
               className={cn(
                 "relative text-white font-['Editorial_New'] font-[100] hover:text-neutral-300"
               )}>
-              <span className="text-base">{navItem.name}</span>
+              <span className="text-lg">{navItem.name}</span>
             </Link>
           ))}
-          <BackgroundGradient>
+          <div className="flex items-center gap-3">
+            <BackgroundGradient>
+              <Link
+                to="/register"
+                className="block bg-black text-white px-6 py-3 rounded-xl font-['Editorial_New'] font-[100] hover:bg-gray-900 transition-colors">
+                <span className="text-lg">Register</span>
+              </Link>
+            </BackgroundGradient>
             <Link
-              to="/register"
-              className="block bg-black text-white px-4 py-2 rounded-xl font-['Editorial_New'] font-[100] hover:bg-gray-900 transition-colors">
-              <span>Register</span>
+              to="/login"
+              className="border font-['Editorial_New'] font-[100] relative border-white/[0.2] text-black px-6 py-3 rounded-xl bg-white hover:bg-white/90 transition-colors">
+              <span className="text-lg">Login</span>
             </Link>
-          </BackgroundGradient>
-          <Link
-            to="/login"
-            className="border font-['Editorial_New'] font-[100] relative border-white/[0.2] text-black px-4 py-2 rounded-xl bg-white hover:bg-white/90 transition-colors">
-            <span>Login</span>
-          </Link>
+          </div>
         </div>
       </div>
     </>
