@@ -28,7 +28,7 @@ export default function Home() {
               <div className="flex justify-center mt-8">
                 <Link
                   to="/register"
-                  className="bg-blue-600 text-white px-8 py-4 rounded-[1.125rem] text-lg font-medium hover:bg-blue-700 transition-colors"
+                  className="bg-black text-white px-8 py-4 rounded-[1.125rem] text-lg font-medium hover:bg-gray-900 transition-colors"
                 >
                   Start learning now
                 </Link>
