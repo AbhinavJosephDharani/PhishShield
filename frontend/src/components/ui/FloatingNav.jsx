@@ -32,9 +32,9 @@ export const FloatingNav = () => {
 
       {/* Navigation Bar */}
       <div className="fixed bottom-6 inset-x-0 mx-auto z-50">
-        <div className="flex items-center justify-center gap-8 p-4 bg-[#1a1a1a] border border-white/[0.2] rounded-2xl max-w-fit mx-auto">
+        <div className="flex items-center justify-center gap-6 p-3 bg-[#1a1a1a] border border-white/[0.2] rounded-3xl max-w-fit mx-auto">
           <Link to="/" className="flex items-center gap-2">
-            <IconShieldCheck className="h-6 w-6 text-white" />
+            <IconShieldCheck className="h-5 w-5 text-white" />
           </Link>
           {navItems.map((navItem, idx) => (
             <Link
@@ -43,21 +43,21 @@ export const FloatingNav = () => {
               className={cn(
                 "relative text-white font-sans font-bold hover:text-neutral-300"
               )}>
-              <span className="text-lg">{navItem.name}</span>
+              <span className="text-base">{navItem.name}</span>
             </Link>
           ))}
           <div className="flex items-center gap-3">
-            <BackgroundGradient containerClassName="rounded-xl overflow-hidden">
+            <BackgroundGradient containerClassName="rounded-2xl overflow-hidden">
               <Link
                 to="/register"
-                className="block bg-black text-white px-6 py-3 rounded-xl font-sans font-bold hover:bg-gray-900 transition-colors">
-                <span className="text-lg">Register</span>
+                className="block bg-black text-white px-5 py-2.5 rounded-2xl font-sans font-bold hover:bg-gray-900 transition-colors">
+                <span className="text-base">Register</span>
               </Link>
             </BackgroundGradient>
             <Link
               to="/login"
-              className="border font-sans font-bold relative border-white/[0.2] text-black px-6 py-3 rounded-xl bg-white hover:bg-white/90 transition-colors">
-              <span className="text-lg">Login</span>
+              className="border font-sans font-bold relative border-white/[0.2] text-black px-5 py-2.5 rounded-2xl bg-white hover:bg-white/90 transition-colors">
+              <span className="text-base">Login</span>
             </Link>
           </div>
         </div>
