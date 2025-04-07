@@ -15,7 +15,7 @@ export default function Home() {
       <WavyBackground className="w-full" waveOpacity={0.3} blur={4}>
         <div className="h-screen text-[color:var(--color--eeeeee)]">
           {/* Hero Section */}
-          <div className="h-screen flex flex-col items-center justify-center -mt-16">
+          <div className="h-screen flex flex-col items-center justify-center -mt-32">
             <div className="container-large px-8">
               <ScrollReveal
                 baseOpacity={0}
