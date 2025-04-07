@@ -32,7 +32,7 @@ export const FloatingNav = () => {
 
       {/* Navigation Bar */}
       <div className="fixed bottom-6 inset-x-0 mx-auto z-50">
-        <div className="flex items-center justify-center gap-6 p-3 bg-[#1a1a1a] border border-white/[0.2] rounded-3xl max-w-fit mx-auto">
+        <div className="flex items-center justify-center gap-8 p-3 bg-[#1a1a1a] border border-white/[0.2] rounded-3xl max-w-fit mx-auto">
           <Link to="/" className="flex items-center gap-2">
             <IconShieldCheck className="h-5 w-5 text-white" />
           </Link>
@@ -43,7 +43,7 @@ export const FloatingNav = () => {
               className={cn(
                 "relative text-white font-sans font-bold hover:text-neutral-300"
               )}>
-              <span className="text-base">{navItem.name}</span>
+              <span className="text-lg">{navItem.name}</span>
             </Link>
           ))}
           <div className="flex items-center gap-3">
@@ -51,13 +51,13 @@ export const FloatingNav = () => {
               <Link
                 to="/register"
                 className="block bg-black text-white px-5 py-2.5 rounded-2xl font-sans font-bold hover:bg-gray-900 transition-colors">
-                <span className="text-base">Register</span>
+                <span className="text-lg">Register</span>
               </Link>
             </BackgroundGradient>
             <Link
               to="/login"
               className="border font-sans font-bold relative border-white/[0.2] text-black px-5 py-2.5 rounded-2xl bg-white hover:bg-white/90 transition-colors">
-              <span className="text-base">Login</span>
+              <span className="text-lg">Login</span>
             </Link>
           </div>
         </div>
