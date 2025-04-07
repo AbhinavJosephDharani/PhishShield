@@ -23,66 +23,37 @@ export default function Home() {
       {/* First Page - Main Hero Section */}
       <div className="relative w-full h-screen overflow-hidden">
         <div className="fixed inset-0 w-full h-full" style={{ transform: 'translateY(calc(var(--scroll) * 0.5))', '--scroll': '0px' }}>
-          <WavyBackground className="w-full" waveOpacity={0.3} blur={4}>
-            <div className="h-screen text-[color:var(--color--eeeeee)]">
-              {/* Hero Section */}
-              <div className="h-screen flex flex-col items-center justify-center -mt-32">
-                <div className="container-large px-8">
-                  <ScrollReveal
-                    baseOpacity={0}
-                    enableBlur={true}
-                    blurStrength={10}
-                    containerClassName="mx-auto text-center mb-8"
-                    textClassName="text-[9.5rem] font-['Editorial_New'] tracking-[-.57rem] leading-[1.1] font-light"
-                  >
-                    Protect Your Digital World with Advanced AI
-                  </ScrollReveal>
-                  <div className="flex justify-center mt-8">
-                    <BackgroundGradient>
-                      <Link
-                        to="/register"
-                        className="block bg-black text-white px-5 py-[1.25rem] rounded-[1.125rem] text-sm font-medium hover:bg-gray-900 transition-colors"
-                      >
-                        Start learning now
-                      </Link>
-                    </BackgroundGradient>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </WavyBackground>
+          <WavyBackground className="w-full" waveOpacity={0.3} blur={4} />
         </div>
 
-        <div className="relative z-10">
-          <div className="h-screen text-[color:var(--color--eeeeee)]">
-            {/* Hero Section */}
-            <div className="h-screen flex flex-col items-center justify-center -mt-32">
-              <div className="container-large px-8">
-                <ScrollReveal
-                  baseOpacity={0}
-                  enableBlur={true}
-                  blurStrength={10}
-                  containerClassName="mx-auto text-center mb-8"
-                  textClassName="text-[9.5rem] font-['Editorial_New'] tracking-[-.57rem] leading-[1.1] font-light"
-                >
-                  Protect Your Digital World with Advanced AI
-                </ScrollReveal>
-                <div className="flex justify-center mt-8">
-                  <BackgroundGradient>
-                    <Link
-                      to="/register"
-                      className="block bg-black text-white px-5 py-[1.25rem] rounded-[1.125rem] text-sm font-medium hover:bg-gray-900 transition-colors"
-                    >
-                      Start learning now
-                    </Link>
-                  </BackgroundGradient>
-                </div>
+        <div className="relative z-10 h-screen text-[color:var(--color--eeeeee)]">
+          {/* Hero Section */}
+          <div className="h-screen flex flex-col items-center justify-center -mt-32">
+            <div className="container-large px-8">
+              <ScrollReveal
+                baseOpacity={0}
+                enableBlur={true}
+                blurStrength={10}
+                containerClassName="mx-auto text-center mb-8"
+                textClassName="text-[9.5rem] font-['Editorial_New'] tracking-[-.57rem] leading-[1.1] font-light"
+              >
+                Protect Your Digital World with Advanced AI
+              </ScrollReveal>
+              <div className="flex justify-center mt-8">
+                <BackgroundGradient>
+                  <Link
+                    to="/register"
+                    className="block bg-black text-white px-5 py-[1.25rem] rounded-[1.125rem] text-sm font-medium hover:bg-gray-900 transition-colors"
+                  >
+                    Start learning now
+                  </Link>
+                </BackgroundGradient>
               </div>
             </div>
-
-            {/* Navigation */}
-            <FloatingNav />
           </div>
+
+          {/* Navigation */}
+          <FloatingNav />
         </div>
       </div>
 
