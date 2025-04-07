@@ -22,7 +22,7 @@ export default function Home() {
                 enableBlur={true}
                 blurStrength={10}
                 containerClassName="mx-auto text-center mb-8"
-                textClassName="text-[9.5rem] font-['ITC_Galliard'] tracking-[-.57rem] leading-[1.1] font-light"
+                textClassName="text-[9.5rem] font-['Editorial_New'] tracking-[-.57rem] leading-[1.1] font-light"
               >
                 Protect Your Digital World with Advanced AI
               </ScrollReveal>
