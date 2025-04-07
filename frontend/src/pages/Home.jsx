@@ -27,12 +27,12 @@ export default function Home() {
                 Protect Your Digital World with Advanced AI
               </ScrollReveal>
               <div className="flex justify-center mt-8">
-                <BackgroundGradient containerClassName="rounded-xl overflow-hidden">
+                <BackgroundGradient containerClassName="rounded-2xl overflow-hidden">
                   <Link
                     to="/register"
-                    className="block w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                    className="block bg-black text-white px-5 py-2.5 rounded-2xl font-sans font-medium hover:bg-gray-900 transition-colors"
                   >
-                    Start learning now
+                    <span className="text-lg">Start learning now</span>
                   </Link>
                 </BackgroundGradient>
               </div>
