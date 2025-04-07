@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { IconShieldCheck } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { cn } from "../../lib/utils";
+import { BackgroundGradient } from "./BackgroundGradient";
 
 const navItems = [
   {
@@ -42,11 +43,13 @@ export const FloatingNav = () => {
               <span className="text-base">{navItem.name}</span>
             </Link>
           ))}
-          <Link
-            to="/register"
-            className="border font-['Editorial_New'] font-[100] relative border-white/[0.2] text-white px-4 py-2 rounded-xl bg-[#1a1a1a] hover:bg-[#252525] transition-colors">
-            <span>Register</span>
-          </Link>
+          <BackgroundGradient>
+            <Link
+              to="/register"
+              className="block bg-black text-white px-4 py-2 rounded-xl font-['Editorial_New'] font-[100] hover:bg-gray-900 transition-colors">
+              <span>Register</span>
+            </Link>
+          </BackgroundGradient>
           <Link
             to="/login"
             className="border font-['Editorial_New'] font-[100] relative border-white/[0.2] text-black px-4 py-2 rounded-xl bg-white hover:bg-white/90 transition-colors">
