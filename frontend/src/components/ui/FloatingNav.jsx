@@ -32,7 +32,7 @@ export const FloatingNav = () => {
 
       {/* Navigation Bar */}
       <div className="fixed bottom-6 inset-x-0 mx-auto z-50">
-        <div className="flex items-center justify-center mx-auto max-w-[704px] h-[64px] bg-[#131313] border border-[#242424] rounded-[20.25px] px-[22.5px] pr-[11.25px] gap-[22.5px] text-[18px] leading-[23.4px] text-[#eeeeee] font-sans mb-[22.5px] antialiased">
+        <div className="flex items-center justify-center gap-8 p-4 bg-[#1a1a1a] border border-white/[0.2] rounded-2xl max-w-fit mx-auto">
           <Link to="/" className="flex items-center gap-2">
             <IconShieldCheck className="h-6 w-6 text-white" />
           </Link>
@@ -41,23 +41,23 @@ export const FloatingNav = () => {
               key={`link-${idx}`}
               to={navItem.link}
               className={cn(
-                "relative text-[#eeeeee] font-sans font-bold hover:text-neutral-300"
+                "relative text-white font-sans font-bold hover:text-neutral-300"
               )}>
-              <span className="text-[18px]">{navItem.name}</span>
+              <span className="text-lg">{navItem.name}</span>
             </Link>
           ))}
           <div className="flex items-center gap-3">
-            <BackgroundGradient containerClassName="rounded-[20.25px] overflow-hidden">
+            <BackgroundGradient containerClassName="rounded-xl overflow-hidden">
               <Link
                 to="/register"
-                className="block bg-black text-white px-6 py-3 rounded-[20.25px] font-sans font-bold hover:bg-gray-900 transition-colors">
-                <span className="text-[18px]">Register</span>
+                className="block bg-black text-white px-6 py-3 rounded-xl font-sans font-bold hover:bg-gray-900 transition-colors">
+                <span className="text-lg">Register</span>
               </Link>
             </BackgroundGradient>
             <Link
               to="/login"
-              className="border font-sans font-bold relative border-[#242424] text-black px-6 py-3 rounded-[20.25px] bg-white hover:bg-white/90 transition-colors">
-              <span className="text-[18px]">Login</span>
+              className="border font-sans font-bold relative border-white/[0.2] text-black px-6 py-3 rounded-xl bg-white hover:bg-white/90 transition-colors">
+              <span className="text-lg">Login</span>
             </Link>
           </div>
         </div>
