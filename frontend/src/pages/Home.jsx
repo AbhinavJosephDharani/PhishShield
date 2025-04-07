@@ -30,7 +30,7 @@ export default function Home() {
                 <BackgroundGradient containerClassName="rounded-xl overflow-hidden">
                   <Link
                     to="/register"
-                    className="block bg-black text-white px-6 py-3 rounded-xl text-lg font-bold hover:bg-gray-900 transition-colors"
+                    className="block w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
                   >
                     Start learning now
                   </Link>
