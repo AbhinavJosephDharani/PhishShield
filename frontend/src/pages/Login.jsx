@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FiMail, FiLock, FiAlertCircle } from 'react-icons/fi';
-import Layout from '../components/Layout';
 import GlitchText from '../components/GlitchText';
+import { FloatingNav } from '../components/ui/FloatingNav';
 
 // API URL based on environment
 const API_URL = import.meta.env.PROD ? 'https://phishshield.vercel.app' : '';
@@ -42,7 +42,8 @@ function Login({ setIsAuthenticated }) {
   };
 
   return (
-    <Layout>
+    <div className="min-h-screen bg-transparent text-white">
+      <FloatingNav />
       <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center px-4">
         <div className="w-full max-w-[400px]">
           <div className="text-center mb-8">
@@ -121,7 +122,7 @@ function Login({ setIsAuthenticated }) {
           </div>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 }
 
