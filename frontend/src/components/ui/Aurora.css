@@ -1,0 +1,25 @@
+@keyframes pulse {
+  0% {
+    transform: translateX(-5%) translateY(-5%) rotate(0deg);
+  }
+  50% {
+    transform: translateX(5%) translateY(5%) rotate(180deg);
+  }
+  100% {
+    transform: translateX(-5%) translateY(-5%) rotate(360deg);
+  }
+}
+
+.aurora-pulse-1 {
+  animation: pulse 8s infinite;
+}
+
+.aurora-pulse-2 {
+  animation: pulse 6s infinite;
+  animation-delay: -3s;
+}
+
+.aurora-pulse-3 {
+  animation: pulse 10s infinite;
+  animation-delay: -6s;
+} 
