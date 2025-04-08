@@ -45,7 +45,7 @@ export default function Home() {
       </WavyBackground>
 
       {/* Second Page */}
-      <div className="min-h-screen bg-black text-[color:var(--color--eeeeee)] py-32">
+      <div className="min-h-screen bg-black text-[color:var(--color--eeeeee)] py-32 relative z-0">
         <div className="container-large px-8 max-w-full">
           <ScrollReveal
             baseOpacity={0}
