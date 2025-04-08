@@ -7,7 +7,15 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: 'dist',
-    emptyOutDir: true
+    emptyOutDir: true,
+    rollupOptions: {
+      external: ['ogl'],
+      output: {
+        globals: {
+          ogl: 'OGL'
+        }
+      }
+    }
   },
   server: {
     proxy: {
