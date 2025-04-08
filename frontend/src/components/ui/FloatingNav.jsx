@@ -57,7 +57,7 @@ export const FloatingNav = () => {
             </BackgroundGradient>
             <Link
               to="/login"
-              className="border font-sans font-medium relative border-white/[0.2] text-black px-5 py-2.5 rounded-2xl bg-white hover:bg-white/90 transition-colors"
+              className="border font-sans font-medium relative border-white/[0.2] text-black px-5 py-2.5 rounded-2xl bg-white hover:bg-white/90 hover:text-black transition-colors"
             >
               <span className="text-lg">Login</span>
             </Link>
