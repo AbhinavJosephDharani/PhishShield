@@ -25,14 +25,14 @@ export const FloatingNav = () => {
     <>
       {/* Top Logo */}
       <motion.div
-        className="fixed top-8 left-1/2 -translate-x-1/2 z-[9999] flex items-center gap-2">
+        className="fixed top-8 left-1/2 -translate-x-1/2 z-[99999] flex items-center gap-2">
         <IconShieldCheck className="h-8 w-8" />
         <span className="text-xl font-[100] font-['Editorial_New'] text-white">PhishShield</span>
       </motion.div>
 
       {/* Navigation Bar */}
-      <div className="fixed bottom-6 inset-x-0 mx-auto z-[9999] isolate">
-        <div className="flex items-center justify-center gap-8 p-3 bg-[#1a1a1a] border border-white/[0.2] rounded-3xl max-w-fit mx-auto backdrop-blur-sm">
+      <div className="fixed bottom-6 inset-x-0 mx-auto z-[99999]">
+        <div className="flex items-center justify-center gap-8 p-3 bg-[#1a1a1a]/95 backdrop-blur-md border border-white/[0.2] rounded-3xl max-w-fit mx-auto">
           <Link to="/" className="flex items-center gap-2">
             <IconShieldCheck className="h-5 w-5 text-white" />
           </Link>
