@@ -15,7 +15,7 @@ export default function Home() {
       <WavyBackground className="w-full" waveOpacity={0.3} blur={4}>
         <div className="h-screen text-[color:var(--color--eeeeee)] relative">
           {/* Hero Section */}
-          <div className="h-screen flex flex-col items-center justify-center -mt-32 relative z-10">
+          <div className="h-screen flex flex-col items-center justify-center -mt-32 relative z-[1]">
             <div className="container-large px-8 max-w-full">
               <ScrollReveal
                 baseOpacity={0}
@@ -45,7 +45,7 @@ export default function Home() {
       </WavyBackground>
 
       {/* Second Page */}
-      <div className="min-h-screen bg-black text-[color:var(--color--eeeeee)] py-32 relative z-20">
+      <div className="min-h-screen bg-black text-[color:var(--color--eeeeee)] py-32 relative z-[2]">
         <div className="container-large px-8 max-w-full">
           <ScrollReveal
             baseOpacity={0}
