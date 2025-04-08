@@ -10,12 +10,12 @@ import { IconShieldCheck } from "@tabler/icons-react";
 
 export default function Home() {
   return (
-    <div className="overflow-x-hidden w-full">
+    <div className="overflow-x-hidden w-full relative">
       {/* First Page - Main Hero Section */}
       <WavyBackground className="w-full" waveOpacity={0.3} blur={4}>
-        <div className="h-screen text-[color:var(--color--eeeeee)] relative">
+        <div className="h-screen text-[color:var(--color--eeeeee)]">
           {/* Hero Section */}
-          <div className="h-screen flex flex-col items-center justify-center -mt-32 relative z-[1]">
+          <div className="h-screen flex flex-col items-center justify-center -mt-32">
             <div className="container-large px-8 max-w-full">
               <ScrollReveal
                 baseOpacity={0}
@@ -45,7 +45,7 @@ export default function Home() {
       </WavyBackground>
 
       {/* Second Page */}
-      <div className="min-h-screen bg-black text-[color:var(--color--eeeeee)] py-32 relative z-[2]">
+      <div className="min-h-screen bg-black text-[color:var(--color--eeeeee)] py-32">
         <div className="container-large px-8 max-w-full">
           <ScrollReveal
             baseOpacity={0}
