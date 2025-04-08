@@ -5,6 +5,9 @@ import path from 'path'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  optimizeDeps: {
+    include: ['ogl'],
+  },
   build: {
     outDir: 'dist',
     emptyOutDir: true,
@@ -15,7 +18,10 @@ export default defineConfig({
           ogl: 'OGL'
         }
       }
-    }
+    },
+    commonjsOptions: {
+      include: [/ogl/, /node_modules/],
+    },
   },
   server: {
     proxy: {
