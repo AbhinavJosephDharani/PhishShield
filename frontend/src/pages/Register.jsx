@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FiUser, FiMail, FiLock, FiAlertCircle } from 'react-icons/fi';
 import GlitchText from '../components/GlitchText';
-import { BackgroundGradient } from '../components/ui/BackgroundGradient';
 import { FloatingNav } from '../components/ui/FloatingNav';
 import Aurora from '../components/ui/Aurora';
 
@@ -59,12 +58,7 @@ function Register() {
 
   return (
     <div className="min-h-screen bg-transparent text-white relative">
-      <Aurora
-        colorStops={["#3A29FF", "#FF94B4", "#FF3232"]}
-        blend={0.5}
-        amplitude={1.0}
-        speed={0.5}
-      />
+      <Aurora className="fixed inset-0 h-screen w-screen" />
       <FloatingNav />
       <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center px-4 relative z-10">
         <div className="w-full max-w-[400px]">
