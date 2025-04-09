@@ -1,31 +1,13 @@
-import React from 'react';
-import './Aurora.css';
+import React from "react";
 
-const Aurora = ({ className = "", ...props }) => {
+export default function Aurora() {
   return (
-    <div className={`fixed inset-0 min-h-screen w-full overflow-hidden ${className}`} {...props}>
-      <div className="absolute inset-0 z-[-1] bg-[#0a0a0a]">
-        <div
-          className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-30 blur-[100px] aurora-pulse-1"
-          style={{
-            clipPath: "circle(40% at 50% 50%)",
-          }}
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-30 blur-[100px] aurora-pulse-2"
-          style={{
-            clipPath: "circle(35% at 60% 60%)",
-          }}
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-r from-blue-500 via-violet-500 to-purple-500 opacity-30 blur-[100px] aurora-pulse-3"
-          style={{
-            clipPath: "circle(35% at 40% 40%)",
-          }}
-        />
+    <div className="relative w-full overflow-hidden">
+      <div className="absolute inset-0">
+        <div className="absolute h-[50rem] w-[50rem] -translate-x-[10%] -translate-y-1/2 rounded-full bg-gradient-to-r from-violet-500/40 to-fuchsia-500/40 blur-3xl" />
+        <div className="absolute right-0 h-[50rem] w-[50rem] translate-x-[10%] translate-y-1/2 rounded-full bg-gradient-to-r from-blue-500/40 to-indigo-500/40 blur-3xl" />
+        <div className="absolute bottom-0 h-[50rem] w-[50rem] -translate-x-1/2 translate-y-1/4 rounded-full bg-gradient-to-r from-purple-500/40 to-pink-500/40 blur-3xl" />
       </div>
     </div>
   );
-};
-
-export default Aurora; 
+} 

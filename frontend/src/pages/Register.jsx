@@ -57,10 +57,12 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-transparent text-white">
-      <Aurora />
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <div className="fixed inset-0 z-0">
+        <Aurora />
+      </div>
       <FloatingNav />
-      <div className="flex flex-col items-center justify-center min-h-screen px-4">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
         <div className="w-full max-w-[400px]">
           <div className="text-center mb-8">
             <GlitchText className="text-3xl font-bold mb-2">
