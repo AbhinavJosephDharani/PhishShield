@@ -3,6 +3,7 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import Layout from '../components/Layout';
 import GlitchText from '../components/GlitchText';
 import { FiHome, FiShield, FiSettings, FiUser } from 'react-icons/fi';
+import PhishingSimulation from './PhishingSimulation';
 
 function Dashboard() {
   const [user, setUser] = useState(null);
