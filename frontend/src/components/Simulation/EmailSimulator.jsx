@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FiMail, FiPaperclip, FiAlertTriangle, FiCheck, FiX, FiExternalLink } from 'react-icons/fi';
+import { FiMail, FiLink, FiPaperclip, FiAlertCircle, FiCheck, FiX } from 'react-icons/fi';
 
 const EmailSimulator = ({ simulation, onComplete }) => {
   const [selectedIndicators, setSelectedIndicators] = useState([]);
@@ -7,176 +7,168 @@ const EmailSimulator = ({ simulation, onComplete }) => {
   const [score, setScore] = useState(0);
   const [hoveredElement, setHoveredElement] = useState(null);
 
-  const handleIndicatorClick = (indicatorId) => {
-    setSelectedIndicators(prev => {
-      if (prev.includes(indicatorId)) {
-        return prev.filter(id => id !== indicatorId);
-      }
-      return [...prev, indicatorId];
-    });
+  const handleIndicatorSelect = (indicator) => {
+    if (selectedIndicators.includes(indicator)) {
+      setSelectedIndicators(selectedIndicators.filter(i => i !== indicator));
+    } else {
+      setSelectedIndicators([...selectedIndicators, indicator]);
+    }
   };
 
   const handleSubmit = () => {
+    const correctSelections = selectedIndicators.filter(indicator => 
+      simulation.indicators.includes(indicator)
+    );
+    const missedIndicators = simulation.indicators.filter(indicator => 
+      !selectedIndicators.includes(indicator)
+    );
+    
+    const score = (correctSelections.length / simulation.indicators.length) * 100;
+    setScore(score);
     setIsSubmitted(true);
-    const correctSelections = selectedIndicators.filter(id => 
-      simulation.indicators.find(ind => ind.id === id)?.correct
-    );
-    const incorrectSelections = selectedIndicators.filter(id => 
-      !simulation.indicators.find(ind => ind.id === id)?.correct
-    );
-    const missedIndicators = simulation.indicators
-      .filter(ind => ind.correct && !selectedIndicators.includes(ind.id))
-      .length;
-
-    const calculatedScore = Math.max(
-      0,
-      (correctSelections.length * 2) - 
-      (incorrectSelections.length + missedIndicators)
-    );
-    setScore(calculatedScore);
-    onComplete(calculatedScore);
+    onComplete(score);
   };
 
   return (
-    <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 overflow-hidden">
+    <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+      {/* Email Header */}
+      <div className="p-4 border-b border-gray-200 bg-gray-50">
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white">
+            {simulation.sender.name.charAt(0)}
+          </div>
+          <div>
+            <div className="font-medium text-gray-900">{simulation.sender.name}</div>
+            <div className="text-sm text-gray-500">{simulation.sender.email}</div>
+          </div>
+        </div>
+        <div className="text-sm text-gray-500">To: You</div>
+        <div className="font-medium text-gray-900 mt-2">{simulation.subject}</div>
+      </div>
+
+      {/* Email Body */}
       <div className="p-6">
-        {/* Visual Email Header */}
-        <div className="mb-6">
-          <div className="flex justify-between items-start mb-4">
-            <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center">
-                <span className="text-blue-400 font-bold">
-                  {simulation.email.from.charAt(0).toUpperCase()}
-                </span>
-              </div>
-              <div>
-                <p className="text-gray-300 font-medium">{simulation.email.from}</p>
-                <p className="text-gray-400 text-sm">to me</p>
-              </div>
-            </div>
-            <div className="text-right">
-              <p className="text-gray-400 text-sm">Today, 10:30 AM</p>
-            </div>
-          </div>
-          <h3 className="text-xl font-semibold text-white mb-4">
-            {simulation.email.subject}
-          </h3>
+        <div className="prose max-w-none">
+          {simulation.content.split('\n').map((paragraph, index) => (
+            <p key={index} className="mb-4 text-gray-700">{paragraph}</p>
+          ))}
         </div>
 
-        {/* Visual Email Body */}
-        <div className="mb-6 bg-white/5 rounded-lg p-6">
-          <div className="whitespace-pre-line text-gray-300">
-            {simulation.email.content}
-          </div>
-          
-          {/* Interactive Link */}
-          <div 
-            className="mt-4 inline-flex items-center text-blue-400 hover:text-blue-300 cursor-pointer"
-            onMouseEnter={() => setHoveredElement('link')}
-            onMouseLeave={() => setHoveredElement(null)}
-          >
-            <FiExternalLink className="mr-2" />
-            <span>https://yourbank-verify.com/account</span>
-          </div>
-
-          {/* Visual Attachments */}
-          {simulation.email.attachments && simulation.email.attachments.length > 0 && (
-            <div className="mt-6">
-              <h4 className="text-gray-400 mb-4">Attachments:</h4>
-              <div className="space-y-2">
-                {simulation.email.attachments.map((attachment, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center p-3 bg-gray-700/30 rounded-lg cursor-pointer hover:bg-gray-700/50 transition-colors"
-                    onMouseEnter={() => setHoveredElement(`attachment-${index}`)}
-                    onMouseLeave={() => setHoveredElement(null)}
-                  >
-                    <div className="w-10 h-10 bg-gray-600/50 rounded flex items-center justify-center mr-4">
-                      <FiPaperclip className="text-gray-400" />
-                    </div>
-                    <div>
-                      <p className="text-gray-300">{attachment.name}</p>
-                      <p className="text-gray-400 text-sm">{attachment.size}</p>
-                    </div>
+        {/* Interactive Links */}
+        {simulation.links && simulation.links.length > 0 && (
+          <div className="mt-4 space-y-2">
+            {simulation.links.map((link, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer"
+                onMouseEnter={() => setHoveredElement(`link-${index}`)}
+                onMouseLeave={() => setHoveredElement(null)}
+              >
+                <FiLink className="text-blue-500" />
+                <span className="text-blue-600 hover:underline">{link.text}</span>
+                {hoveredElement === `link-${index}` && (
+                  <div className="text-sm text-gray-500 ml-2">
+                    {link.isPhishing ? '⚠️ Suspicious link' : '✅ Safe link'}
                   </div>
-                ))}
+                )}
               </div>
-            </div>
-          )}
-        </div>
-
-        {/* Interactive Elements */}
-        {!isSubmitted ? (
-          <div className="mt-8">
-            <h4 className="text-gray-300 mb-4">Select all phishing indicators:</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {simulation.indicators.map((indicator) => (
-                <button
-                  key={indicator.id}
-                  onClick={() => handleIndicatorClick(indicator.id)}
-                  className={`p-4 rounded-lg transition-all duration-200 ${
-                    selectedIndicators.includes(indicator.id)
-                      ? 'bg-blue-600/20 border-2 border-blue-500/50'
-                      : 'bg-gray-700/50 hover:bg-gray-700 border border-gray-600'
-                  }`}
-                >
-                  <div className="flex items-start space-x-3">
-                    <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                      selectedIndicators.includes(indicator.id)
-                        ? 'bg-blue-500'
-                        : 'bg-gray-600'
-                    }`}>
-                      {selectedIndicators.includes(indicator.id) && (
-                        <FiCheck className="text-white" />
-                      )}
-                    </div>
-                    <span className="text-gray-300 text-left">{indicator.text}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-            <button
-              onClick={handleSubmit}
-              className="mt-6 w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-            >
-              Submit Analysis
-            </button>
+            ))}
           </div>
-        ) : (
-          <div className="mt-8">
-            <div className="text-center mb-6">
-              <div className="inline-block p-4 bg-blue-500/20 rounded-full mb-4">
-                <FiAlertTriangle className="text-blue-400 text-4xl" />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-2">
-                Your Score: {score}/6
-              </h3>
-              <p className="text-gray-300">
-                {score >= 4
-                  ? "Great job! You've identified most of the phishing indicators."
-                  : "Good effort! Let's review what you missed."}
-              </p>
-            </div>
+        )}
 
-            <div className="mb-6">
-              <h4 className="text-gray-300 mb-4">Learning Points:</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {simulation.learningPoints.map((point, index) => (
-                  <div
-                    key={index}
-                    className="p-4 bg-gray-700/30 rounded-lg flex items-start space-x-3"
-                  >
-                    <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-                      <span className="text-blue-400">{index + 1}</span>
-                    </div>
-                    <span className="text-gray-300">{point}</span>
+        {/* Attachments */}
+        {simulation.attachments && simulation.attachments.length > 0 && (
+          <div className="mt-4 space-y-2">
+            {simulation.attachments.map((attachment, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 cursor-pointer"
+                onMouseEnter={() => setHoveredElement(`attachment-${index}`)}
+                onMouseLeave={() => setHoveredElement(null)}
+              >
+                <FiPaperclip className="text-gray-500" />
+                <span className="text-gray-700">{attachment.name}</span>
+                {hoveredElement === `attachment-${index}` && (
+                  <div className="text-sm text-gray-500 ml-2">
+                    {attachment.isPhishing ? '⚠️ Suspicious file' : '✅ Safe file'}
                   </div>
-                ))}
+                )}
               </div>
-            </div>
+            ))}
           </div>
         )}
       </div>
+
+      {/* Phishing Indicators */}
+      {!isSubmitted && (
+        <div className="p-4 border-t border-gray-200 bg-gray-50">
+          <h3 className="text-lg font-medium text-gray-900 mb-3">Select all phishing indicators you find:</h3>
+          <div className="space-y-2">
+            {simulation.indicators.map((indicator, index) => (
+              <div
+                key={index}
+                className={`flex items-center gap-2 p-2 rounded-lg cursor-pointer transition-colors ${
+                  selectedIndicators.includes(indicator)
+                    ? 'bg-blue-50 border border-blue-200'
+                    : 'hover:bg-gray-50'
+                }`}
+                onClick={() => handleIndicatorSelect(indicator)}
+              >
+                <div className={`w-5 h-5 rounded-full border flex items-center justify-center ${
+                  selectedIndicators.includes(indicator)
+                    ? 'bg-blue-500 border-blue-500 text-white'
+                    : 'border-gray-300'
+                }`}>
+                  {selectedIndicators.includes(indicator) && <FiCheck size={14} />}
+                </div>
+                <span className="text-gray-700">{indicator}</span>
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={handleSubmit}
+            className="mt-4 w-full py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Submit Analysis
+          </button>
+        </div>
+      )}
+
+      {/* Results */}
+      {isSubmitted && (
+        <div className="p-4 border-t border-gray-200 bg-gray-50">
+          <div className="text-center mb-4">
+            <div className="text-2xl font-bold text-gray-900">{score}%</div>
+            <div className="text-sm text-gray-500">Your Score</div>
+          </div>
+          
+          <div className="space-y-4">
+            <div>
+              <h4 className="font-medium text-gray-900 mb-2">Learning Points:</h4>
+              <ul className="space-y-2">
+                {simulation.learningPoints.map((point, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <FiCheck className="text-green-500 mt-1 flex-shrink-0" />
+                    <span className="text-gray-700">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div>
+              <h4 className="font-medium text-gray-900 mb-2">Tips for Next Time:</h4>
+              <ul className="space-y-2">
+                {simulation.tips.map((tip, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <FiAlertCircle className="text-blue-500 mt-1 flex-shrink-0" />
+                    <span className="text-gray-700">{tip}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

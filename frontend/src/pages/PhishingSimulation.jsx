@@ -1,121 +1,113 @@
 import { useState } from 'react';
-import GlitchText from '../components/GlitchText';
+import { useNavigate } from 'react-router-dom';
+import Layout from '../components/Layout';
 import EmailSimulator from '../components/Simulation/EmailSimulator';
+import GlitchText from '../components/GlitchText';
+import { FiArrowLeft, FiRefreshCw } from 'react-icons/fi';
 
 const sampleSimulations = [
   {
     id: 1,
-    title: "Bank Security Alert",
-    description: "Identify phishing indicators in this bank security email",
-    email: {
-      from: "security@yourbank.com",
-      to: "user@example.com",
-      subject: "Urgent: Account Security Alert",
-      content: `
-        Dear Valued Customer,
-
-        We have detected unusual activity on your account. To ensure your account security, please verify your information by clicking the link below:
-
-        https://yourbank-verify.com/account
-
-        If you do not verify your account within 24 hours, we will be forced to temporarily suspend your account.
-
-        Best regards,
-        Your Bank Security Team
-      `,
-      attachments: [
-        {
-          name: "Account_Statement.pdf",
-          size: "2.4 MB",
-          type: "pdf"
-        }
-      ]
+    title: "Urgent: Your Account Security Alert",
+    sender: {
+      name: "Security Team",
+      email: "security@yourbank.com"
     },
-    indicators: [
+    subject: "⚠️ Important: Unusual Login Activity Detected",
+    content: `Dear Valued Customer,
+
+We have detected unusual login activity on your account from a new device. For your security, we need to verify this activity.
+
+Please review the following login attempt:
+- Location: New York, USA
+- Device: iPhone 13
+- Time: 2 minutes ago
+
+If this was you, you can ignore this message. If not, please click the link below to secure your account immediately.
+
+Best regards,
+Security Team`,
+    links: [
       {
-        id: 1,
-        text: "Urgent language creating a sense of panic",
-        correct: true
-      },
-      {
-        id: 2,
-        text: "Suspicious link to an external domain",
-        correct: true
-      },
-      {
-        id: 3,
-        text: "Threatening account suspension",
-        correct: true
-      },
-      {
-        id: 4,
-        text: "Professional email signature",
-        correct: false
+        text: "Secure My Account",
+        isPhishing: true
       }
     ],
+    attachments: [],
+    indicators: [
+      "Urgent language creating panic",
+      "Generic greeting ('Dear Valued Customer')",
+      "Suspicious link to 'secure account'",
+      "Request for immediate action",
+      "Unusual sender email format"
+    ],
     learningPoints: [
-      "Banks never ask for personal information via email",
-      "Always check the sender's email address carefully",
-      "Be wary of urgent or threatening language",
-      "Hover over links to verify their destination"
+      "Banks never ask you to click links in emails to secure your account",
+      "Look for personalized greetings in legitimate bank communications",
+      "Check the sender's email address carefully",
+      "Don't be pressured by urgent language",
+      "Always verify through official channels"
+    ],
+    tips: [
+      "Hover over links to check their actual destination",
+      "Contact your bank directly through official channels",
+      "Check for spelling and grammar errors",
+      "Look for personalized information that only your bank would know"
     ]
   },
   {
     id: 2,
-    title: "Package Delivery Scam",
-    description: "Spot the red flags in this delivery notification",
-    email: {
-      from: "delivery@amazzon.com",
-      to: "user@example.com",
-      subject: "Your Package Delivery is Pending",
-      content: `
-        Hello Customer,
-
-        Your package #AMZ-987654321 is ready for delivery but we need additional information to complete the process.
-
-        Please click the link below to update your delivery preferences:
-        https://amazzon-delivery.com/update
-
-        If we don't receive your response within 48 hours, your package will be returned to the sender.
-
-        Thank you for shopping with us!
-        Amazon Delivery Team
-      `,
-      attachments: [
-        {
-          name: "Delivery_Details.pdf",
-          size: "1.2 MB",
-          type: "pdf"
-        }
-      ]
+    title: "Your Package Delivery Update",
+    sender: {
+      name: "Amazon Delivery",
+      email: "delivery@amazon-prime.com"
     },
-    indicators: [
+    subject: "Package Delivery Issue - Action Required",
+    content: `Hello,
+
+We attempted to deliver your package today but were unable to complete the delivery due to an incorrect address.
+
+Package Details:
+- Tracking Number: AMZ-987654321
+- Delivery Date: Today
+- Status: Pending
+
+Please click the link below to update your delivery address and schedule a new delivery time.
+
+Thank you for choosing Amazon Prime.
+
+Customer Service Team`,
+    links: [
       {
-        id: 1,
-        text: "Misspelled company name (Amazzon)",
-        correct: true
-      },
-      {
-        id: 2,
-        text: "Generic greeting (Hello Customer)",
-        correct: true
-      },
-      {
-        id: 3,
-        text: "Suspicious link to update information",
-        correct: true
-      },
-      {
-        id: 4,
-        text: "Professional formatting",
-        correct: false
+        text: "Update Delivery Address",
+        isPhishing: true
       }
     ],
+    attachments: [
+      {
+        name: "delivery_receipt.pdf",
+        isPhishing: true
+      }
+    ],
+    indicators: [
+      "Suspicious sender email domain",
+      "Generic greeting",
+      "Attachment from unknown sender",
+      "Request to click link for address update",
+      "No specific order details"
+    ],
     learningPoints: [
-      "Legitimate companies rarely misspell their own name",
-      "Be cautious of generic greetings in official communications",
-      "Delivery companies don't usually ask for information updates via email",
-      "Check the sender's email domain carefully"
+      "Amazon uses amazon.com domain for official communications",
+      "Legitimate delivery notifications include specific order details",
+      "Be cautious of unexpected attachments",
+      "Check tracking numbers in your Amazon account directly",
+      "Look for personalized order information"
+    ],
+    tips: [
+      "Always check the sender's email domain",
+      "Verify tracking numbers in your account",
+      "Don't open unexpected attachments",
+      "Look for specific order details in delivery notifications"
     ]
   }
 ];
@@ -123,62 +115,62 @@ const sampleSimulations = [
 function PhishingSimulation() {
   const [currentSimulation, setCurrentSimulation] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
+  const navigate = useNavigate();
 
   const handleComplete = (score) => {
     console.log('Simulation completed with score:', score);
     setIsCompleted(true);
   };
 
-  const handleNext = () => {
-    if (currentSimulation < sampleSimulations.length - 1) {
-      setCurrentSimulation(prev => prev + 1);
-      setIsCompleted(false);
-    }
-  };
-
   const handleRetry = () => {
+    setCurrentSimulation((prev) => (prev + 1) % sampleSimulations.length);
     setIsCompleted(false);
   };
 
   return (
-    <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <div className="flex items-center justify-between mb-8">
-        <GlitchText className="text-2xl sm:text-3xl font-bold">
-          {sampleSimulations[currentSimulation].title}
-        </GlitchText>
-        <div className="text-gray-400">
-          Simulation {currentSimulation + 1} of {sampleSimulations.length}
-        </div>
-      </div>
-      
-      <p className="text-gray-300 mb-8">
-        {sampleSimulations[currentSimulation].description}
-      </p>
-
-      <EmailSimulator
-        simulation={sampleSimulations[currentSimulation]}
-        onComplete={handleComplete}
-      />
-
-      {isCompleted && (
-        <div className="mt-8 flex justify-center space-x-4">
+    <Layout>
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-8">
           <button
-            onClick={handleRetry}
-            className="px-6 py-3 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-colors"
+            onClick={() => navigate('/dashboard')}
+            className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
           >
-            Try Again
+            <FiArrowLeft />
+            Back to Dashboard
           </button>
-          {currentSimulation < sampleSimulations.length - 1 && (
-            <button
-              onClick={handleNext}
-              className="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-            >
-              Next Simulation
-            </button>
-          )}
+          <GlitchText className="text-2xl font-bold">
+            Phishing Simulation Training
+          </GlitchText>
+          <div className="w-8" /> {/* Spacer for alignment */}
         </div>
-      )}
-    </div>
+
+        <div className="mb-8 text-center">
+          <h2 className="text-xl font-semibold text-gray-300 mb-2">
+            {sampleSimulations[currentSimulation].title}
+          </h2>
+          <p className="text-gray-400">
+            Analyze the email below and identify all phishing indicators
+          </p>
+        </div>
+
+        <EmailSimulator
+          simulation={sampleSimulations[currentSimulation]}
+          onComplete={handleComplete}
+        />
+
+        {isCompleted && (
+          <div className="mt-8 text-center">
+            <button
+              onClick={handleRetry}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <FiRefreshCw />
+              Try Another Simulation
+            </button>
+          </div>
+        )}
+      </div>
+    </Layout>
   );
 }
 
