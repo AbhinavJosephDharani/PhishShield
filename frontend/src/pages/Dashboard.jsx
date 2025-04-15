@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FiHome, FiShield, FiSettings, FiUser, FiAlertTriangle, FiCheckCircle, FiBarChart2 } from 'react-icons/fi';
 import GlitchText from '../components/GlitchText';
 import { BackgroundGradient } from '../components/ui/BackgroundGradient';
-import { Sidebar } from '../components/ui/Sidebar';
+import Sidebar from '../components/ui/Sidebar';
 import { FloatingNav } from '../components/ui/FloatingNav';
 
 function Dashboard() {
