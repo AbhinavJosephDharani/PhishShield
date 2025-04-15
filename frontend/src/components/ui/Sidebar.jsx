@@ -60,10 +60,8 @@ const Sidebar = ({ onLogout }) => {
             </Link>
           );
         })}
-      </nav>
 
-      {/* Logout Button */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700 bg-gray-800/50 backdrop-blur-sm z-10">
+        {/* Logout Button */}
         <button
           onClick={onLogout}
           className="flex items-center gap-3 p-3 rounded-lg text-gray-300 hover:bg-gray-700/50 w-full transition-colors"
@@ -73,7 +71,7 @@ const Sidebar = ({ onLogout }) => {
             <span className="font-medium">Logout</span>
           )}
         </button>
-      </div>
+      </nav>
     </div>
   );
 };
