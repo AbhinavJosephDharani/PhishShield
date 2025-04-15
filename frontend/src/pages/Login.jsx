@@ -7,6 +7,7 @@ import { FloatingNav } from '../components/ui/FloatingNav';
 import Aurora from '../components/ui/Aurora';
 
 // API URL based on environment
+// Note: The login endpoint is /api/auth/login as defined in backend/server.js
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 function Login({ setIsAuthenticated }) {
