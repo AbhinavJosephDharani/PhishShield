@@ -7,7 +7,7 @@ import { FloatingNav } from '../components/ui/FloatingNav';
 import Aurora from '../components/ui/Aurora';
 
 // API URL based on environment
-const API_URL = import.meta.env.PROD ? 'https://phishshield.vercel.app' : '';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 function Login({ setIsAuthenticated }) {
   const [email, setEmail] = useState('');
@@ -25,18 +25,19 @@ function Login({ setIsAuthenticated }) {
       const response = await axios.post(`${API_URL}/api/auth/login`, {
         email,
         password,
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
       });
 
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-      setIsAuthenticated(true);
-      navigate('/dashboard');
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        setIsAuthenticated(true);
+        navigate('/dashboard');
+      } else {
+        setError('Invalid response from server');
+      }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to login');
+      console.error('Login error:', err);
+      setError(err.response?.data?.message || 'Failed to login. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }

@@ -19,8 +19,26 @@ function App() {
     <Router>
       <div className="min-h-screen bg-gray-900 text-white">
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route 
+            path="/login" 
+            element={
+              isAuthenticated ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Login setIsAuthenticated={setIsAuthenticated} />
+              )
+            } 
+          />
+          <Route 
+            path="/register" 
+            element={
+              isAuthenticated ? (
+                <Navigate to="/dashboard" replace />
+              ) : (
+                <Register setIsAuthenticated={setIsAuthenticated} />
+              )
+            } 
+          />
           <Route
             path="/dashboard"
             element={
