@@ -6,13 +6,14 @@ import { BackgroundGradient } from '../components/ui/BackgroundGradient';
 import Sidebar from '../components/ui/Sidebar';
 import { FloatingNav } from '../components/ui/FloatingNav';
 
-function Dashboard() {
+function Dashboard({ setIsAuthenticated }) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    setIsAuthenticated(false);
     navigate('/login');
   };
 
