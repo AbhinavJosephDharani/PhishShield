@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import Layout from '../components/Layout';
 import GlitchText from '../components/GlitchText';
-import { FiHome, FiShield, FiSettings, FiUser } from 'react-icons/fi';
+import { FiHome, FiShield, FiSettings, FiUser, FiAlertTriangle, FiCheckCircle, FiBarChart2 } from 'react-icons/fi';
 import PhishingSimulation from './PhishingSimulation';
 import Sidebar from '../components/ui/Sidebar';
-import { FiAlertCircle, FiUsers, FiTrendingUp } from 'react-icons/fi';
+import { BackgroundGradient } from '../components/ui/BackgroundGradient';
+import { FloatingNav } from '../components/ui/FloatingNav';
 
 function Dashboard() {
   const [user, setUser] = useState(null);
@@ -31,10 +32,55 @@ function Dashboard() {
   if (!user) return null;
 
   const stats = [
-    { title: 'Total Simulations', value: '24', icon: FiShield, change: '+12%' },
-    { title: 'Active Users', value: '156', icon: FiUsers, change: '+8%' },
-    { title: 'Threats Detected', value: '48', icon: FiAlertCircle, change: '-5%' },
-    { title: 'Success Rate', value: '92%', icon: FiTrendingUp, change: '+3%' }
+    {
+      title: 'Total Simulations',
+      value: '12',
+      icon: <FiShield className="w-6 h-6" />,
+      change: '+2 this week',
+      gradient: 'from-blue-500 to-indigo-600'
+    },
+    {
+      title: 'Active Users',
+      value: '24',
+      icon: <FiUser className="w-6 h-6" />,
+      change: '+5 this month',
+      gradient: 'from-purple-500 to-pink-600'
+    },
+    {
+      title: 'Threats Detected',
+      value: '156',
+      icon: <FiAlertTriangle className="w-6 h-6" />,
+      change: '-12% this week',
+      gradient: 'from-red-500 to-orange-600'
+    },
+    {
+      title: 'Success Rate',
+      value: '92%',
+      icon: <FiCheckCircle className="w-6 h-6" />,
+      change: '+3% this month',
+      gradient: 'from-green-500 to-emerald-600'
+    }
+  ];
+
+  const recentActivity = [
+    {
+      title: 'Completed Phishing Simulation',
+      description: 'Successfully identified 8/10 phishing indicators',
+      time: '2 hours ago',
+      icon: <FiShield className="w-5 h-5" />
+    },
+    {
+      title: 'New Training Module',
+      description: 'Advanced Email Security course completed',
+      time: '1 day ago',
+      icon: <FiCheckCircle className="w-5 h-5" />
+    },
+    {
+      title: 'Security Score Update',
+      description: 'Your security awareness score increased by 5 points',
+      time: '2 days ago',
+      icon: <FiBarChart2 className="w-5 h-5" />
+    }
   ];
 
   const renderContent = () => {
@@ -58,26 +104,78 @@ function Dashboard() {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               {stats.map((stat, index) => (
-                <div key={index} className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-gray-400 text-sm">{stat.title}</p>
-                      <p className="text-2xl font-bold mt-1">{stat.value}</p>
-                    </div>
-                    <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                      <stat.icon className="text-blue-400" size={24} />
+                <BackgroundGradient key={index}>
+                  <div className={`p-6 rounded-xl bg-gradient-to-br ${stat.gradient} h-full`}>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-gray-200">{stat.title}</p>
+                        <p className="text-2xl font-bold mt-1">{stat.value}</p>
+                        <p className="text-xs text-gray-300 mt-2">{stat.change}</p>
+                      </div>
+                      <div className="p-3 rounded-full bg-white/10">
+                        {stat.icon}
+                      </div>
                     </div>
                   </div>
-                  <p className="text-green-400 text-sm mt-4">{stat.change} from last month</p>
-                </div>
+                </BackgroundGradient>
               ))}
             </div>
 
+            {/* Training Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+              <BackgroundGradient>
+                <div className="p-6 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600">
+                  <h3 className="text-xl font-bold mb-4">Phishing Awareness Training</h3>
+                  <p className="text-gray-200 mb-6">
+                    Complete our interactive phishing simulation to test your knowledge and improve your security awareness.
+                  </p>
+                  <Link
+                    to="/simulation"
+                    className="inline-flex items-center px-4 py-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
+                  >
+                    Start Training
+                    <FiShield className="ml-2" />
+                  </Link>
+                </div>
+              </BackgroundGradient>
+
+              <BackgroundGradient>
+                <div className="p-6 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600">
+                  <h3 className="text-xl font-bold mb-4">Security Score</h3>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="text-4xl font-bold">85%</div>
+                    <div className="text-sm text-gray-200">Good</div>
+                  </div>
+                  <div className="w-full bg-white/10 rounded-full h-2 mb-4">
+                    <div className="bg-white h-2 rounded-full" style={{ width: '85%' }}></div>
+                  </div>
+                  <p className="text-sm text-gray-200">
+                    Your security awareness is above average. Keep up the good work!
+                  </p>
+                </div>
+              </BackgroundGradient>
+            </div>
+
             {/* Recent Activity */}
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
-              <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
+            <div className="mb-8">
+              <h3 className="text-xl font-bold mb-4">Recent Activity</h3>
               <div className="space-y-4">
-                {/* Add your recent activity items here */}
+                {recentActivity.map((activity, index) => (
+                  <BackgroundGradient key={index}>
+                    <div className="p-4 rounded-xl bg-gray-800/50 backdrop-blur-sm">
+                      <div className="flex items-start">
+                        <div className="p-2 rounded-full bg-white/10 mr-4">
+                          {activity.icon}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-medium">{activity.title}</h4>
+                          <p className="text-sm text-gray-400">{activity.description}</p>
+                          <p className="text-xs text-gray-500 mt-1">{activity.time}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </BackgroundGradient>
+                ))}
               </div>
             </div>
           </>
@@ -90,62 +188,23 @@ function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <Sidebar />
-      
-      {/* Main Content */}
-      <main className={`transition-all duration-300 ${
-        isSidebarCollapsed ? 'ml-16' : 'ml-64'
-      }`}>
-        <div className="p-8">
-          <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
-          
-          {renderContent()}
-        </div>
-      </main>
-      
-      {/* Bottom Navigation */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#1a1a1a]/95 backdrop-blur-md border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-around items-center h-16">
-            <Link
-              to="/dashboard"
-              className={`flex flex-col items-center justify-center w-full h-full ${
-                location.pathname === '/dashboard' ? 'text-blue-500' : 'text-gray-400'
-              }`}
-            >
-              <FiHome className="text-xl" />
-              <span className="text-xs mt-1">Home</span>
-            </Link>
-            <Link
-              to="/simulation"
-              className={`flex flex-col items-center justify-center w-full h-full ${
-                location.pathname === '/simulation' ? 'text-blue-500' : 'text-gray-400'
-              }`}
-            >
-              <FiShield className="text-xl" />
-              <span className="text-xs mt-1">Training</span>
-            </Link>
-            <Link
-              to="/profile"
-              className={`flex flex-col items-center justify-center w-full h-full ${
-                location.pathname === '/profile' ? 'text-blue-500' : 'text-gray-400'
-              }`}
-            >
-              <FiUser className="text-xl" />
-              <span className="text-xs mt-1">Profile</span>
-            </Link>
-            <Link
-              to="/settings"
-              className={`flex flex-col items-center justify-center w-full h-full ${
-                location.pathname === '/settings' ? 'text-blue-500' : 'text-gray-400'
-              }`}
-            >
-              <FiSettings className="text-xl" />
-              <span className="text-xs mt-1">Settings</span>
-            </Link>
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <FloatingNav />
+      <div className="flex">
+        <Sidebar isCollapsed={isSidebarCollapsed} setIsCollapsed={setIsSidebarCollapsed} />
+        
+        <main className={`flex-1 transition-all duration-300 ${isSidebarCollapsed ? 'ml-20' : 'ml-64'}`}>
+          <div className="p-8">
+            <div className="mb-8">
+              <GlitchText className="text-3xl font-bold">
+                Dashboard
+              </GlitchText>
+              <p className="text-gray-400 mt-2">Welcome back! Here's your security overview.</p>
+            </div>
+
+            {renderContent()}
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );
