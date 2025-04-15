@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiHome, FiShield, FiSettings, FiUser, FiAlertTriangle, FiCheckCircle, FiBarChart2 } from 'react-icons/fi';
 import GlitchText from '../components/GlitchText';
-import { BackgroundGradient } from '../components/ui/BackgroundGradient';
+import { GlowOnHover } from '../components/ui/GlowOnHover';
 import Sidebar from '../components/ui/Sidebar';
 import { FloatingNav } from '../components/ui/FloatingNav';
 
@@ -87,8 +87,8 @@ function Dashboard({ setIsAuthenticated }) {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               {stats.map((stat, index) => (
-                <BackgroundGradient key={index} className="rounded-xl">
-                  <div className="bg-[#1a1a1a] p-6 rounded-xl h-full">
+                <GlowOnHover key={index}>
+                  <div className="p-6 h-full">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-gray-200">{stat.title}</p>
@@ -100,14 +100,14 @@ function Dashboard({ setIsAuthenticated }) {
                       </div>
                     </div>
                   </div>
-                </BackgroundGradient>
+                </GlowOnHover>
               ))}
             </div>
 
             {/* Training Section */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-              <BackgroundGradient className="rounded-xl">
-                <div className="bg-[#1a1a1a] p-6 rounded-xl h-full">
+              <GlowOnHover>
+                <div className="p-6 h-full">
                   <h3 className="text-xl font-bold mb-4">Phishing Awareness Training</h3>
                   <p className="text-gray-200 mb-6">
                     Complete our interactive phishing simulation to test your knowledge and improve your security awareness.
@@ -120,10 +120,10 @@ function Dashboard({ setIsAuthenticated }) {
                     <FiShield className="ml-2" />
                   </Link>
                 </div>
-              </BackgroundGradient>
+              </GlowOnHover>
 
-              <BackgroundGradient className="rounded-xl">
-                <div className="bg-[#1a1a1a] p-6 rounded-xl h-full">
+              <GlowOnHover>
+                <div className="p-6 h-full">
                   <h3 className="text-xl font-bold mb-4">Security Score</h3>
                   <div className="flex items-center justify-between mb-4">
                     <div className="text-4xl font-bold">85%</div>
@@ -136,7 +136,7 @@ function Dashboard({ setIsAuthenticated }) {
                     Your security awareness is above average. Keep up the good work!
                   </p>
                 </div>
-              </BackgroundGradient>
+              </GlowOnHover>
             </div>
 
             {/* Recent Activity */}
@@ -144,8 +144,8 @@ function Dashboard({ setIsAuthenticated }) {
               <h3 className="text-xl font-bold mb-4">Recent Activity</h3>
               <div className="space-y-4">
                 {recentActivity.map((activity, index) => (
-                  <BackgroundGradient key={index} className="rounded-xl">
-                    <div className="bg-[#1a1a1a] p-4 rounded-xl">
+                  <GlowOnHover key={index}>
+                    <div className="p-4">
                       <div className="flex items-start">
                         <div className="p-2 rounded-full bg-white/5 mr-4">
                           {activity.icon}
@@ -157,7 +157,7 @@ function Dashboard({ setIsAuthenticated }) {
                         </div>
                       </div>
                     </div>
-                  </BackgroundGradient>
+                  </GlowOnHover>
                 ))}
               </div>
             </div>
