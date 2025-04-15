@@ -4,11 +4,14 @@ import Layout from '../components/Layout';
 import GlitchText from '../components/GlitchText';
 import { FiHome, FiShield, FiSettings, FiUser } from 'react-icons/fi';
 import PhishingSimulation from './PhishingSimulation';
+import Sidebar from '../components/ui/Sidebar';
+import { FiAlertCircle, FiUsers, FiTrendingUp } from 'react-icons/fi';
 
 function Dashboard() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -26,6 +29,13 @@ function Dashboard() {
   };
 
   if (!user) return null;
+
+  const stats = [
+    { title: 'Total Simulations', value: '24', icon: FiShield, change: '+12%' },
+    { title: 'Active Users', value: '156', icon: FiUsers, change: '+8%' },
+    { title: 'Threats Detected', value: '48', icon: FiAlertCircle, change: '-5%' },
+    { title: 'Success Rate', value: '92%', icon: FiTrendingUp, change: '+3%' }
+  ];
 
   const renderContent = () => {
     switch (location.pathname) {
@@ -45,67 +55,29 @@ function Dashboard() {
               </button>
             </div>
             
-            {/* Training Progress */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="p-6 rounded-lg bg-gray-800/50 backdrop-blur-sm border border-gray-700">
-                <h3 className="text-xl font-semibold mb-4 text-blue-400">Training Progress</h3>
-                <div className="flex items-center">
-                  <div className="flex-1 bg-gray-700 rounded-full h-2">
-                    <div className="bg-blue-500 h-2 rounded-full w-[45%]"></div>
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              {stats.map((stat, index) => (
+                <div key={index} className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-gray-400 text-sm">{stat.title}</p>
+                      <p className="text-2xl font-bold mt-1">{stat.value}</p>
+                    </div>
+                    <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                      <stat.icon className="text-blue-400" size={24} />
+                    </div>
                   </div>
-                  <span className="ml-4 text-gray-300">45%</span>
+                  <p className="text-green-400 text-sm mt-4">{stat.change} from last month</p>
                 </div>
-              </div>
-              
-              <div className="p-6 rounded-lg bg-gray-800/50 backdrop-blur-sm border border-gray-700">
-                <h3 className="text-xl font-semibold mb-4 text-purple-400">Recent Activities</h3>
-                <ul className="space-y-2 text-gray-300">
-                  <li>• Completed Phishing Module</li>
-                  <li>• Started Social Engineering</li>
-                </ul>
-              </div>
-              
-              <div className="p-6 rounded-lg bg-gray-800/50 backdrop-blur-sm border border-gray-700">
-                <h3 className="text-xl font-semibold mb-4 text-pink-400">Security Score</h3>
-                <div className="flex items-center justify-center">
-                  <div className="text-4xl font-bold text-pink-400">85</div>
-                  <div className="ml-2 text-gray-300">/100</div>
-                </div>
-              </div>
+              ))}
             </div>
 
-            {/* Available Training */}
-            <div>
-              <GlitchText className="text-xl sm:text-2xl font-bold mb-6">
-                Available Training
-              </GlitchText>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="p-6 rounded-lg bg-gray-800/50 backdrop-blur-sm border border-gray-700 hover:border-blue-500/50 transition-colors">
-                  <h3 className="text-xl font-semibold mb-4 text-blue-400">
-                    Phishing Awareness
-                  </h3>
-                  <p className="text-gray-300 mb-4">
-                    Learn to identify and avoid phishing attempts in emails and messages.
-                  </p>
-                  <Link
-                    to="/simulation"
-                    className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-                  >
-                    Start Training
-                  </Link>
-                </div>
-
-                <div className="p-6 rounded-lg bg-gray-800/50 backdrop-blur-sm border border-gray-700 hover:border-purple-500/50 transition-colors">
-                  <h3 className="text-xl font-semibold mb-4 text-purple-400">
-                    Social Engineering
-                  </h3>
-                  <p className="text-gray-300 mb-4">
-                    Understand and protect against social engineering tactics.
-                  </p>
-                  <button className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors">
-                    Start Training
-                  </button>
-                </div>
+            {/* Recent Activity */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+              <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
+              <div className="space-y-4">
+                {/* Add your recent activity items here */}
               </div>
             </div>
           </>
@@ -118,10 +90,19 @@ function Dashboard() {
   };
 
   return (
-    <Layout>
-      <div className="min-h-screen pb-20">
-        {renderContent()}
-      </div>
+    <div className="min-h-screen bg-gray-900 text-white">
+      <Sidebar />
+      
+      {/* Main Content */}
+      <main className={`transition-all duration-300 ${
+        isSidebarCollapsed ? 'ml-16' : 'ml-64'
+      }`}>
+        <div className="p-8">
+          <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+          
+          {renderContent()}
+        </div>
+      </main>
       
       {/* Bottom Navigation */}
       <div className="fixed bottom-0 left-0 right-0 bg-[#1a1a1a]/95 backdrop-blur-md border-t border-gray-800">
@@ -166,7 +147,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 }
 
