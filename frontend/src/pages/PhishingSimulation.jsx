@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import EmailSimulator from '../components/Simulation/EmailSimulator';
 import GlitchText from '../components/GlitchText';
 import { FiArrowLeft, FiRefreshCw } from 'react-icons/fi';
+import AccessibilityChecklist from '../components/Accessibility/AccessibilityChecklist';
 
 const sampleSimulations = [
   {
@@ -133,21 +134,22 @@ function PhishingSimulation() {
         <div className="flex items-center justify-between mb-8">
           <button
             onClick={() => navigate('/dashboard')}
-            className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+            className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg"
+            aria-label="Back to dashboard"
           >
-            <FiArrowLeft />
+            <FiArrowLeft aria-hidden="true" />
             Back to Dashboard
           </button>
           <GlitchText className="text-2xl font-bold">
             Phishing Simulation Training
           </GlitchText>
-          <div className="w-8" /> {/* Spacer for alignment */}
+          <div className="w-8" aria-hidden="true" /> {/* Spacer for alignment */}
         </div>
 
         <div className="mb-8 text-center">
-          <h2 className="text-xl font-semibold text-gray-300 mb-2">
+          <h1 className="text-xl font-semibold text-gray-300 mb-2">
             {sampleSimulations[currentSimulation].title}
-          </h2>
+          </h1>
           <p className="text-gray-400">
             Analyze the email below and identify all phishing indicators
           </p>
@@ -162,13 +164,18 @@ function PhishingSimulation() {
           <div className="mt-8 text-center">
             <button
               onClick={handleRetry}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+              aria-label="Try another simulation"
             >
-              <FiRefreshCw />
+              <FiRefreshCw aria-hidden="true" />
               Try Another Simulation
             </button>
           </div>
         )}
+
+        <div className="mt-12">
+          <AccessibilityChecklist />
+        </div>
       </div>
     </Layout>
   );
