@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import PhishingSimulation from './pages/PhishingSimulation';
+import Home from './pages/Home';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -19,6 +20,7 @@ function App() {
     <Router>
       <div className="min-h-screen bg-gray-900 text-white">
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route 
             path="/login" 
             element={
@@ -54,16 +56,6 @@ function App() {
             element={
               isAuthenticated ? (
                 <PhishingSimulation />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          />
-          <Route
-            path="/"
-            element={
-              isAuthenticated ? (
-                <Navigate to="/dashboard" replace />
               ) : (
                 <Navigate to="/login" replace />
               )
