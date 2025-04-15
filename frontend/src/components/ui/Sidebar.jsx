@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiHome, FiBook, FiUser, FiSettings, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FiHome, FiBook, FiUser, FiSettings, FiChevronLeft, FiChevronRight, FiLogOut } from 'react-icons/fi';
 
-const Sidebar = () => {
+const Sidebar = ({ onLogout }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const location = useLocation();
 
@@ -61,6 +61,19 @@ const Sidebar = () => {
           );
         })}
       </nav>
+
+      {/* Logout Button */}
+      <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-700">
+        <button
+          onClick={onLogout}
+          className="flex items-center gap-3 p-3 rounded-lg text-gray-300 hover:bg-gray-700/50 w-full transition-colors"
+        >
+          <FiLogOut size={20} />
+          {!isCollapsed && (
+            <span className="font-medium">Logout</span>
+          )}
+        </button>
+      </div>
     </div>
   );
 };

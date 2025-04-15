@@ -68,7 +68,11 @@ function Dashboard() {
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       <FloatingNav />
       <div className="flex">
-        <Sidebar isCollapsed={isSidebarCollapsed} setIsCollapsed={setIsSidebarCollapsed} />
+        <Sidebar 
+          isCollapsed={isSidebarCollapsed} 
+          setIsCollapsed={setIsSidebarCollapsed}
+          onLogout={handleLogout}
+        />
         
         <main className={`flex-1 transition-all duration-300 ${isSidebarCollapsed ? 'ml-20' : 'ml-64'}`}>
           <div className="p-8">
