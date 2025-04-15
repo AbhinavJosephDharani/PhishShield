@@ -104,8 +104,8 @@ function Dashboard() {
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               {stats.map((stat, index) => (
-                <BackgroundGradient key={index}>
-                  <div className={`p-6 rounded-xl bg-gradient-to-br ${stat.gradient} h-full`}>
+                <BackgroundGradient key={index} className="rounded-xl overflow-hidden">
+                  <div className="p-6 bg-gray-800/50 backdrop-blur-sm h-full">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-sm text-gray-200">{stat.title}</p>
@@ -123,8 +123,8 @@ function Dashboard() {
 
             {/* Training Section */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-              <BackgroundGradient>
-                <div className="p-6 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600">
+              <BackgroundGradient className="rounded-xl overflow-hidden">
+                <div className="p-6 bg-gray-800/50 backdrop-blur-sm h-full">
                   <h3 className="text-xl font-bold mb-4">Phishing Awareness Training</h3>
                   <p className="text-gray-200 mb-6">
                     Complete our interactive phishing simulation to test your knowledge and improve your security awareness.
@@ -139,8 +139,8 @@ function Dashboard() {
                 </div>
               </BackgroundGradient>
 
-              <BackgroundGradient>
-                <div className="p-6 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600">
+              <BackgroundGradient className="rounded-xl overflow-hidden">
+                <div className="p-6 bg-gray-800/50 backdrop-blur-sm h-full">
                   <h3 className="text-xl font-bold mb-4">Security Score</h3>
                   <div className="flex items-center justify-between mb-4">
                     <div className="text-4xl font-bold">85%</div>
@@ -161,8 +161,8 @@ function Dashboard() {
               <h3 className="text-xl font-bold mb-4">Recent Activity</h3>
               <div className="space-y-4">
                 {recentActivity.map((activity, index) => (
-                  <BackgroundGradient key={index}>
-                    <div className="p-4 rounded-xl bg-gray-800/50 backdrop-blur-sm">
+                  <BackgroundGradient key={index} className="rounded-xl overflow-hidden">
+                    <div className="p-4 bg-gray-800/50 backdrop-blur-sm">
                       <div className="flex items-start">
                         <div className="p-2 rounded-full bg-white/10 mr-4">
                           {activity.icon}
