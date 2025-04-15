@@ -6,6 +6,9 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import PhishingSimulation from './pages/PhishingSimulation';
 import Home from './pages/Home';
+import Features from './pages/Features';
+import Community from './pages/Community';
+import About from './pages/About';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -61,6 +64,9 @@ function App() {
               )
             }
           />
+          <Route path="/features" element={<Features />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </div>
     </Router>
