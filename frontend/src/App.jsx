@@ -16,85 +16,63 @@ import Simulation from './pages/Simulation';
 import Navbar from './components/Navbar';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
-const AuthLayout = ({ children, onLogout }) => {
+const AuthLayout = ({ children }) => {
   const { isAuthenticated } = useAuth();
   
   if (!isAuthenticated) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/login" replace />;
   }
-
+  
   return (
-    <>
-      <Navbar onLogout={onLogout} />
-      {children}
-    </>
+    <div className="min-h-screen bg-gray-100">
+      <Navbar />
+      <main className="container mx-auto px-4 py-8">
+        {children}
+      </main>
+    </div>
   );
 };
 
 function App() {
-  const { logout } = useAuth();
-
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-900 text-white">
+    <AuthProvider>
+      <Router>
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-
+          
           {/* Protected Routes */}
-          <Route
-            path="/dashboard"
-            element={
-              <AuthLayout onLogout={logout}>
-                <Dashboard />
-              </AuthLayout>
-            }
-          />
-          <Route
-            path="/phishing-simulation"
-            element={
-              <AuthLayout onLogout={logout}>
-                <PhishingSimulation />
-              </AuthLayout>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <AuthLayout onLogout={logout}>
-                <Profile />
-              </AuthLayout>
-            }
-          />
-          <Route
-            path="/settings"
-            element={
-              <AuthLayout onLogout={logout}>
-                <Settings />
-              </AuthLayout>
-            }
-          />
-          <Route
-            path="/simulation/:id"
-            element={
-              <AuthLayout onLogout={logout}>
-                <Simulation />
-              </AuthLayout>
-            }
-          />
+          <Route path="/dashboard" element={
+            <AuthLayout>
+              <Dashboard />
+            </AuthLayout>
+          } />
+          <Route path="/phishing-simulation" element={
+            <AuthLayout>
+              <PhishingSimulation />
+            </AuthLayout>
+          } />
+          <Route path="/simulation/:id" element={
+            <AuthLayout>
+              <Simulation />
+            </AuthLayout>
+          } />
+          <Route path="/profile" element={
+            <AuthLayout>
+              <Profile />
+            </AuthLayout>
+          } />
+          <Route path="/settings" element={
+            <AuthLayout>
+              <Settings />
+            </AuthLayout>
+          } />
         </Routes>
-      </div>
-    </Router>
+      </Router>
+    </AuthProvider>
   );
 }
 
-// Wrap the App with AuthProvider
-const AppWithAuth = () => (
-  <AuthProvider>
-    <App />
-  </AuthProvider>
-);
-
-export default AppWithAuth;
+export default App;
