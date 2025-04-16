@@ -28,11 +28,39 @@ function Login() {
       if (result.success) {
         navigate('/dashboard');
       } else {
-        setError(result.error || 'Failed to login. Please check your credentials.');
+        // Handle specific error cases
+        if (result.lockUntil) {
+          const lockTime = new Date(result.lockUntil);
+          const minutes = Math.ceil((lockTime - new Date()) / (1000 * 60));
+          setError(`Account is locked. Please try again in ${minutes} minutes or reset your password.`);
+        } else if (result.error === 'Invalid credentials') {
+          setError('Invalid email or password. Please try again.');
+        } else {
+          setError(result.error || 'Failed to login. Please try again later.');
+        }
       }
     } catch (err) {
       console.error('Login error:', err);
-      setError('Failed to login. Please check your credentials.');
+      if (err.response) {
+        // Handle different HTTP error codes
+        switch (err.response.status) {
+          case 401:
+            setError('Invalid email or password. Please try again.');
+            break;
+          case 429:
+            setError('Too many login attempts. Please try again later.');
+            break;
+          case 500:
+            setError('Server error. Please try again later.');
+            break;
+          default:
+            setError('An unexpected error occurred. Please try again.');
+        }
+      } else if (err.request) {
+        setError('Network error. Please check your internet connection.');
+      } else {
+        setError('An unexpected error occurred. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }

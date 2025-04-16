@@ -37,9 +37,47 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error('Login error:', error);
+      
+      // Handle specific error responses
+      if (error.response) {
+        const { data, status } = error.response;
+        
+        // Handle account locking
+        if (data.lockUntil) {
+          return {
+            success: false,
+            error: data.message,
+            lockUntil: data.lockUntil
+          };
+        }
+        
+        // Handle rate limiting
+        if (status === 429) {
+          return {
+            success: false,
+            error: 'Too many login attempts. Please try again later.'
+          };
+        }
+        
+        // Handle other error cases
+        return { 
+          success: false, 
+          error: data.message || 'Authentication failed'
+        };
+      }
+      
+      // Handle network errors
+      if (error.request) {
+        return {
+          success: false,
+          error: 'Network error. Please check your internet connection.'
+        };
+      }
+      
+      // Handle unexpected errors
       return { 
         success: false, 
-        error: error.response?.data?.message || 'Failed to login. Please check your credentials.' 
+        error: 'An unexpected error occurred. Please try again.' 
       };
     }
   };
