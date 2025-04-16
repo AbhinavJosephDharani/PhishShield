@@ -1,5 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PublicLayout from './components/PublicLayout';
 import AuthLayout from './components/AuthLayout';
 import Login from './pages/Login';
@@ -13,25 +12,7 @@ import About from './pages/About';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Simulation from './pages/Simulation';
-import Navbar from './components/Navbar';
-import { AuthProvider, useAuth } from './context/AuthContext';
-
-const AuthLayout = ({ children }) => {
-  const { isAuthenticated } = useAuth();
-  
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-  
-  return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
-      <main className="container mx-auto px-4 py-8">
-        {children}
-      </main>
-    </div>
-  );
-};
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
@@ -75,4 +56,4 @@ function App() {
   );
 }
 
-export default App;
+export default App; 
