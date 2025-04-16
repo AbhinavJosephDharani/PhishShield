@@ -14,6 +14,7 @@ import Settings from './pages/Settings';
 import Simulation from './pages/Simulation';
 import { AuthProvider } from './context/AuthContext';
 
+// Trigger redeployment - testing login functionality
 function App() {
   return (
     <AuthProvider>
