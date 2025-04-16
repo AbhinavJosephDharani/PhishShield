@@ -2,9 +2,15 @@ import { useState } from 'react';
 import { FiMail, FiShield, FiAward, FiClock } from 'react-icons/fi';
 import { GlowOnHover } from '../components/ui/GlowOnHover';
 import GlitchText from '../components/GlitchText';
+import { useNavigate } from 'react-router-dom';
 
 const PhishingSimulation = () => {
   const [selectedDifficulty, setSelectedDifficulty] = useState(null);
+  const navigate = useNavigate();
+
+  const handleStartSimulation = (simulationId) => {
+    navigate(`/simulation/${simulationId}`);
+  };
 
   const difficulties = [
     {
@@ -34,6 +40,54 @@ const PhishingSimulation = () => {
           id: 'easy-3',
           title: 'Grammar and Spelling',
           description: 'Spot common linguistic red flags in phishing attempts.',
+          duration: '5-10 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'easy-4',
+          title: 'Attachment Safety',
+          description: 'Learn to identify suspicious email attachments and file types.',
+          duration: '5-10 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'easy-5',
+          title: 'Sender Verification',
+          description: 'Practice verifying email sender authenticity.',
+          duration: '5-10 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'easy-6',
+          title: 'Basic Social Engineering',
+          description: 'Identify basic social engineering attempts in emails.',
+          duration: '5-10 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'easy-7',
+          title: 'Email Header Analysis',
+          description: 'Learn to analyze email headers for signs of spoofing.',
+          duration: '5-10 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'easy-8',
+          title: 'Link Safety',
+          description: 'Practice safe clicking habits and link verification.',
+          duration: '5-10 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'easy-9',
+          title: 'Basic Phishing Patterns',
+          description: 'Recognize common patterns in phishing attempts.',
           duration: '5-10 mins',
           completed: false,
           locked: false
@@ -70,6 +124,54 @@ const PhishingSimulation = () => {
           duration: '10-15 mins',
           completed: false,
           locked: false
+        },
+        {
+          id: 'moderate-4',
+          title: 'Advanced URL Analysis',
+          description: 'Identify sophisticated URL manipulation techniques.',
+          duration: '10-15 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'moderate-5',
+          title: 'Domain Spoofing',
+          description: 'Learn to detect domain spoofing and lookalike domains.',
+          duration: '10-15 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'moderate-6',
+          title: 'Multi-Stage Attacks',
+          description: 'Identify complex phishing campaigns with multiple stages.',
+          duration: '10-15 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'moderate-7',
+          title: 'Brand Impersonation',
+          description: 'Spot sophisticated brand impersonation attempts.',
+          duration: '10-15 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'moderate-8',
+          title: 'Advanced Social Engineering',
+          description: 'Recognize complex social engineering techniques.',
+          duration: '10-15 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'moderate-9',
+          title: 'Email Authentication',
+          description: 'Understand and verify email authentication methods.',
+          duration: '10-15 mins',
+          completed: false,
+          locked: false
         }
       ]
     },
@@ -100,6 +202,54 @@ const PhishingSimulation = () => {
           id: 'hard-3',
           title: 'Enterprise Security Challenge',
           description: 'Protect against sophisticated enterprise-level attacks.',
+          duration: '15-20 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'hard-4',
+          title: 'Advanced BEC Attacks',
+          description: 'Identify sophisticated Business Email Compromise attempts.',
+          duration: '15-20 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'hard-5',
+          title: 'Whaling Attacks',
+          description: 'Protect against executive-targeted phishing attempts.',
+          duration: '15-20 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'hard-6',
+          title: 'Supply Chain Attacks',
+          description: 'Identify phishing attempts through supply chain vulnerabilities.',
+          duration: '15-20 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'hard-7',
+          title: 'Advanced Spear Phishing',
+          description: 'Handle highly targeted and personalized phishing attempts.',
+          duration: '15-20 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'hard-8',
+          title: 'Multi-Vector Attacks',
+          description: 'Identify and respond to attacks using multiple vectors.',
+          duration: '15-20 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'hard-9',
+          title: 'Advanced Threat Analysis',
+          description: 'Analyze and respond to sophisticated threat scenarios.',
           duration: '15-20 mins',
           completed: false,
           locked: false
@@ -168,6 +318,7 @@ const PhishingSimulation = () => {
                         <span>{simulation.duration}</span>
                       </div>
                       <button
+                        onClick={() => handleStartSimulation(simulation.id)}
                         className="mt-4 w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 rounded-lg transition-colors"
                       >
                         Start Simulation
