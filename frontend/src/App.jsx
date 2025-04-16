@@ -23,6 +23,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/about" element={<About />} />
           
           {/* Protected Routes */}
           <Route path="/dashboard" element={

@@ -30,7 +30,7 @@ const Community = () => {
     {
       id: 3,
       title: 'New phishing technique targeting mobile users',
-      content: 'Warning: There\'s a new wave of SMS phishing attacks. Here\'s what to look out for...',
+      content: 'Warning: There's a new wave of SMS phishing attacks. Here's what to look out for...',
       author: 'CyberAlert',
       likes: 56,
       comments: 31,

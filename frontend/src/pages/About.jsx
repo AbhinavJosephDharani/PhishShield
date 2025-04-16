@@ -16,7 +16,7 @@ const About = () => {
     },
     {
       title: 'Who We Serve',
-      content: 'Our platform is designed for individuals, teams, and organizations of all sizes. Whether you\'re an individual looking to improve your security awareness or an organization seeking to protect your employees, PhishShield has the tools and resources you need.',
+      content: 'Our platform is designed for individuals, teams, and organizations of all sizes. Whether you're an individual looking to improve your security awareness or an organization seeking to protect your employees, PhishShield has the tools and resources you need.',
       icon: <FiUsers className="w-8 h-8" />
     }
   ];

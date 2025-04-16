@@ -30,7 +30,7 @@ const Features = () => {
     },
     {
       title: 'Custom Simulations',
-      description: 'Create tailored phishing simulations specific to your organization\'s needs and threats.',
+      description: 'Create tailored phishing simulations specific to your organization's needs and threats.',
       icon: <FiShield className="w-6 h-6" />,
       comingSoon: true
     },
