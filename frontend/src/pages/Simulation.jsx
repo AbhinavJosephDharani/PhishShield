@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { FiMail, FiShield, FiAward, FiClock } from 'react-icons/fi';
+import { GlowOnHover } from '../components/ui/GlowOnHover';
+import GlitchText from '../components/GlitchText';
 
 const Simulation = () => {
   const { id } = useParams();
@@ -9,6 +12,81 @@ const Simulation = () => {
   const [answers, setAnswers] = useState({});
   const [showFeedback, setShowFeedback] = useState(false);
   const [score, setScore] = useState(0);
+  const [selectedDifficulty, setSelectedDifficulty] = useState(null);
+
+  const handleStartSimulation = (simulationId) => {
+    navigate(`/simulation/${simulationId}`);
+  };
+
+  const difficulties = [
+    {
+      level: 'easy',
+      title: 'Beginner',
+      description: 'Learn the basics of identifying phishing attempts through simple scenarios.',
+      icon: <FiMail className="w-6 h-6" />,
+      color: 'text-green-400',
+      simulations: [
+        {
+          id: 'easy-1',
+          title: 'Basic Email Verification',
+          description: 'Learn to identify suspicious sender addresses and basic email red flags.',
+          duration: '5-10 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'easy-2',
+          title: 'Package Delivery Scam',
+          description: 'Practice identifying suspicious URLs and fake website addresses.',
+          duration: '5-10 mins',
+          completed: false,
+          locked: false
+        }
+      ]
+    },
+    {
+      level: 'moderate',
+      title: 'Intermediate',
+      description: 'Face more sophisticated phishing attempts with subtle deception techniques.',
+      icon: <FiShield className="w-6 h-6" />,
+      color: 'text-yellow-400',
+      simulations: [
+        {
+          id: 'intermediate-1',
+          title: 'CEO Fraud Attack',
+          description: 'Identify sophisticated business email compromise attempts.',
+          duration: '10-15 mins',
+          completed: false,
+          locked: false
+        },
+        {
+          id: 'intermediate-2',
+          title: 'Tax Refund Scam',
+          description: 'Learn to detect domain spoofing and lookalike domains.',
+          duration: '10-15 mins',
+          completed: false,
+          locked: false
+        }
+      ]
+    },
+    {
+      level: 'hard',
+      title: 'Advanced',
+      description: 'Challenge yourself with complex, multi-layered phishing scenarios.',
+      icon: <FiAward className="w-6 h-6" />,
+      color: 'text-red-400',
+      simulations: [
+        {
+          id: 'advanced-1',
+          title: 'Spear Phishing Attack',
+          description: 'Complex scenarios combining multiple deception techniques.',
+          duration: '15-20 mins',
+          completed: false,
+          locked: false
+        }
+      ]
+    }
+  ];
 
   const simulationData = {
     'easy-1': {
@@ -252,6 +330,84 @@ Company Partner Inc.`
     }
   };
 
+  // If no simulation ID is provided, show the selection interface
+  if (!id) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <GlitchText text="Phishing Simulation" className="text-4xl font-bold mb-4" />
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              Test your ability to identify phishing attempts through realistic scenarios.
+              Start with beginner levels and progress to more challenging simulations.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {difficulties.map((difficulty) => (
+              <motion.div
+                key={difficulty.level}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`bg-[#1a1a1a] rounded-lg p-6 border border-gray-800 ${
+                  selectedDifficulty === difficulty.level ? 'ring-2 ring-blue-500' : ''
+                }`}
+              >
+                <div className={`flex items-center mb-4 ${difficulty.color}`}>
+                  {difficulty.icon}
+                  <h3 className="text-xl font-semibold ml-2">{difficulty.title}</h3>
+                </div>
+                <p className="text-gray-400 mb-6">{difficulty.description}</p>
+                <div className="space-y-4">
+                  {difficulty.simulations.map((simulation) => (
+                    <GlowOnHover key={simulation.id}>
+                      <button
+                        onClick={() => handleStartSimulation(simulation.id)}
+                        disabled={simulation.locked}
+                        className={`w-full p-4 text-left rounded-lg transition-colors ${
+                          simulation.locked
+                            ? 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                            : 'bg-[#2a2a2a] hover:bg-[#3a3a3a] text-white'
+                        }`}
+                      >
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <h4 className="font-medium">{simulation.title}</h4>
+                            <p className="text-sm text-gray-400">{simulation.description}</p>
+                          </div>
+                          {simulation.locked && (
+                            <svg
+                              className="w-5 h-5 text-gray-500"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                              />
+                            </svg>
+                          )}
+                        </div>
+                        <div className="mt-2 flex items-center text-sm text-gray-400">
+                          <FiClock className="mr-1" />
+                          <span>{simulation.duration}</span>
+                        </div>
+                      </button>
+                    </GlowOnHover>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // If a simulation ID is provided, show the actual simulation
   const currentSimulation = simulationData[id] || simulationData['easy-1'];
   const currentStepData = currentSimulation.steps[currentStep];
 
@@ -280,12 +436,12 @@ Company Partner Inc.`
       setAnswers({});
       setShowFeedback(false);
     } else {
-      navigate('/simulation/complete');
+      navigate('/simulation');
     }
   };
 
   const handleBack = () => {
-    navigate('/phishing-simulation');
+    navigate('/simulation');
   };
 
   return (

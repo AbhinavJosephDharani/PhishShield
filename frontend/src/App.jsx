@@ -4,7 +4,6 @@ import AuthLayout from './components/AuthLayout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
-import PhishingSimulation from './pages/PhishingSimulation';
 import Home from './pages/Home';
 import Features from './pages/Features';
 import Community from './pages/Community';
@@ -31,9 +30,9 @@ function App() {
               <Dashboard />
             </AuthLayout>
           } />
-          <Route path="/phishing-simulation" element={
+          <Route path="/simulation" element={
             <AuthLayout>
-              <PhishingSimulation />
+              <Simulation />
             </AuthLayout>
           } />
           <Route path="/simulation/:id" element={
