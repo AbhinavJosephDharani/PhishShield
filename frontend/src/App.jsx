@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import Layout from './components/Layout';
+import PublicLayout from './components/PublicLayout';
+import AuthLayout from './components/AuthLayout';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -19,56 +20,99 @@ function App() {
     setIsAuthenticated(!!token);
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setIsAuthenticated(false);
+  };
+
   return (
     <Router>
-      <div className="min-h-screen bg-gray-900 text-white">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route 
-            path="/login" 
-            element={
-              isAuthenticated ? (
-                <Navigate to="/dashboard" replace />
-              ) : (
+      <Routes>
+        {/* Public Routes */}
+        <Route
+          path="/"
+          element={
+            <PublicLayout>
+              <Home />
+            </PublicLayout>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <PublicLayout>
                 <Login setIsAuthenticated={setIsAuthenticated} />
-              )
-            } 
-          />
-          <Route 
-            path="/register" 
-            element={
-              isAuthenticated ? (
-                <Navigate to="/dashboard" replace />
-              ) : (
+              </PublicLayout>
+            )
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <PublicLayout>
                 <Register setIsAuthenticated={setIsAuthenticated} />
-              )
-            } 
-          />
-          <Route
-            path="/dashboard"
-            element={
-              isAuthenticated ? (
-                <Dashboard setIsAuthenticated={setIsAuthenticated} />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          />
-          <Route
-            path="/simulation"
-            element={
-              isAuthenticated ? (
+              </PublicLayout>
+            )
+          }
+        />
+
+        {/* Authenticated Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            isAuthenticated ? (
+              <AuthLayout onLogout={handleLogout}>
+                <Dashboard />
+              </AuthLayout>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+        <Route
+          path="/simulation"
+          element={
+            isAuthenticated ? (
+              <AuthLayout onLogout={handleLogout}>
                 <PhishingSimulation />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          />
-          <Route path="/features" element={<Features />} />
-          <Route path="/community" element={<Community />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
-      </div>
+              </AuthLayout>
+            ) : (
+              <Navigate to="/login" replace />
+            )
+          }
+        />
+        <Route
+          path="/features"
+          element={
+            <AuthLayout onLogout={handleLogout}>
+              <Features />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="/community"
+          element={
+            <AuthLayout onLogout={handleLogout}>
+              <Community />
+            </AuthLayout>
+          }
+        />
+        <Route
+          path="/about"
+          element={
+            <AuthLayout onLogout={handleLogout}>
+              <About />
+            </AuthLayout>
+          }
+        />
+      </Routes>
     </Router>
   );
 }
