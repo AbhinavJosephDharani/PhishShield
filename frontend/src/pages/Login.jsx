@@ -1,21 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { FiMail, FiLock, FiAlertCircle } from 'react-icons/fi';
 import GlitchText from '../components/GlitchText';
 import { FloatingNav } from '../components/ui/FloatingNav';
 import Aurora from '../components/ui/Aurora';
+import { useAuth } from '../context/AuthContext';
 
 // API URL based on environment
 // Note: The login endpoint is /api/auth/login as defined in backend/server.js
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-function Login({ setIsAuthenticated }) {
+function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,22 +24,15 @@ function Login({ setIsAuthenticated }) {
     setIsLoading(true);
 
     try {
-      const response = await axios.post(`${API_URL}/api/auth/login`, {
-        email,
-        password,
-      });
-
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-        setIsAuthenticated(true);
+      const result = await login(email, password);
+      if (result.success) {
         navigate('/dashboard');
       } else {
-        setError('Invalid response from server');
+        setError(result.error || 'Failed to login. Please check your credentials.');
       }
     } catch (err) {
       console.error('Login error:', err);
-      setError(err.response?.data?.message || 'Failed to login. Please check your credentials.');
+      setError('Failed to login. Please check your credentials.');
     } finally {
       setIsLoading(false);
     }

@@ -1,4 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import axios from 'axios';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const AuthContext = createContext();
 
@@ -17,20 +20,27 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      // Here you would typically make an API call to your backend
-      // For now, we'll just simulate a successful login
-      const mockUser = {
-        id: '1',
+      const response = await axios.post(`${API_URL}/api/auth/login`, {
         email,
-        name: 'Test User'
-      };
-      
-      setUser(mockUser);
-      setIsAuthenticated(true);
-      localStorage.setItem('user', JSON.stringify(mockUser));
-      return { success: true };
+        password,
+      });
+
+      if (response.data.token) {
+        const userData = response.data.user;
+        setUser(userData);
+        setIsAuthenticated(true);
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(userData));
+        return { success: true };
+      } else {
+        return { success: false, error: 'Invalid response from server' };
+      }
     } catch (error) {
-      return { success: false, error: error.message };
+      console.error('Login error:', error);
+      return { 
+        success: false, 
+        error: error.response?.data?.message || 'Failed to login. Please check your credentials.' 
+      };
     }
   };
 
@@ -38,24 +48,33 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAuthenticated(false);
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
   };
 
   const register = async (email, password, name) => {
     try {
-      // Here you would typically make an API call to your backend
-      // For now, we'll just simulate a successful registration
-      const mockUser = {
-        id: '1',
+      const response = await axios.post(`${API_URL}/api/auth/register`, {
         email,
-        name
-      };
-      
-      setUser(mockUser);
-      setIsAuthenticated(true);
-      localStorage.setItem('user', JSON.stringify(mockUser));
-      return { success: true };
+        password,
+        name,
+      });
+
+      if (response.data.token) {
+        const userData = response.data.user;
+        setUser(userData);
+        setIsAuthenticated(true);
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(userData));
+        return { success: true };
+      } else {
+        return { success: false, error: 'Invalid response from server' };
+      }
     } catch (error) {
-      return { success: false, error: error.message };
+      console.error('Registration error:', error);
+      return { 
+        success: false, 
+        error: error.response?.data?.message || 'Failed to register. Please try again.' 
+      };
     }
   };
 
