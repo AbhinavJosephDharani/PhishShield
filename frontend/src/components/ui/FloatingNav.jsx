@@ -22,29 +22,9 @@ const publicNavItems = [
   }
 ];
 
-const protectedNavItems = [
-  {
-    name: "Dashboard",
-    link: "/dashboard"
-  },
-  {
-    name: "Training",
-    link: "/simulation"
-  },
-  {
-    name: "Profile",
-    link: "/profile"
-  },
-  {
-    name: "Settings",
-    link: "/settings"
-  }
-];
-
 export const FloatingNav = () => {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
-  const navItems = isAuthenticated ? protectedNavItems : publicNavItems;
 
   return (
     <>
@@ -61,7 +41,7 @@ export const FloatingNav = () => {
           <Link to="/" className="flex items-center gap-2">
             <IconShieldCheck className="h-5 w-5 text-white" />
           </Link>
-          {navItems.map((navItem, idx) => (
+          {publicNavItems.map((navItem, idx) => (
             <Link
               key={`link-${idx}`}
               to={navItem.link}
