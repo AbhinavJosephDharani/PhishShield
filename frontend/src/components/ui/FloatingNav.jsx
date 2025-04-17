@@ -1,13 +1,12 @@
-// Navigation component with dynamic menu items based on auth state
+// Navigation component with consistent menu items
 import React from "react";
 import { motion } from "framer-motion";
 import { IconShieldCheck } from "@tabler/icons-react";
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "../../lib/utils";
 import { BackgroundGradient } from "./BackgroundGradient";
-import { useAuth } from "../../context/AuthContext";
 
-const publicNavItems = [
+const navItems = [
   {
     name: "Features",
     link: "/features"
@@ -23,7 +22,6 @@ const publicNavItems = [
 ];
 
 export const FloatingNav = () => {
-  const { isAuthenticated } = useAuth();
   const location = useLocation();
 
   return (
@@ -41,7 +39,7 @@ export const FloatingNav = () => {
           <Link to="/" className="flex items-center gap-2">
             <IconShieldCheck className="h-5 w-5 text-white" />
           </Link>
-          {publicNavItems.map((navItem, idx) => (
+          {navItems.map((navItem, idx) => (
             <Link
               key={`link-${idx}`}
               to={navItem.link}
@@ -52,24 +50,22 @@ export const FloatingNav = () => {
               <span className="text-lg">{navItem.name}</span>
             </Link>
           ))}
-          {!isAuthenticated && (
-            <div className="flex items-center gap-3">
-              <BackgroundGradient>
-                <Link
-                  to="/register"
-                  className="block bg-black text-white px-5 py-2.5 rounded-2xl font-sans font-medium hover:bg-gray-900 transition-colors"
-                >
-                  <span className="text-lg">Register</span>
-                </Link>
-              </BackgroundGradient>
+          <div className="flex items-center gap-3">
+            <BackgroundGradient>
               <Link
-                to="/login"
-                className="border font-sans font-medium relative border-white/[0.2] text-black px-5 py-2.5 rounded-2xl bg-white hover:bg-white/90 hover:text-black transition-colors"
+                to="/register"
+                className="block bg-black text-white px-5 py-2.5 rounded-2xl font-sans font-medium hover:bg-gray-900 transition-colors"
               >
-                <span className="text-lg">Login</span>
+                <span className="text-lg">Register</span>
               </Link>
-            </div>
-          )}
+            </BackgroundGradient>
+            <Link
+              to="/login"
+              className="border font-sans font-medium relative border-white/[0.2] text-black px-5 py-2.5 rounded-2xl bg-white hover:bg-white/90 hover:text-black transition-colors"
+            >
+              <span className="text-lg">Login</span>
+            </Link>
+          </div>
         </div>
       </div>
     </>
