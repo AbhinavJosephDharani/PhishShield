@@ -1,3 +1,4 @@
+// Navigation component with dynamic menu items based on auth state
 import React from "react";
 import { motion } from "framer-motion";
 import { IconShieldCheck } from "@tabler/icons-react";
